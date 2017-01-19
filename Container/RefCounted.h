@@ -39,13 +39,17 @@ namespace Sapphire
 		//  增加引用计数.
 		void AddRef();
 		/// Decrement reference count and delete self if no more references. Can also be called outside of a SharedPtr for traditional reference counting.
+		//减少引用计数数量，如果没有更多的引用了删除对象。
 		void ReleaseRef();
 		/// Return reference count.
+		// 返回引用计数
 		int Refs() const;
 		/// Return weak reference count.
+		//返回弱引用数量
 		int WeakRefs() const;
 
 		/// Return pointer to the reference count structure.
+		//  返回引用计数结构体的指针
 		RefCount* RefCountPtr() { return refCount_; }
 
 	private:
@@ -55,6 +59,7 @@ namespace Sapphire
 		RefCounted& operator =(const RefCounted& rhs);
 
 		/// Pointer to the reference count structure.
+		//指向引用计数结构体的指针
 		RefCount* refCount_;
 	};
 }

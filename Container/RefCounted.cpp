@@ -11,6 +11,7 @@ namespace Sapphire
 		refCount_(new RefCount())
 	{
 		// Hold a weak ref to self to avoid possible double delete of the refcount
+		//保存一个弱引用到自己避免引用的重复删除
 		(refCount_->weakRefs_)++;
 	}
 
@@ -20,6 +21,7 @@ namespace Sapphire
 		assert(refCount_->refs_ == 0);
 		assert(refCount_->weakRefs_ > 0);
 
+		//标记对象为过期，如果没有别的弱引用存在释放他自己的弱引用并删除引用计数
 		// Mark object as expired, release the self weak ref and delete the refcount if no other weak refs exist
 		refCount_->refs_ = -1;
 		(refCount_->weakRefs_)--;
@@ -50,7 +52,6 @@ namespace Sapphire
 
 	int RefCounted::WeakRefs() const
 	{
-		// Subtract one to not return the internally held reference
 		return refCount_->weakRefs_ - 1;
 	}
 }
