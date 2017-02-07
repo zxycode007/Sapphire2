@@ -442,6 +442,7 @@ namespace Sapphire
 		{
 			if (refCount_)
 			{
+				//增加弱引用计数
 				assert(refCount_->weakRefs_ >= 0);
 				++(refCount_->weakRefs_);
 			}
@@ -453,9 +454,10 @@ namespace Sapphire
 		{
 			if (refCount_)
 			{
+				//只减少引用对象弱引用计数
 				assert(refCount_->weakRefs_ > 0);
 				--(refCount_->weakRefs_);
-
+				//弱引用计数失效，释放引用计数指针
 				if (Expired() && !refCount_->weakRefs_)
 					delete refCount_;
 			}
@@ -465,8 +467,10 @@ namespace Sapphire
 		}
 
 		/// Pointer to the object.
+		// 原始对象
 		T* ptr_;
 		/// Pointer to the RefCount structure.
+		//引用计数器指针
 		RefCount* refCount_;
 	};
 

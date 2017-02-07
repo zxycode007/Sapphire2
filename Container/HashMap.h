@@ -12,13 +12,15 @@ namespace Sapphire
 {
 
 	/// Hash map template class.
+	//  hash map 模板类
 	template <class T, class U> class HashMap : public HashBase
 	{
 	public:
-		typedef T KeyType;
-		typedef U ValueType;
+		typedef T KeyType;     //key类型
+		typedef U ValueType;      //value 类型
 
 		/// Hash map key-value pair with const key.
+		// key-value 对
 		class KeyValue
 		{
 		public:
@@ -59,6 +61,7 @@ namespace Sapphire
 		};
 
 		/// Hash map node.
+		//  hash表节点
 		struct Node : public HashNodeBase
 		{
 			/// Construct undefined.

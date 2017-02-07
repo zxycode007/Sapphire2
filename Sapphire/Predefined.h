@@ -9,3 +9,4 @@
 
 
 #define SAPPHIRE_MINIDUMPS 1
+#define _SAPPHIRE_DEBUG_

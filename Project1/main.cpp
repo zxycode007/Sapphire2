@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "Timer.h"
 #include "Condition.h"
+#include "DebugNew.h"
 
 using namespace std;
 
@@ -92,7 +93,6 @@ class TestSharedPtr : public RefCounted
 public:
 	TestSharedPtr()
 	{
-		AddRef();
 		std::cout << "创建对象" << this << std::endl;
 	}
 	~TestSharedPtr()
@@ -120,16 +120,17 @@ int main()
 
 	Condition* c = new Condition();
 	Context* ctx = new Context();
+	SharedPtr<Context> spctx = SharedPtr<Context>(ctx);
 	Log* log = new Log(ctx);
 	log->Open("log1.log");
+	SharedPtr<Log> spLog = SharedPtr<Log>(log);
 
 	TestSharedPtr* tsp = new TestSharedPtr();
 	cout << tsp->Refs() << endl;
-	tsp->ReleaseRef();
+	SharedPtr<TestSharedPtr> sp = SharedPtr<TestSharedPtr>(tsp);
 
 	SAPPHIRE_LOGINFO("asad");
 	
-
 	cout << sizeof(Sapphire::String) << v->GetString().CString() << endl;
 
 	//测试union实现变体的原理
@@ -148,7 +149,9 @@ int main()
 	cout << div(u1, u2) << endl;
 	
 	delete v;
+	delete c;
 
 	getchar();
+	_CrtDumpMemoryLeaks();
 	return f();
 }
