@@ -27,7 +27,10 @@
     <ClInclude Include="Mesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2.h">
+    <ClInclude Include="Vertex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

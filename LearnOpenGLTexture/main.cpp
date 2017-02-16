@@ -18,8 +18,10 @@ void render();
 
 GLFWwindow*  init();
 
+
 int main(char* argc[], int argv)
 {
+
 	GLFWwindow* window = init();
 
 	// 定义窗口大小

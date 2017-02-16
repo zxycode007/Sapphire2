@@ -107,6 +107,55 @@ int main()
 	typedef int(*func)(void);
 	func f = test;
 
+	{
+		Sapphire::Quaternion q1;
+
+		q1.FromAngleAxis(90, Vector3::FORWARD);
+		Vector3 V(1, 1, 0);
+		Quaternion q2(0, V.x_, V.y_, V.z_);
+		Quaternion res = q1*q2*q1.Inverse();
+		cout << res.x_ << "  " << res.y_ << "  " << res.z_ << endl;
+
+	}
+	
+	
+	{
+		Vector3 v1(1, 1, 0);
+		Vector3 v2(-1, 1, 0);
+		Quaternion q3(v1,v2);
+		cout << q3.x_ << "  " << q3.y_ << "  " << q3.z_ << endl;
+		Vector3 eularAngle = q3.EulerAngles();
+		cout << " eularAngleX:" << eularAngle.x_ << "  eularAngleY:" << eularAngle.y_ << "  eularAngleZ:" << eularAngle.z_ << endl;
+	}
+	
+	 
+	{
+		Quaternion q1;
+		q1.FromAngleAxis(60.0f, Vector3::FORWARD);
+		Quaternion q2;
+		q2.FromAngleAxis(135.0f, Vector3::FORWARD);
+		Quaternion q3;
+		q3 = q1.Slerp(q2, 0.5);
+		cout << " q3 angle" << q3.RollAngle() << endl;
+		Vector3 v1(0, 1, 0);
+		Vector3 v2 = q3*v1;
+		cout << v2.ToString().CString() << endl;
+
+		 
+	}
+
+	{
+		Vector3 v1(1, 0, 0);
+		Vector3 v2(-0.7071, 0.7071, 0);
+		Quaternion q(v1, v2);
+		Vector3 axis;
+		float angle;
+		q.ToAngleAxis(angle, axis);
+		Vector3 v3 = q*v1;
+	}
+
+ 
+
 	Sapphire::Variant* v;
 	v = new Sapphire::Variant("测试阿萨德的洒落大理石块大声地");
 	Sapphire::String str = v->GetString();

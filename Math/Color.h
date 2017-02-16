@@ -112,10 +112,13 @@ namespace Sapphire
 		const float* Data() const { return &r_; }
 
 		/// Return color packed to a 32-bit integer, with R component in the lowest 8 bits. Components are clamped to [0, 1] range.
+		//  返回32位int颜色， R分量在最低8位 ABGR格式
 		unsigned ToUInt() const;
 		/// Return HSL color-space representation as a Vector3; the RGB values are clipped before conversion but not changed in the process.
+		//  返回HSL颜色空间表示的一个Vecto3； RGB值在转换前已经被剪切，但这个过程中不会改变
 		Vector3 ToHSL() const;
 		/// Return HSV color-space representation as a Vector3; the RGB values are clipped before conversion but not changed in the process.
+		//   返回HSV颜色空间表示的一个Vecto3； RGB值在转换前已经被剪切，但这个过程中不会改变
 		Vector3 ToHSV() const;
 		/// Set RGBA values from specified HSL values and alpha.
 		void FromHSL(float h, float s, float l, float a = 1.0f);

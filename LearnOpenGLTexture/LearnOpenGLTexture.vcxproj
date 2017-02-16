@@ -68,18 +68,20 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>../Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\ProjectBase\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Container;../Core;../Core/IO;../Sapphire;../Math;..\ProjectBase\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>F:\VS2015Project\LearnOpenGL\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ProjectBase.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;winmm.lib;imm32.lib;Core.lib;LibCpuId.lib;Container.lib;Math.lib;LZ4.lib;SDL.lib;ProjectBase.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
@@ -121,7 +123,8 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

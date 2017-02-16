@@ -293,4 +293,29 @@ namespace Sapphire
 		sprintf(tempBuffer, "%g %g %g %g", w_, x_, y_, z_);
 		return String(tempBuffer);
 	}
+
+	void Quaternion::ToAngleAxis(float & angle, Vector3 & axis) const
+	{
+		// 这个四元数表示的旋转是
+		//   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
+
+		float fSqrLength = x_*x_ + y_*y_ + z_*z_;
+		if (fSqrLength > 0.0)
+		{
+			angle = 2.0*Acos(w_);
+			float fInvLength = 1.0f/sqrt(fSqrLength);
+			axis.x_ = x_*fInvLength;
+			axis.y_ = y_*fInvLength;
+			axis.z_ = z_*fInvLength;
+		}
+		else
+		{
+			// 角度是 0 (mod 2*pi), 所以任何轴都会做
+			angle = 0.0f;
+			axis.x_ = 1.0;
+			axis.y_ = 0.0;
+			axis.z_ = 0.0;
+		}
+
+	}
 }

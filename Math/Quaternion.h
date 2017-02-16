@@ -417,6 +417,9 @@ namespace Sapphire
 		/// Normalized linear interpolation with another quaternion.
 		Quaternion Nlerp(Quaternion rhs, float t, bool shortestPath = false) const;
 
+		//将这个四元数转换为一个旋转轴和旋转角度
+		void ToAngleAxis(float& rfAngle, Vector3& rkAxis) const;
+
 		/// Return float data.
 		const float* Data() const { return &w_; }
 
