@@ -246,7 +246,7 @@ namespace Sapphire
 
 
 	//快速求倒数
-	float Reciprocal(const float f)
+	inline float Reciprocal(const float f)
 	{
 #if defined(_MSC_VER)
 
@@ -260,7 +260,7 @@ namespace Sapphire
 		__asm mulss xmm1, xmm0            // xmm2 = f * rcpss(f) * rcpss(f)
 		__asm addss xmm0, xmm0            // xmm0 = 2 * rcpss(f)
 		__asm subss xmm0, xmm1            // xmm0 = 2 * rcpss(f)
-		//        - f * rcpss(f) * rcpss(f)
+										  //        - f * rcpss(f) * rcpss(f)
 		__asm movss rec, xmm0             // return xmm0
 		return rec;
 

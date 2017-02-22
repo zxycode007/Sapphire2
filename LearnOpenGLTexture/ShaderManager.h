@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <GL\glew.h>
 
+
 struct ShaderStruct
 {
 	string  ShaderName;

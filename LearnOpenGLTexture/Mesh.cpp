@@ -49,7 +49,7 @@ bool MeshBuffer::Initialize()
 	glGenBuffers(1, &mVbo);
 	//创建VAO
 	glGenVertexArrays(1, &mVao);
-	//创建EBO对象
+	//创建EBO对象 (元素缓冲对象  画顶点还是元素)
 	glGenBuffers(1, &mEbo);
 	mIsInit = true;
 	return true;
@@ -138,6 +138,7 @@ void MeshBuffer::DrawMeshBuffer(ShaderStruct * shader)
 	glBindVertexArray(mVao);
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	GLenum errorcode = glGetError();
 	glBindVertexArray(0);
 
 	Finish();

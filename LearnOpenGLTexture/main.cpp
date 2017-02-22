@@ -9,6 +9,8 @@
 #include "IOUtil.h"
 #include "ShaderManager.h"
 #include "Mesh.h"
+#include "Line.h"
+#include "VideoDriver.h"
 
 #pragma comment(lib,"opengl32.lib")
 
@@ -131,6 +133,14 @@ void render()
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	smesh->DrawMesh();
+
+	Sapphire::Line3d lines(Sapphire::Vector3(0.5, -0.8, 1.0), Sapphire::Vector3(-0.5, -0.8, 1.0));
+	lines.setColor(Sapphire::Color(1.0, 0.0, 0.0, 1.0));
+	OpenGLVideoDriver* vd = new OpenGLVideoDriver();
+	vd->Load(shader);
+	vd->drawLine(lines);
+	delete vd;
+
 }
 
 

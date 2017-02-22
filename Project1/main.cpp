@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "Condition.h"
 #include "DebugNew.h"
+#include <vector>
 
 using namespace std;
 
@@ -102,8 +103,11 @@ public:
 };
  
 
+
+
 int main()
 {
+
 	typedef int(*func)(void);
 	func f = test;
 

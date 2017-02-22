@@ -38,6 +38,7 @@ public:
 		mVao = 0;
 		mMesh = mesh;
 		mWindow = Window;
+		mMode = mode;
 		mVaoIndex = 0;
 	};
 	bool Initialize();
