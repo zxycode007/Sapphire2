@@ -80,7 +80,7 @@ namespace Sapphire
 			return value;
 	}
 
-	/// Smoothly damp between values.
+	/// 取两个值的线性插值
 	inline float SmoothStep(float lhs, float rhs, float t)
 	{
 		t = Clamp((t - lhs) / (rhs - lhs), 0.0f, 1.0f); // Saturate t
@@ -88,6 +88,7 @@ namespace Sapphire
 	}
 
 	/// Return sine of an angle in degrees.
+	// 返回正弦的角度
 	inline float Sin(float angle) { return sinf(angle * M_DEGTORAD); }
 
 	/// Return cosine of an angle in degrees.
@@ -138,7 +139,7 @@ namespace Sapphire
 		return value == 1;
 	}
 
-	/// Round up to next power of two.
+	/// Round up to next power of two
 	inline unsigned NextPowerOfTwo(unsigned value)
 	{
 		unsigned ret = 1;
@@ -158,6 +159,7 @@ namespace Sapphire
 	}
 
 	/// Update a hash with the given 8-bit value using the SDBM algorithm.
+	// 用给的8位值和SDBM算法更新hash
 	inline unsigned SDBMHash(unsigned hash, unsigned char c) { return c + (hash << 6) + (hash << 16) - hash; }
 
 	/// Return a random float between 0.0 (inclusive) and 1.0 (exclusive.)
@@ -219,5 +221,58 @@ namespace Sapphire
 		float out;
 		*((unsigned*)&out) = t1;
 		return out;
+	}
+
+	//快速平方根算法
+	inline float Qrsqrt_HW(const float f)
+	{
+#if defined(_MSC_VER)
+		// SSE 平方根倒数估算法 精确到有符号的12位尾数
+		float recsqrt;
+		__asm rsqrtss xmm0, f           // xmm0 = rsqrtss(f)
+		__asm movss recsqrt, xmm0       // return xmm0
+		return recsqrt;
+
+		/*
+		//来自于Nvidia
+		u32 tmp = (u32(IEEE_1_0 << 1) + IEEE_1_0 - *(u32*)&x) >> 1;
+		f32 y = *(f32*)&tmp;
+		return y * (1.47f - 0.47f * x * y * y);
+		*/
+#else
+		return 1.f / sqrtf(f);
+#endif
+	}
+
+
+	//快速求倒数
+	float Reciprocal(const float f)
+	{
+#if defined(_MSC_VER)
+
+		// SSE Newton-Raphson 倒数估算法, 精确到尾数23位
+		// 一个Newtown-Raphson 迭代:
+		// f(i+1) = 2 * rcpss(f) - f * rcpss(f) * rcpss(f)
+		float rec;
+		__asm rcpss xmm0, f               // xmm0 = rcpss(f)
+		__asm movss xmm1, f               // xmm1 = f
+		__asm mulss xmm1, xmm0            // xmm1 = f * rcpss(f)
+		__asm mulss xmm1, xmm0            // xmm2 = f * rcpss(f) * rcpss(f)
+		__asm addss xmm0, xmm0            // xmm0 = 2 * rcpss(f)
+		__asm subss xmm0, xmm1            // xmm0 = 2 * rcpss(f)
+		//        - f * rcpss(f) * rcpss(f)
+		__asm movss rec, xmm0             // return xmm0
+		return rec;
+
+
+		//! 不能够除0.. (fpu 异常)
+		// 代替设置f到一个高值取获取一个接近0的返回值
+		// 这儿必须测试（平面法线与其它的点积）<0.f
+		//UINT32  x = (-(AIR(f) != 0 ) >> 31 ) & ( IR(f) ^ 0xd368d4a5 ) ^ 0xd368d4a5;
+		//return 1.f / FR ( x );
+
+#else  
+		return 1.f / f;
+#endif
 	}
 }
