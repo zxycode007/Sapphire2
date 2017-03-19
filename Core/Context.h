@@ -50,13 +50,13 @@ namespace Sapphire
 		template <class T> void RegisterFactory(const char* category);
 		/// 移除子系统的模板版本 
 		template <class T> void RemoveSubsystem();
-	    // 
+	    // 注册对象类型T注册属性
 		template <class T> void RegisterAttribute(const AttributeInfo& attr);
-	
+	    // 移除对象类型T的属性
 		template <class T> void RemoveAttribute(const char* name);
-
+		//复制基属性
 		template <class T, class U> void CopyBaseAttributes();
-
+		//更新默认属性
 		template <class T> void UpdateAttributeDefaultValue(const char* name, const Variant& defaultValue);
 
 		

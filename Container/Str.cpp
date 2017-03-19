@@ -390,31 +390,34 @@ namespace Sapphire
 		return Begin() + pos;
 	}
 
+	//重新调整字符串数组大小
 	void String::Resize(unsigned newLength)
 	{
+		//如果容量为空
 		if (!capacity_)
 		{
-			// If zero length requested, do not allocate buffer yet
+			// 如果新大小为0，直接不分配
 			if (!newLength)
 				return;
 
-			// Calculate initial capacity
+			// 计算初始大小
 			capacity_ = newLength + 1;
 			if (capacity_ < MIN_CAPACITY)
 				capacity_ = MIN_CAPACITY;
-
+			//分配空间
 			buffer_ = new char[capacity_];
 		}
 		else
 		{
+			//新大小不为0，并且大于现有容量
 			if (newLength && capacity_ < newLength + 1)
 			{
-				// Increase the capacity with half each time it is exceeded
+				// 每次增加超过一半增加容量
 				while (capacity_ < newLength + 1)
 					capacity_ += (capacity_ + 1) >> 1;
 
 				char* newBuffer = new char[capacity_];
-				// Move the existing data to the new buffer, then delete the old buffer
+				// 移动已存在的数据到新内存，并释放旧内存
 				if (length_)
 					CopyChars(newBuffer, buffer_, length_);
 				delete[] buffer_;

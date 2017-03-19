@@ -13,42 +13,42 @@ typedef unsigned ThreadID;
 
 namespace Sapphire
 {
-	/// Operating system thread.
+	/// 操作系统线程封装
 	class SAPPHIRE_API Thread
 	{
 	public:
-		/// Construct. Does not start the thread yet.
+		/// 构造函数不会自动开始线程
 		Thread();
-		/// Destruct. If running, stop and wait for thread to finish.
+		/// 析构，如果运行状态，停止并等待线程完成
 		virtual ~Thread();
 
-		/// The function to run in the thread.
+		/// 这个线程要运行的函数
 		virtual void ThreadFunction() = 0;
 
-		/// Start running the thread. Return true if successful, or false if already running or if can not create the thread.
+		/// 开始这个线程。如果成功返回true，如果失败可能已经运行或者没能创建这个线程
 		bool Run();
-		/// Set the running flag to false and wait for the thread to finish.
+		/// 设置标志位false，并等待线程完成
 		void Stop();
-		/// Set thread priority. The thread must have been started first.
+		/// 设置线程的优先级
 		void SetPriority(int priority);
 
-		/// Return whether thread exists.
+		/// 返回这个线程释放存在
 		bool IsStarted() const { return handle_ != 0; }
 
-		/// Set the current thread as the main thread.
+		/// 设置当前线程作为主线程
 		static void SetMainThread();
-		/// Return the current thread's ID.
+		/// 返回当前线程ID
 		static ThreadID GetCurrentThreadID();
-		/// Return whether is executing in the main thread.
+		/// 返回释放在主线程中执行
 		static bool IsMainThread();
 
 	protected:
-		/// Thread handle.
+		/// 线程句柄
 		void* handle_;
-		/// Running flag.
+		/// 运行标志
 		volatile bool shouldRun_;
 
-		/// Main thread's thread ID.
+		/// 主线程的线程ID
 		static ThreadID mainThreadID;
 	};
 }

@@ -514,9 +514,10 @@ namespace Sapphire
 
 	void Variant::SetType(VariantType newType)
 	{
+		// 如果类型相同，必须释放原来内存，在赋值新的
 		if (type_ == newType)
 			return;
-
+		//释放原来的内存
 		switch (type_)
 		{
 		case VAR_STRING:
@@ -569,7 +570,7 @@ namespace Sapphire
 
 		type_ = newType;
 
-		switch (type_)
+		switch (type_) //类型不同，直接new新变量
 		{
 		case VAR_STRING:
 			new(reinterpret_cast<String*>(&value_)) String();

@@ -15,6 +15,7 @@
 
 // MSVC debug模式：使用内存泄露报告
 #if defined(_MSC_VER) && defined(_DEBUG) && !defined(SAPPHIRE_WIN32_CONSOLE)
+//WINMAIN函数定义
 #define SAPPHIRE_DEFINE_MAIN(function) \
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd) \
 { \
@@ -48,7 +49,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
     Sapphire::ParseArguments(GetCommandLineW()); \
     return function; \
 }
-// Android or iOS: use SDL_main
+// Android 或 iOS: 使用SDL
 #elif defined(ANDROID) || defined(IOS)
 #define SAPPHIRE_DEFINE_MAIN(function) \
 extern "C" int SDL_main(int argc, char** argv); \
@@ -57,7 +58,7 @@ int SDL_main(int argc, char** argv) \
     SAPPHIRE::ParseArguments(argc, argv); \
     return function; \
 }
-// Linux or OS X: use main
+// 其它
 #else
 #define SAPPHIRE_DEFINE_MAIN(function) \
 int main(int argc, char** argv) \

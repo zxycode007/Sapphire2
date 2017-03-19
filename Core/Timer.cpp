@@ -32,6 +32,7 @@ namespace Sapphire
 	{
 #ifdef WIN32
 		LARGE_INTEGER frequency;
+		//查询频率
 		if (QueryPerformanceFrequency(&frequency))
 		{
 			HiresTimer::frequency = frequency.QuadPart;
@@ -48,6 +49,7 @@ namespace Sapphire
 		SetTimerPeriod(0);
 	}
 
+	//获取时钟
 	static unsigned Tick()
 	{
 #ifdef WIN32
@@ -66,6 +68,7 @@ namespace Sapphire
 #ifdef WIN32
 		if (HiresTimer::IsSupported())
 		{
+			//获取高分辨率时钟
 			LARGE_INTEGER counter;
 			QueryPerformanceCounter(&counter);
 			return counter.QuadPart;
@@ -89,6 +92,7 @@ namespace Sapphire
 
 		timeStep_ = timeStep;
 
+		//性能剖析器
 		Profiler* profiler = GetSubsystem<Profiler>();
 		if (profiler)
 			profiler->BeginFrame();
@@ -96,13 +100,13 @@ namespace Sapphire
 		{
 			SAPPHIRE_PROFILE(BeginFrame);
 
-			// Frame begin event
+			//帧开始事件
 			using namespace BeginFrame;
 
-			VariantMap& eventData = GetEventDataMap();
-			eventData[P_FRAMENUMBER] = frameNumber_;
-			eventData[P_TIMESTEP] = timeStep_;
-			SendEvent(E_BEGINFRAME, eventData);
+			VariantMap& eventData = GetEventDataMap(); //取得本对象的事件数据数组
+			eventData[P_FRAMENUMBER] = frameNumber_;    //设置帧数数据
+			eventData[P_TIMESTEP] = timeStep_;          //设置时间步进数据
+			SendEvent(E_BEGINFRAME, eventData);    //发送事件
 		}
 	}
 

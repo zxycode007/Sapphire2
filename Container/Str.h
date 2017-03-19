@@ -20,7 +20,7 @@ namespace Sapphire
 		typedef RandomAccessIterator<char> Iterator;
 		typedef RandomAccessConstIterator<char> ConstIterator;
 
-		/// Construct empty.
+		/// 空串
 		String() :
 			length_(0),
 			capacity_(0),
@@ -28,7 +28,7 @@ namespace Sapphire
 		{
 		}
 
-		/// Construct from another string.
+		/// 从别的字符串构造String
 		String(const String& str) :
 			length_(0),
 			capacity_(0),
@@ -37,7 +37,7 @@ namespace Sapphire
 			*this = str;
 		}
 
-		/// Construct from a C string.
+		// 从C字符串构造String
 		String(const char* str) :
 			length_(0),
 			capacity_(0),
@@ -46,7 +46,7 @@ namespace Sapphire
 			*this = str;
 		}
 
-		/// Construct from a C string.
+		/// 从C字符串构造String
 		String(char* str) :
 			length_(0),
 			capacity_(0),
@@ -55,7 +55,7 @@ namespace Sapphire
 			*this = (const char*)str;
 		}
 
-		/// Construct from a char array and length.
+		/// 用给的长度的字符串构造String
 		String(const char* str, unsigned length) :
 			length_(0),
 			capacity_(0),
@@ -65,7 +65,7 @@ namespace Sapphire
 			CopyChars(buffer_, str, length);
 		}
 
-		/// Construct from a null-terminated wide character array.
+		/// 从一个以null结尾的wchar数组构造字符串
 		String(const wchar_t* str) :
 			length_(0),
 			capacity_(0),
@@ -74,7 +74,7 @@ namespace Sapphire
 			SetUTF8FromWChar(str);
 		}
 
-		/// Construct from a null-terminated wide character array.
+		/// 从一个以null结尾的wchar数组构造字符串
 		String(wchar_t* str) :
 			length_(0),
 			capacity_(0),
@@ -83,7 +83,7 @@ namespace Sapphire
 			SetUTF8FromWChar(str);
 		}
 
-		/// Construct from a wide character string.
+		///构造宽字符串数组
 		String(const WString& str);
 
 		/// Construct from an integer.
@@ -138,17 +138,18 @@ namespace Sapphire
 			return *this;
 		}
 
-		/// Assign a C string.
+		///分配一个C字符串
 		String& operator =(const char* rhs)
 		{
 			unsigned rhsLength = CStringLength(rhs);
 			Resize(rhsLength);
+			//复制过去
 			CopyChars(buffer_, rhs, rhsLength);
 
 			return *this;
 		}
 
-		/// Add-assign a string.
+		/// 增加分配字符串
 		String& operator +=(const String& rhs)
 		{
 			unsigned oldLength = length_;
@@ -158,7 +159,7 @@ namespace Sapphire
 			return *this;
 		}
 
-		/// Add-assign a C string.
+		/// 增加分配C字符串
 		String& operator +=(const char* rhs)
 		{
 			unsigned rhsLength = CStringLength(rhs);
@@ -425,7 +426,7 @@ namespace Sapphire
 		/// Return a UTF8 substring with length from position.
 		String SubstringUTF8(unsigned pos, unsigned length) const;
 
-		/// Return hash value for HashSet & HashMap.
+		//   返回HashSet和HashMap的hash值
 		unsigned ToHash() const
 		{
 			unsigned hash = 0;
@@ -454,7 +455,7 @@ namespace Sapphire
 		static unsigned DecodeUTF16(const wchar_t*& src);
 #endif
 
-		/// Return length of a C string.
+		/// 返回C字符串长度
 		static unsigned CStringLength(const char* str)
 		{
 			if (!str)
@@ -492,7 +493,7 @@ namespace Sapphire
 				memmove(buffer_ + dest, buffer_ + src, count);
 		}
 
-		/// Copy chars from one buffer to another.
+		//从一个缓冲区复制字符串到另一个
 		static void CopyChars(char* dest, const char* src, unsigned count)
 		{
 #ifdef _MSC_VER

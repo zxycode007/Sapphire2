@@ -7,28 +7,27 @@
 namespace Sapphire
 {
 
-	/// %Condition on which a thread can wait.
+	// 线程可否等待的条件
 	class SAPPHIRE_API Condition
 	{
 	public:
-		/// Construct.
+		
 		Condition();
 
-		/// Destruct.
 		~Condition();
 
-		/// Set the condition. Will be automatically reset once a waiting thread wakes up.
+		/// 设置条件
 		void Set();
 
-		/// Wait on the condition.
+		/// 等待这个条件
 		void Wait();
 
 	private:
 #ifndef WIN32
-		/// Mutex for the event, necessary for pthreads-based implementation.
+		/// 事件互斥量， ptheads实现必须
 		void* mutex_;
 #endif
-		/// Operating system specific event.
+		/// 操作系统的特定事件
 		void* event_;
 	};
 }

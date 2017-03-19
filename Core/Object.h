@@ -42,6 +42,7 @@ namespace Sapphire
 	};
 
 	//将原类型名和基类类型名定义为ClassName和BaseClassName便于Object内部统一调用
+	//用宏来定义基类的运行时信息
 #define SAPPHIRE_OBJECT(typeName, baseTypeName) \
     public: \
         typedef typeName ClassName; \
@@ -92,19 +93,19 @@ namespace Sapphire
 		template<typename T> bool IsInstanceOf() const { return IsInstanceOf(T::GetTypeInfoStatic()); }
 
 		
-		// 订阅可以由任何发送者发送的一个事件
+		// 绑定事件处理函数到可以是任意发送者的事件类型
 		void SubscribeToEvent(StringHash eventType, EventHandler* handler);
-		///  订阅可以由特定发送者发送的一个事件
+		///  绑定事件处理函数到可以是特定发送者的事件类型
 		void SubscribeToEvent(Object* sender, StringHash eventType, EventHandler* handler);
-		/// 取消订阅事件
+		/// 取消事件的绑定处理函数
 		void UnsubscribeFromEvent(StringHash eventType);
-		/// 取消特定发送者的特定事件类型的事件
+		/// 取消事件的特定发送者的绑定处理函数
 		void UnsubscribeFromEvent(Object* sender, StringHash eventType);
-		/// 取消特定发送者的所有订阅的事件
+		/// 取消特定发送者的所有绑定的处理函数
 		void UnsubscribeFromEvents(Object* sender);
-		/// 取消订阅的所有事件
+		/// 取消所有事件的绑定
 		void UnsubscribeFromAllEvents();
-		/// 取消订阅除了列表内的所有事件，和只有用户数据的
+		/// 取消订阅除了列表内的和是否只有用户数据的所有事件
 		void UnsubscribeFromAllEventsExcept(const PODVector<StringHash>& exceptions, bool onlyUserData);
 		/// 给所有订阅者发送事件
 		void SendEvent(StringHash eventType);

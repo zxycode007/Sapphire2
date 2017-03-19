@@ -150,13 +150,13 @@ namespace Sapphire
 
 	void Context::CopyBaseAttributes(StringHash baseType, StringHash derivedType)
 	{
-		// Prevent endless loop if mistakenly copying attributes from same class as derived
 		if (baseType == derivedType)
 		{
 			SAPPHIRE_LOGWARNING("Attempt to copy base attributes to itself for class " + GetTypeName(baseType));
 			return;
 		}
 
+		//获取基类型的属性列表
 		const Vector<AttributeInfo>* baseAttributes = GetAttributes(baseType);
 		if (baseAttributes)
 		{
@@ -164,7 +164,7 @@ namespace Sapphire
 			{
 				const AttributeInfo& attr = baseAttributes->At(i);
 				attributes_[derivedType].Push(attr);
-				if (attr.mode_ & AM_NET)
+				if (attr.mode_ & AM_NET)  //是否网络复制模式
 					networkAttributes_[derivedType].Push(attr);
 			}
 		}

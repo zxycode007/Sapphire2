@@ -5,41 +5,39 @@
 
 namespace Sapphire
 {
-	/// Operating system mutual exclusion primitive.
+	/// 互斥体
 	class SAPPHIRE_API Mutex
 	{
 	public:
-		/// Construct.
 		Mutex();
-		/// Destruct.
 		~Mutex();
 
-		/// Acquire the mutex. Block if already acquired.
+		//  得到互斥体，如果已经被得到，则阻塞
 		void Acquire();
-		/// Release the mutex.
+		/// 释放互斥体
 		void Release();
 
 	private:
-		/// Mutex handle.
+		/// 互斥体句柄
 		void* handle_;
 	};
 
-	/// Lock that automatically acquires and releases a mutex.
+	// 自动获得和释放互斥体的锁
 	class SAPPHIRE_API MutexLock
 	{
 	public:
-		/// Construct and acquire the mutex.
+		/// 构造并获得互斥体
 		MutexLock(Mutex& mutex);
-		/// Destruct. Release the mutex.
+		/// 析构并释放互斥体
 		~MutexLock();
 
 	private:
-		/// Prevent copy construction.
+		/// 阻止拷贝构造函数
 		MutexLock(const MutexLock& rhs);
-		/// Prevent assignment.
+		/// 阻止赋值
 		MutexLock& operator =(const MutexLock& rhs);
 
-		/// Mutex reference.
+		/// 互斥体引用
 		Mutex& mutex_;
 	};
 }

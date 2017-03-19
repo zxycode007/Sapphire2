@@ -12,6 +12,10 @@
 
 using namespace std;
 
+SAPPHIRE_EVENT(E_TESTEVENT, tevent)
+{
+	int i = 1;
+}
 int test()
 {
 	cout << "test" << endl;
@@ -108,6 +112,9 @@ public:
 int main()
 {
 
+	using namespace tevent;
+	cout << tevent::i << endl;
+
 	typedef int(*func)(void);
 	func f = test;
 
@@ -144,6 +151,8 @@ int main()
 		Vector3 v1(0, 1, 0);
 		Vector3 v2 = q3*v1;
 		cout << v2.ToString().CString() << endl;
+		Sapphire::Matrix4 mat4(q3.RotationMatrix());
+		cout << mat4.ToString().CString() << endl;
 
 		 
 	}
@@ -159,6 +168,9 @@ int main()
 	}
 
  
+	Sapphire::Variant v1;
+	v1 = Sapphire::String("abas");
+	cout << v1.ToString().CString() << endl;
 
 	Sapphire::Variant* v;
 	v = new Sapphire::Variant("测试阿萨德的洒落大理石块大声地");
