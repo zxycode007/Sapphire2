@@ -10,11 +10,11 @@ namespace Sapphire
 
 	class AsyncExecRequest;
 
-	/// Return files.
+	/// 返回文件
 	static const unsigned SCAN_FILES = 0x1;
-	/// Return directories.
+	/// 返回目录
 	static const unsigned SCAN_DIRS = 0x2;
-	/// Return also hidden files.
+	/// 返回隐藏文件
 	static const unsigned SCAN_HIDDEN = 0x4;
 
 	// 文件和目录操作和访问控制的子系统
@@ -23,9 +23,9 @@ namespace Sapphire
 		SAPPHIRE_OBJECT(FileSystem, Object);
 
 	public:
-		/// Construct.
+		 
 		FileSystem(Context* context);
-		/// Destruct.
+
 		~FileSystem();
 
 		/// 设置当前工作目录
@@ -46,17 +46,16 @@ namespace Sapphire
 		bool SystemOpen(const String& fileName, const String& mode = String::EMPTY);
 		/// 复制一个文件。如果成功返回true
 		bool Copy(const String& srcFileName, const String& destFileName);
-		/// Rename a file. Return true if successful.
+		/// 重命名文件
 		bool Rename(const String& srcFileName, const String& destFileName);
-		/// Delete a file. Return true if successful.
+		/// 删除文件
 		bool Delete(const String& fileName);
-		/// 注册一个允许访问的路径。
-		//Register a path as allowed to access. If no paths are registered, all are allowed. Registering allowed paths is considered securing the Urho3D execution environment: running programs and opening files externally through the system will fail afterward.
+		/// 注册一个允许访问的路径。如果没有路径被注册，则所有都可被访问
 		void RegisterPath(const String& pathName);
-		/// Set a file's last modified time as seconds since 1.1.1970. Return true on success.
+		/// 设置文件上一次修改时间 
 		bool SetLastModifiedTime(const String& fileName, unsigned newTime);
 
-		/// Return the absolute current working directory.
+		///返回当前绝对路径
 		String GetCurrentDir() const;
 
 		/// Return whether is executing engine console commands as OS-specific system command.
@@ -67,7 +66,7 @@ namespace Sapphire
 
 		/// Check if a path is allowed to be accessed. If no paths are registered, all are allowed.
 		bool CheckAccess(const String& pathName) const;
-		/// Returns the file's last modified time as seconds since 1.1.1970, or 0 if can not be accessed.
+		/// 返回文件自1.1.1970起的上一次修改的时间， 如果为0则无法访问
 		unsigned GetLastModifiedTime(const String& fileName) const;
 		/// Check if a file exists.
 		bool FileExists(const String& fileName) const;
@@ -86,20 +85,20 @@ namespace Sapphire
 		/// 扫描目录，内部调用
 		void ScanDirInternal
 			(Vector<String>& result, String path, const String& startPath, const String& filter, unsigned flags, bool recursive) const;
-		/// Handle begin frame event to check for completed async executions.
+		/// 处理BeginFrame事件，检查已完成的异步执行
 		void HandleBeginFrame(StringHash eventType, VariantMap& eventData);
-		/// Handle a console command event.
+		/// 处理一个控制台命令的事件
 		void HandleConsoleCommand(StringHash eventType, VariantMap& eventData);
 
 		/// 允许访问的目录
 		HashSet<String> allowedPaths_;
-		/// Cached program directory.
+		/// 程序目录的缓存
 		mutable String programDir_;
 		/// 异步执行序列
 		List<AsyncExecRequest*> asyncExecQueue_;
 		/// 下一次异步的执行ID
 		unsigned nextAsyncExecID_;
-		/// Flag for executing engine console commands as OS-specific system command. Default to true.
+		/// 游戏控制台执行操作系统命令的标志
 		bool executeConsoleCommands_;
 	};
 

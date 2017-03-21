@@ -37,7 +37,7 @@ namespace Sapphire
 		// 返回一个文件的改变（如果未找到，返回false)
 		bool GetNextChange(String& dest);
 
-		/// Return the path being watched, or empty if not watching.
+		/// 返回被观察的目录
 		const String& GetPath() const { return path_; }
 
 		/// Return the delay in seconds for notifying file changes.
@@ -59,7 +59,7 @@ namespace Sapphire
 
 #ifdef WIN32
 
-		/// Directory handle for the path being watched.
+		/// 观察的目录句柄
 		void* dirHandle_;
 
 #elif __linux__

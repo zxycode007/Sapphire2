@@ -56,10 +56,12 @@ extern "C"
 namespace Sapphire
 {
 
+	//执行系统命令
 	int DoSystemCommand(const String& commandLine, bool redirectToLog, Context* context)
 	{
-#if !defined(NO_POPEN)
-		if (!redirectToLog)
+		//没有popen函数
+#if !defined(NO_POPEN) 
+		if (!redirectToLog)   //不重定向log
 #endif
 			//执行控制台命令
 			return system(commandLine.CString());
@@ -155,7 +157,7 @@ namespace Sapphire
 			argPtrs.Push(0);
 
 			execvp(argPtrs[0], (char**)&argPtrs[0]);
-			return -1; // Return -1 if we could not spawn the process
+			return -1; // Return -1 不能创建进程
 		}
 		else if (pid > 0)
 		{
@@ -182,8 +184,7 @@ namespace Sapphire
 			if (requestID == M_MAX_UNSIGNED)
 				requestID = 1;
 		}
-
-		/// Return request ID.
+		// 返回请求ID
 		unsigned GetRequestID() const { return requestID_; }
 
 		//返回退出码，当IsCompleted（）为true时有效
@@ -193,19 +194,19 @@ namespace Sapphire
 		bool IsCompleted() const { return completed_; }
 
 	protected:
-		/// Request ID.
+		/// 请求ID
 		unsigned requestID_;
 		/// Exit code.
 		int exitCode_;
-		/// Completed flag.
+		/// 完成标志.
 		volatile bool completed_;
 	};
 
-	/// Async system command operation.
+	/// 异步系统命令操作
 	class AsyncSystemCommand : public AsyncExecRequest
 	{
 	public:
-		/// Construct and run.
+		/// 构造并允许
 		AsyncSystemCommand(unsigned requestID, const String& commandLine) :
 			AsyncExecRequest(requestID),
 			commandLine_(commandLine)
@@ -213,7 +214,7 @@ namespace Sapphire
 			Run();
 		}
 
-		/// The function to run in the thread.
+		/// 这个函数在线程中运行
 		virtual void ThreadFunction()
 		{
 			exitCode_ = DoSystemCommand(commandLine_, false, 0);
@@ -221,15 +222,16 @@ namespace Sapphire
 		}
 
 	private:
-		/// Command line.
+		/// 命令行
 		String commandLine_;
 	};
 
-	/// Async system run operation.
+
+	/// 异步系统运行操作
 	class AsyncSystemRun : public AsyncExecRequest
 	{
 	public:
-		/// Construct and run.
+		/// 构造并运行
 		AsyncSystemRun(unsigned requestID, const String& fileName, const Vector<String>& arguments) :
 			AsyncExecRequest(requestID),
 			fileName_(fileName),
@@ -238,7 +240,7 @@ namespace Sapphire
 			Run();
 		}
 
-		/// The function to run in the thread.
+	
 		virtual void ThreadFunction()
 		{
 			exitCode_ = DoSystemRun(fileName_, arguments_);
@@ -246,9 +248,9 @@ namespace Sapphire
 		}
 
 	private:
-		/// File to run.
+		/// 运行的文件名
 		String fileName_;
-		/// Command line split in arguments.
+		///命令行分割的参数
 		const Vector<String>& arguments_;
 	};
 
@@ -265,7 +267,7 @@ namespace Sapphire
 
 	FileSystem::~FileSystem()
 	{
-		// If any async exec items pending, delete them
+		 
 		if (asyncExecQueue_.Size())
 		{
 			for (List<AsyncExecRequest*>::Iterator i = asyncExecQueue_.Begin(); i != asyncExecQueue_.End(); ++i)
@@ -337,6 +339,7 @@ namespace Sapphire
 			return;
 
 		executeConsoleCommands_ = enable;
+		//执行控制台命令
 		if (enable)
 			SubscribeToEvent(E_CONSOLECOMMAND, SAPPHIRE_HANDLER(FileSystem, HandleConsoleCommand));
 		else
@@ -892,7 +895,7 @@ namespace Sapphire
 
 	void FileSystem::HandleBeginFrame(StringHash eventType, VariantMap& eventData)
 	{
-		/// Go through the execution queue and post + remove completed requests
+		// 遍历执行队列并且抛出移除完成的异步请求
 		for (List<AsyncExecRequest*>::Iterator i = asyncExecQueue_.Begin(); i != asyncExecQueue_.End();)
 		{
 			AsyncExecRequest* request = *i;
@@ -901,9 +904,11 @@ namespace Sapphire
 				using namespace AsyncExecFinished;
 				//获取事件数据MAP
 				VariantMap& newEventData = GetEventDataMap();
+				//设置该已完成请求的ID
 				newEventData[P_REQUESTID] = request->GetRequestID();
+				//设置该请求ExitCode
 				newEventData[P_EXITCODE] = request->GetExitCode();
-				//发送事件
+				//发送异步执行完成事件
 				SendEvent(E_ASYNCEXECFINISHED, newEventData);
 				//执行完毕，从异步队列中清除
 				delete request;

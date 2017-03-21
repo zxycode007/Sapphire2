@@ -10,6 +10,8 @@
 #include "DebugNew.h"
 #include <vector>
 
+//使用SDL文件系统
+#include "SDL/include/SDL_filesystem.h"
 using namespace std;
 
 SAPPHIRE_EVENT(E_TESTEVENT, tevent)
@@ -111,6 +113,8 @@ public:
 
 int main()
 {
+
+	char* prefPath = SDL_GetPrefPath("SAPPHIRE", "temp");
 
 	using namespace tevent;
 	cout << tevent::i << endl;

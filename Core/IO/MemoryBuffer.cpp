@@ -40,6 +40,7 @@ namespace Sapphire
 
 	unsigned MemoryBuffer::Read(void* dest, unsigned size)
 	{
+		
 		if (size + position_ > size_)
 			size = size_ - position_;
 		if (!size)
