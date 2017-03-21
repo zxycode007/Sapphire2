@@ -32,9 +32,9 @@ namespace Sapphire
 	bool PackageFile::Open(const String& fileName, unsigned startOffset)
 	{
 #ifdef ANDROID
-		if (URHO3D_IS_ASSET(fileName))
+		if (SAPPHIRE_IS_ASSET(fileName))
 		{
-			URHO3D_LOGERROR("Package files within the apk are not supported on Android");
+			SAPPHIRE_LOGERROR("Package files within the apk are not supported on Android");
 			return false;
 		}
 #endif
@@ -43,20 +43,23 @@ namespace Sapphire
 		if (!file->IsOpen())
 			return false;
 
-		// Check ID, then read the directory
+		// 检查ID，并读取目录
 		file->Seek(startOffset);
+		//读取文件ID (文件头0-4字节)
 		String id = file->ReadFileID();
 		if (id != "UPAK" && id != "ULZ4")
 		{
-			// If start offset has not been explicitly specified, also try to read package size from the end of file
-			// to know how much we must rewind to find the package start
+			// 如果起始偏移不能明确指定，那么尝试从文件末尾读取包大小来知道需要倒回到包起始要多少字节
 			if (!startOffset)
 			{
 				unsigned fileSize = file->GetSize();
 				file->Seek((unsigned)(fileSize - sizeof(unsigned)));
+				//从末尾读取包大小，来确定新起始偏移地址
 				unsigned newStartOffset = fileSize - file->ReadUInt();
+
 				if (newStartOffset < fileSize)
 				{
+					//合法
 					startOffset = newStartOffset;
 					file->Seek(startOffset);
 					id = file->ReadFileID();
@@ -77,13 +80,16 @@ namespace Sapphire
 
 		unsigned numFiles = file->ReadUInt();
 		checksum_ = file->ReadUInt();
-
+		//依次读取文件入口
 		for (unsigned i = 0; i < numFiles; ++i)
 		{
 			String entryName = file->ReadString();
 			PackageEntry newEntry;
+			//文件在包中偏移量
 			newEntry.offset_ = file->ReadUInt() + startOffset;
+			//文件大小
 			newEntry.size_ = file->ReadUInt();
+			//文件校验和
 			newEntry.checksum_ = file->ReadUInt();
 			if (!compressed_ && newEntry.offset_ + newEntry.size_ > totalSize_)
 			{
@@ -102,7 +108,6 @@ namespace Sapphire
 		bool found = entries_.Find(fileName) != entries_.End();
 
 #ifdef WIN32
-		// On Windows perform a fallback case-insensitive search
 		if (!found)
 		{
 			for (HashMap<String, PackageEntry>::ConstIterator i = entries_.Begin(); i != entries_.End(); ++i)
@@ -126,7 +131,6 @@ namespace Sapphire
 			return &i->second_;
 
 #ifdef WIN32
-		// On Windows perform a fallback case-insensitive search
 		else
 		{
 			for (HashMap<String, PackageEntry>::ConstIterator j = entries_.Begin(); j != entries_.End(); ++j)

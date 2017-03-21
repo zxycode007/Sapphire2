@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include <string>
 #include "Sapphire.h"
 #include "Variant.h"
@@ -9,6 +10,7 @@
 #include "Condition.h"
 #include "DebugNew.h"
 #include <vector>
+#include "FileSystem.h"
 
 //使用SDL文件系统
 #include "SDL/include/SDL_filesystem.h"
@@ -74,7 +76,7 @@ uint32 div(uint64 u, uint32 z) //return u/z
 {
 	uint32 x = (uint32)(u >> 32);  //u高32位
 	uint32 y = (uint32)u;          //u 64位
-	//y保存商 x保存余数
+								   //y保存商 x保存余数
 	for (int i = 0; i<32; ++i)
 	{
 		uint32 t = ((int32)x) >> 31;   //取u最高位
@@ -107,15 +109,35 @@ public:
 		std::cout << "删除对象" << this << std::endl;
 	}
 };
- 
+
+
+void testFileModule()
+{
+	Sapphire::SharedPtr<Sapphire::Context> context = SharedPtr<Context>(new Sapphire::Context());
+	Sapphire::File*  file = new Sapphire::File(context);
+	Sapphire::FileSystem* fs = new Sapphire::FileSystem(context);
+	Sapphire::String path = fs->GetCurrentDir();
+	path += "test.jpg";
+
+	bool ret = file->Open(path.CString());
+	unsigned fileSize = file->GetSize();
+	int pos = file->Seek((unsigned)(fileSize - sizeof(unsigned)));
+	//新起始偏移地址
+	unsigned i = file->ReadUInt();
+	unsigned newStartOffset = fileSize - i;
+	cout << "" << endl;
+	delete fs;
+	file->Close();
+	delete file;
+}
 
 
 
 int main()
 {
 
+	testFileModule();
 	char* prefPath = SDL_GetPrefPath("SAPPHIRE", "temp");
-
 
 	using namespace tevent;
 	cout << tevent::i << endl;
@@ -133,18 +155,18 @@ int main()
 		cout << res.x_ << "  " << res.y_ << "  " << res.z_ << endl;
 
 	}
-	
-	
+
+
 	{
 		Vector3 v1(1, 1, 0);
 		Vector3 v2(-1, 1, 0);
-		Quaternion q3(v1,v2);
+		Quaternion q3(v1, v2);
 		cout << q3.x_ << "  " << q3.y_ << "  " << q3.z_ << endl;
 		Vector3 eularAngle = q3.EulerAngles();
 		cout << " eularAngleX:" << eularAngle.x_ << "  eularAngleY:" << eularAngle.y_ << "  eularAngleZ:" << eularAngle.z_ << endl;
 	}
-	
-	 
+
+
 	{
 		Quaternion q1;
 		q1.FromAngleAxis(60.0f, Vector3::FORWARD);
@@ -159,7 +181,7 @@ int main()
 		Sapphire::Matrix4 mat4(q3.RotationMatrix());
 		cout << mat4.ToString().CString() << endl;
 
-		 
+
 	}
 
 	{
@@ -172,7 +194,7 @@ int main()
 		Vector3 v3 = q*v1;
 	}
 
- 
+
 	Sapphire::Variant v1;
 	v1 = Sapphire::String("abas");
 	cout << v1.ToString().CString() << endl;
@@ -181,11 +203,11 @@ int main()
 	v = new Sapphire::Variant("测试阿萨德的洒落大理石块大声地");
 	Sapphire::String str = v->GetString();
 	Sapphire::VariantType vt = v->GetType();
-	
+
 	HashMap<Sapphire::String, int> map;
 	map.Insert(Pair<String, int>("asd", 1));
 
-	HashMap<String,int>::Iterator it = map.Find("asd");
+	HashMap<String, int>::Iterator it = map.Find("asd");
 	cout << it->second_ << endl;
 
 	Condition* c = new Condition();
@@ -200,7 +222,7 @@ int main()
 	SharedPtr<TestSharedPtr> sp = SharedPtr<TestSharedPtr>(tsp);
 
 	SAPPHIRE_LOGINFO("asad");
-	
+
 	cout << sizeof(Sapphire::String) << v->GetString().CString() << endl;
 
 	//测试union实现变体的原理
@@ -217,7 +239,7 @@ int main()
 	uint32 u2 = 16;
 	//
 	cout << div(u1, u2) << endl;
-	
+
 	delete v;
 	delete c;
 
