@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include <string>
 #include "Sapphire.h"
 #include "Variant.h"
@@ -9,6 +10,7 @@
 #include "Condition.h"
 #include "DebugNew.h"
 #include <vector>
+#include "FileSystem.h"
 
 //使用SDL文件系统
 #include "SDL/include/SDL_filesystem.h"
@@ -109,11 +111,32 @@ public:
 };
  
 
+void testFileModule()
+{
+	Sapphire::SharedPtr<Sapphire::Context> context = SharedPtr<Context>(new Sapphire::Context());
+	Sapphire::File*  file = new Sapphire::File(context);
+	Sapphire::FileSystem* fs = new Sapphire::FileSystem(context);
+	Sapphire::String path =  fs->GetCurrentDir();
+	path += "test.jpg";
+
+	bool ret = file->Open(path.CString());
+	unsigned fileSize = file->GetSize();
+	int pos = file->Seek((unsigned)(fileSize - sizeof(unsigned)));
+	//新起始偏移地址
+	unsigned i = file->ReadUInt();
+	unsigned newStartOffset = fileSize - i;
+	cout << "" << endl;
+	delete fs;
+	file->Close();
+	delete file;
+}
+
 
 
 int main()
 {
 
+	testFileModule();
 	char* prefPath = SDL_GetPrefPath("SAPPHIRE", "temp");
 
 	using namespace tevent;
