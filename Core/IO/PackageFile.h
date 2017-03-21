@@ -6,73 +6,73 @@
 namespace  Sapphire
 {
 
-	/// 打包文件入口
+	/// %File entry within the package file.
 	struct PackageEntry
 	{
-		/// 起始偏移地址
+		/// Offset from the beginning.
 		unsigned offset_;
-		/// 文件大小
+		/// File size.
 		unsigned size_;
-		/// 文件校验和
+		/// File checksum.
 		unsigned checksum_;
 	};
 
-	/// 保存目录树到一个文件包
+	/// Stores files of a directory tree sequentially for convenient access.
 	class SAPPHIRE_API PackageFile : public Object
 	{
 		SAPPHIRE_OBJECT(PackageFile, Object);
 
 	public:
-		 
+		/// Construct.
 		PackageFile(Context* context);
-		/// 构造并打开
+		/// Construct and open.
 		PackageFile(Context* context, const String& fileName, unsigned startOffset = 0);
-		///  析构
+		/// Destruct.
 		virtual ~PackageFile();
 
-		/// 打开包文件。 如果为成功true
+		/// Open the package file. Return true if successful.
 		bool Open(const String& fileName, unsigned startOffset = 0);
-		/// 检查包文件是否存在。 文件名大小写敏感取决于平台
+		/// Check if a file exists within the package file. This will be case-insensitive on Windows and case-sensitive on other platforms.
 		bool Exists(const String& fileName) const;
-		/// 找到符合名字的文件入口。 如果为空没找到
+		/// Return the file entry corresponding to the name, or null if not found. This will be case-insensitive on Windows and case-sensitive on other platforms.
 		const PackageEntry* GetEntry(const String& fileName) const;
 
-		/// 返回所有文件入口
+		/// Return all file entries.
 		const HashMap<String, PackageEntry>& GetEntries() const { return entries_; }
 
-		/// 返回包文件名
+		/// Return the package file name.
 		const String& GetName() const { return fileName_; }
 
-		/// 返回包文件名的hash值
+		/// Return hash of the package file name.
 		StringHash GetNameHash() const { return nameHash_; }
 
-		/// 返回文件数
+		/// Return number of files.
 		unsigned GetNumFiles() const { return entries_.Size(); }
 
-		/// 返回包文件的总大小
+		/// Return total size of the package file.
 		unsigned GetTotalSize() const { return totalSize_; }
 
-		/// 返回包文件内容的校验和
+		/// Return checksum of the package file contents.
 		unsigned GetChecksum() const { return checksum_; }
 
-		/// 返回文件是否压缩
+		/// Return whether the files are compressed.
 		bool IsCompressed() const { return compressed_; }
 
-		/// 返回在包中的文件列表
+		/// Return list of file names in the package.
 		const Vector<String> GetEntryNames() const { return entries_.Keys(); }
 
 	private:
-		/// 文件入口表
+		/// File entries.
 		HashMap<String, PackageEntry> entries_;
-		/// 文件名
+		/// File name.
 		String fileName_;
-		/// 包文件名hash
+		/// Package file name hash.
 		StringHash nameHash_;
-		/// 包文件总大小
+		/// Package file total size.
 		unsigned totalSize_;
-		/// 包文件校验和
+		/// Package file checksum.
 		unsigned checksum_;
-		/// 压缩标志
+		/// Compressed flag.
 		bool compressed_;
 	};
 }
