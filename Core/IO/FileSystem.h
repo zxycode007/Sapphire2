@@ -58,23 +58,23 @@ namespace Sapphire
 		///返回当前绝对路径
 		String GetCurrentDir() const;
 
-		/// Return whether is executing engine console commands as OS-specific system command.
+		/// 返回引擎是否执行控制台命令
 		bool GetExecuteConsoleCommands() const { return executeConsoleCommands_; }
 
-		/// Return whether paths have been registered.
+		/// 路径是否已经被注册了
 		bool HasRegisteredPaths() const { return allowedPaths_.Size() > 0; }
 
-		/// Check if a path is allowed to be accessed. If no paths are registered, all are allowed.
+		/// 检查路径访问许可
 		bool CheckAccess(const String& pathName) const;
 		/// 返回文件自1.1.1970起的上一次修改的时间， 如果为0则无法访问
 		unsigned GetLastModifiedTime(const String& fileName) const;
-		/// Check if a file exists.
+		/// 文件是否存在
 		bool FileExists(const String& fileName) const;
-		/// Check if a directory exists.
+		/// 目录是否存在
 		bool DirExists(const String& pathName) const;
-		/// Scan a directory for specified files.
+		/// 扫描目录
 		void ScanDir(Vector<String>& result, const String& pathName, const String& filter, unsigned flags, bool recursive) const;
-		/// Return the program's directory. If it does not contain the Urho3D default CoreData and Data directories, and the current working directory does, return the working directory instead.
+		/// 返回程序的目录。
 		String GetProgramDir() const;
 		/// Return the user documents directory.
 		String GetUserDocumentsDir() const;

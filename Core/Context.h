@@ -170,8 +170,9 @@ namespace Sapphire
 		HashMap<String, Vector<StringHash> > objectCategories_;
 	};
 
+	//会自动创建一个类型T的对象工厂，并添加到对象工厂列表中
 	template <class T> void Context::RegisterFactory() { RegisterFactory(new ObjectFactoryImpl<T>(this)); }
-
+	//指定目录注册对象工厂
 	template <class T> void Context::RegisterFactory(const char* category)
 	{
 		RegisterFactory(new ObjectFactoryImpl<T>(this), category);
@@ -182,11 +183,11 @@ namespace Sapphire
 	template <class T> void Context::RegisterAttribute(const AttributeInfo& attr) { RegisterAttribute(T::GetTypeStatic(), attr); }
 
 	template <class T> void Context::RemoveAttribute(const char* name) { RemoveAttribute(T::GetTypeStatic(), name); }
-
+	//将属于类型T的属性复制给类型U
 	template <class T, class U> void Context::CopyBaseAttributes() { CopyBaseAttributes(T::GetTypeStatic(), U::GetTypeStatic()); }
 
 	template <class T> T* Context::GetSubsystem() const { return static_cast<T*>(GetSubsystem(T::GetTypeStatic())); }
-
+	//获取属性名
 	template <class T> AttributeInfo* Context::GetAttribute(const char* name) { return GetAttribute(T::GetTypeStatic(), name); }
 
 	template <class T> void Context::UpdateAttributeDefaultValue(const char* name, const Variant& defaultValue)

@@ -11,6 +11,8 @@
 #include "DebugNew.h"
 #include <vector>
 #include "FileSystem.h"
+#include "Test.h"
+#include "CoreEvents.h"
 
 //使用SDL文件系统
 #include "SDL/include/SDL_filesystem.h"
@@ -19,11 +21,6 @@ using namespace std;
 SAPPHIRE_EVENT(E_TESTEVENT, tevent)
 {
 	int i = 1;
-}
-int test()
-{
-	cout << "test" << endl;
-	return 5;
 }
 
 
@@ -111,6 +108,52 @@ public:
 };
 
 
+
+void TestObj()
+{
+	SharedPtr<Context> context = SharedPtr<Context>(new Context());
+	{
+		
+		//注册对象工厂
+		context->RegisterFactory<CustomObj>();
+		context->RegisterFactory<CustomEvenTObj>();
+		AttributeInfo att;
+		att.type_ = VariantType::VAR_INT;
+		att.name_ = "width";
+		att.mode_ = AM_NET;
+		att.offset_ = 0;
+		att.ptr_ = 0;
+		context->RegisterAttribute<CustomObj>(att);
+    	SharedPtr<Object> obj1 = context->CreateObject(CustomObj::GetTypeStatic());
+		SharedPtr<Object> obj2 = context->CreateObject(CustomEvenTObj::GetTypeStatic());
+		//事件发送
+		SharedPtr<CustomObj> cobj1 = DynamicCast<CustomObj>(obj1);
+		SharedPtr<CustomEvenTObj> evobj = DynamicCast<CustomEvenTObj>(obj2);
+		EventHandlerImpl<CustomEvenTObj>* handler = new EventHandlerImpl<CustomEvenTObj>(evobj.Get(), &Sapphire::CustomEvenTObj::invoke);
+		using namespace BeginFrame;
+		cobj1->SubscribeToEvent(E_BEGINFRAME, handler);
+		SharedPtr<Object> obj3 = context->CreateObject(CustomEvenTObj::GetTypeStatic());
+		obj3->SendEvent(E_BEGINFRAME);
+		
+
+		AttributeInfo* atinfo = context->GetAttribute<CustomObj>("width");
+		cout << atinfo->mode_ << "  name=" << atinfo->mode_ << endl;
+
+	}
+	{
+		CustomObj* cobj = new CustomObj(context);
+		Object* obj = cobj;
+		VariantMap dataMap = obj->GetEventDataMap();
+		String category = obj->GetCategory();
+		cout << obj->GetType().ToString().CString() << endl;
+		cout << obj->GetTypeInfo()->GetTypeName().CString() << endl;
+
+	}
+
+	
+}
+
+
 void testFileModule()
 {
 	Sapphire::SharedPtr<Sapphire::Context> context = SharedPtr<Context>(new Sapphire::Context());
@@ -133,17 +176,16 @@ void testFileModule()
 
 
 
+
+
 int main()
 {
-
+	TestObj();
 	testFileModule();
 	char* prefPath = SDL_GetPrefPath("SAPPHIRE", "temp");
 
 	using namespace tevent;
 	cout << tevent::i << endl;
-
-	typedef int(*func)(void);
-	func f = test;
 
 	{
 		Sapphire::Quaternion q1;
@@ -245,5 +287,5 @@ int main()
 
 	getchar();
 	_CrtDumpMemoryLeaks();
-	return f();
+	return 0;
 }

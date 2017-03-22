@@ -5,38 +5,38 @@
 
 namespace Sapphire
 {
-	/// Frame begin event.
+	/// 帧开始事件
 	SAPPHIRE_EVENT(E_BEGINFRAME, BeginFrame)
 	{
 		SAPPHIRE_PARAM(P_FRAMENUMBER, FrameNumber);      // unsigned
 		SAPPHIRE_PARAM(P_TIMESTEP, TimeStep);            // float
 	}
 
-	/// Application-wide logic update event.
+	/// 用于程序逻辑更新事件
 	SAPPHIRE_EVENT(E_UPDATE, Update)
 	{
 		SAPPHIRE_PARAM(P_TIMESTEP, TimeStep);            // float
 	}
 
-	/// Application-wide logic post-update event.
+	/// 应用程序逻辑后更新事件
 	SAPPHIRE_EVENT(E_POSTUPDATE, PostUpdate)
 	{
 		SAPPHIRE_PARAM(P_TIMESTEP, TimeStep);            // float
 	}
 
-	/// Render update event.
+	/// 渲染更新事件
 	SAPPHIRE_EVENT(E_RENDERUPDATE, RenderUpdate)
 	{
 		SAPPHIRE_PARAM(P_TIMESTEP, TimeStep);            // float
 	}
 
-	/// Post-render update event.
+	/// 后期渲染更新事件
 	SAPPHIRE_EVENT(E_POSTRENDERUPDATE, PostRenderUpdate)
 	{
 		SAPPHIRE_PARAM(P_TIMESTEP, TimeStep);            // float
 	}
 
-	/// Frame end event.
+	/// 帧结束事件
 	SAPPHIRE_EVENT(E_ENDFRAME, EndFrame)
 	{
 	}

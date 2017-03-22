@@ -86,8 +86,9 @@ namespace Sapphire
 	{
 		if (!factory)
 			return;
-
+		//注册工厂
 		RegisterFactory(factory);
+		//对象目录,放入工厂类型
 		if (String::CStringLength(category))
 			objectCategories_[category].Push(factory->GetType());
 	}
