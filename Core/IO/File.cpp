@@ -282,38 +282,42 @@ namespace Sapphire
 #endif
 		if (compressed_)
 		{
-			unsigned sizeLeft = size;
-			unsigned char* destPtr = (unsigned char*)dest;
+			//压缩标志
+			unsigned sizeLeft = size;   //剩余字节
+			unsigned char* destPtr = (unsigned char*)dest;     //目标地址指针
 
 			while (sizeLeft)
 			{
 				if (!readBuffer_ || readBufferOffset_ >= readBufferSize_)
 				{
+					//读取文件头块
 					unsigned char blockHeaderBytes[4];
 					fread(blockHeaderBytes, sizeof blockHeaderBytes, 1, (FILE*)handle_);
-
+					//构造一个内存流
 					MemoryBuffer blockHeader(&blockHeaderBytes[0], sizeof blockHeaderBytes);
-					unsigned unpackedSize = blockHeader.ReadUShort();
-					unsigned packedSize = blockHeader.ReadUShort();
+					unsigned unpackedSize = blockHeader.ReadUShort();   //读取未压缩的大小
+					unsigned packedSize = blockHeader.ReadUShort();     //读取压缩的大小
 
 					if (!readBuffer_)
 					{
-						readBuffer_ = new unsigned char[unpackedSize];
-						inputBuffer_ = new unsigned char[LZ4_compressBound(unpackedSize)];
+						readBuffer_ = new unsigned char[unpackedSize];     //未压缩的缓冲区
+						inputBuffer_ = new unsigned char[LZ4_compressBound(unpackedSize)];    //用于解压缩的缓冲区
 					}
-
-					/// \todo Handle errors
+					//读取要解压缩的数据
 					fread(inputBuffer_.Get(), packedSize, 1, (FILE*)handle_);
+					//将压缩缓冲区内容解压到
 					LZ4_decompress_fast((const char*)inputBuffer_.Get(), (char*)readBuffer_.Get(), unpackedSize);
 
 					readBufferSize_ = unpackedSize;
 					readBufferOffset_ = 0;
 				}
-
+				//计算复制的大小
 				unsigned copySize = (unsigned)Min((int)(readBufferSize_ - readBufferOffset_), (int)sizeLeft);
 				memcpy(destPtr, readBuffer_.Get() + readBufferOffset_, copySize);
 				destPtr += copySize;
+				//计算剩余大小
 				sizeLeft -= copySize;
+				//新的缓冲区偏移地址
 				readBufferOffset_ += copySize;
 				position_ += copySize;
 			}
@@ -321,7 +325,7 @@ namespace Sapphire
 			return size;
 		}
 
-		// Need to reassign the position due to internal buffering when transitioning from writing to reading
+		// 同步读标志，需要重新关联内部缓冲区位置
 		if (readSyncNeeded_)
 		{
 			fseek((FILE*)handle_, position_ + offset_, SEEK_SET);
@@ -331,7 +335,6 @@ namespace Sapphire
 		size_t ret = fread(dest, size, 1, (FILE*)handle_);
 		if (ret != 1)
 		{
-			// Return to the position where the read began
 			fseek((FILE*)handle_, position_ + offset_, SEEK_SET);
 			SAPPHIRE_LOGERROR("Error while reading from file " + GetName());
 			return 0;
