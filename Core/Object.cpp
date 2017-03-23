@@ -132,6 +132,7 @@ namespace Sapphire
 		handler->SetSenderAndEventType(0, eventType);
 		// 首先移除旧的事件处理器
 		EventHandler* previous;
+		// 查找该对象是否已经注册该事件类型的Handler
 		EventHandler* oldHandler = FindSpecificEventHandler(0, eventType, &previous); //查询就的事件处理器
 		if (oldHandler)
 			eventHandlers_.Erase(oldHandler, previous);
