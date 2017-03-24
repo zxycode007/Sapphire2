@@ -34,6 +34,9 @@
     <Filter Include="头文件\Input">
       <UniqueIdentifier>{895da0f5-b1e5-4dad-b87e-88a2b25b90a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Resource">
+      <UniqueIdentifier>{dfa15502-0c6f-446a-8139-17516295c18f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h">
@@ -122,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="Input\InputEvents.h">
       <Filter>头文件\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Resource.h">
+      <Filter>头文件\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
