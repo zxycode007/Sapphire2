@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sapphire", "Sapphire\Sapphire.vcxproj", "{B0DE70F3-CBE0-44C3-93B5-015A616B2DEF}"
 EndProject
@@ -28,6 +28,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProjectBase", "ProjectBase\ProjectBase.vcxproj", "{5953F8AA-D4D6-49EF-91A5-94F1FAF95603}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LearnOpenGLTexture", "LearnOpenGLTexture\LearnOpenGLTexture.vcxproj", "{215F0900-94EE-4793-A918-BB57AEEF8FA3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "Graphics\Graphics.vcxproj", "{5438C0BA-92E5-41C3-93CE-1D7F2636B780}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,12 @@ Global
 		{215F0900-94EE-4793-A918-BB57AEEF8FA3}.Release|Win32.Build.0 = Release|Win32
 		{215F0900-94EE-4793-A918-BB57AEEF8FA3}.Release|x64.ActiveCfg = Release|x64
 		{215F0900-94EE-4793-A918-BB57AEEF8FA3}.Release|x64.Build.0 = Release|x64
+		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Debug|Win32.Build.0 = Debug|Win32
+		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Debug|x64.ActiveCfg = Debug|Win32
+		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Release|Win32.ActiveCfg = Release|Win32
+		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Release|Win32.Build.0 = Release|Win32
+		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

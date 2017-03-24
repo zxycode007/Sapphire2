@@ -28,6 +28,12 @@
     <Filter Include="源文件\Core\Core">
       <UniqueIdentifier>{6e53e1e0-5961-461e-84af-99e4b43012fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Core\Input">
+      <UniqueIdentifier>{8ef662cf-290e-4697-af35-202517ca611b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Input">
+      <UniqueIdentifier>{895da0f5-b1e5-4dad-b87e-88a2b25b90a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h">
@@ -113,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="IO\VectorBuffer.h">
       <Filter>头文件\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputEvents.h">
+      <Filter>头文件\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -11,9 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5C9D65F6-4BDA-4409-8341-9D440A2B6E8C}</ProjectGuid>
-    <RootNamespace>Core</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectGuid>{5438C0BA-92E5-41C3-93CE-1D7F2636B780}</ProjectGuid>
+    <RootNamespace>Graphics</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -25,7 +24,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -40,19 +39,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>../Sapphire/Src;$(IncludePath)</IncludePath>
     <OutDir>..\Lib</OutDir>
     <IntDir>..\Obj</IntDir>
-    <IncludePath>../Sapphire/Src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../ThirdParty;../Math;../Container;../Sapphire/;../ThirdParty/LZ4;../Core/IO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>/D _CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>../ThirdParty;../Math;../Container;../Sapphire/;../ThirdParty/LZ4;../Core/IO;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/D _CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -73,60 +71,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Attribute.h" />
-    <ClInclude Include="Condition.h" />
-    <ClInclude Include="Context.h" />
-    <ClInclude Include="CoreEvents.h" />
-    <ClInclude Include="Input\InputEvents.h" />
-    <ClInclude Include="IO\Compression.h" />
-    <ClInclude Include="IO\Deserializer.h" />
-    <ClInclude Include="IO\File.h" />
-    <ClInclude Include="IO\FileSystem.h" />
-    <ClInclude Include="IO\FileWatcher.h" />
-    <ClInclude Include="IO\IOEvents.h" />
-    <ClInclude Include="IO\Log.h" />
-    <ClInclude Include="IO\MemoryBuffer.h" />
-    <ClInclude Include="IO\PackageFile.h" />
-    <ClInclude Include="IO\RWOpsWrapper.h" />
-    <ClInclude Include="IO\Serializer.h" />
-    <ClInclude Include="IO\VectorBuffer.h" />
-    <ClInclude Include="Main.h" />
-    <ClInclude Include="MiniDump.h" />
-    <ClInclude Include="Mutex.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="ProcessUtil.h" />
-    <ClInclude Include="profiler.h" />
-    <ClInclude Include="Spline.h" />
-    <ClInclude Include="StringUtil.h" />
-    <ClInclude Include="Thread.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Variant.h" />
-    <ClInclude Include="WorkQueue.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Condition.cpp" />
-    <ClCompile Include="Context.cpp" />
-    <ClCompile Include="IO\Compression.cpp" />
-    <ClCompile Include="IO\Deserializer.cpp" />
-    <ClCompile Include="IO\File.cpp" />
-    <ClCompile Include="IO\FileSystem.cpp" />
-    <ClCompile Include="IO\FileWatcher.cpp" />
-    <ClCompile Include="IO\Log.cpp" />
-    <ClCompile Include="IO\MemoryBuffer.cpp" />
-    <ClCompile Include="IO\PackageFile.cpp" />
-    <ClCompile Include="IO\Serializer.cpp" />
-    <ClCompile Include="IO\VectorBuffer.cpp" />
-    <ClCompile Include="MiniDump.cpp" />
-    <ClCompile Include="Mutex.cpp" />
-    <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ProcessUtil.cpp" />
-    <ClCompile Include="profiler.cpp" />
-    <ClCompile Include="Spline.cpp" />
-    <ClCompile Include="StringUtil.cpp" />
-    <ClCompile Include="Thread.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Variant.cpp" />
-    <ClCompile Include="WorkQueue.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
