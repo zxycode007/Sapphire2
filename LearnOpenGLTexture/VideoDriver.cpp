@@ -11,7 +11,7 @@ bool OpenGLVideoDriver::Load(ShaderStruct * shader)
 	{
 		return false;
 	}
-	mShader = shader;
+	mCurShader = shader;
 	return true;
 }
 void OpenGLVideoDriver::drawLine(const Sapphire::Line3d & line)
@@ -35,7 +35,7 @@ void OpenGLVideoDriver::drawLine(const Sapphire::Line3d & line)
 	GLuint ebo;
 	//创建EBO对象
 	glGenBuffers(1, &ebo);
-	if (mShader == NULL || mShader->isCompiled == false)
+	if (mCurShader == NULL || mCurShader->isCompiled == false)
 	{
 		return;
 	}
@@ -58,7 +58,7 @@ void OpenGLVideoDriver::drawLine(const Sapphire::Line3d & line)
 		glBindVertexArray(0);
 
 	}
-	glUseProgram(mShader->ShaderProgram);
+	glUseProgram(mCurShader->ShaderProgram);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_LINES, 0, 2);
 	glBindVertexArray(0);
@@ -67,4 +67,8 @@ void OpenGLVideoDriver::drawLine(const Sapphire::Line3d & line)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
+}
+
+void OpenGLVideoDriver::drawRenderList()
+{
 }

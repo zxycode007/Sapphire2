@@ -18,14 +18,14 @@ namespace Sapphire
 	class Vector3;
 	class Vector4;
 
-	/// Abstract stream for writing.
+	/// 写入的抽象流
 	class SAPPHIRE_API Serializer
 	{
 	public:
 		/// Destruct.
 		virtual ~Serializer();
 
-		/// Write bytes to the stream. Return number of bytes actually written.
+		/// 写入字节到流。返回实际写入的字节数
 		virtual unsigned Write(const void* data, unsigned size) = 0;
 
 		/// Write a 32-bit integer.

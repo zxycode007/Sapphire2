@@ -39,6 +39,15 @@
     <ClInclude Include="VideoDriver.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="EmptyRefException.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,6 +60,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="VideoDriver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,33 +6,32 @@
 
 namespace Sapphire
 {
-	/// Abstract stream for reading.
+	/// 抽象的读取流
 	class SAPPHIRE_API Deserializer
 	{
 	public:
-		/// Construct with zero size.
+		/// 用0大小构造
 		Deserializer();
-		/// Construct with defined size.
+		/// 用指定的大小构造
 		Deserializer(unsigned size);
-		/// Destruct.
 		virtual ~Deserializer();
 
-		/// Read bytes from the stream. Return number of bytes actually read.
+		/// 从这个流中读取字节，返回实际读取的字节数
 		virtual unsigned Read(void* dest, unsigned size) = 0;
-		/// Set position from the beginning of the stream.
+		/// 从这个流的起始处开始设置位置
 		virtual unsigned Seek(unsigned position) = 0;
-		/// Return name of the stream.
+		/// 返回这个流的名称
 		virtual const String& GetName() const;
-		/// Return a checksum if applicable.
+		/// 如果合适检查校验和
 		virtual unsigned GetChecksum();
 
-		/// Return current position.
+		/// 返回当前位置
 		unsigned GetPosition() const { return position_; }
 
-		/// Return size.
+		/// 返回大小
 		unsigned GetSize() const { return size_; }
 
-		/// Return whether the end of stream has been reached.
+		/// 返回是否到达流的末尾
 		bool IsEof() const { return position_ >= size_; }
 
 		/// Read a 32-bit integer.

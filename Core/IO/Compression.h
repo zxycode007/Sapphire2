@@ -9,19 +9,19 @@ namespace Sapphire
 	class Serializer;
 	class VectorBuffer;
 
-	/// Estimate and return worst case LZ4 compressed output size in bytes for given input size.
+	/// 对于给定的输入大小估算并且返回最坏情况的LZ4 压缩输出大小
 	SAPPHIRE_API unsigned EstimateCompressBound(unsigned srcSize);
-	/// Compress data using the LZ4 algorithm and return the compressed data size. The needed destination buffer worst-case size is given by EstimateCompressBound().
+	/// 用LZ4压缩算法压缩数据并且返回压缩数据的大小.它需要目标缓冲由EstimateCompressBound()给定的大小
 	SAPPHIRE_API unsigned CompressData(void* dest, const void* src, unsigned srcSize);
-	/// Uncompress data using the LZ4 algorithm. The uncompressed data size must be known. Return the number of compressed data bytes consumed.
+	/// 用LZ4算法解压缩数据。 未压缩数据的大小必须知道。返回已经解压缩数据大小
 	SAPPHIRE_API unsigned DecompressData(void* dest, const void* src, unsigned destSize);
-	/// Compress a source stream (from current position to the end) to the destination stream using the LZ4 algorithm. Return true on success.
+	/// 压缩一个流(从源到目标)，成功返回true
 	SAPPHIRE_API bool CompressStream(Serializer& dest, Deserializer& src);
-	/// Decompress a compressed source stream produced using CompressStream() to the destination stream. Return true on success.
+	/// 解压缩一个流到目标流，成功返回true
 	SAPPHIRE_API bool DecompressStream(Serializer& dest, Deserializer& src);
-	/// Compress a VectorBuffer using the LZ4 algorithm and return the compressed result buffer.
+	/// 用LZ4算法压缩一个可变缓冲区，返回压缩结果缓冲区
 	SAPPHIRE_API VectorBuffer CompressVectorBuffer(VectorBuffer& src);
-	/// Decompress a VectorBuffer produced using CompressVectorBuffer().
+	/// 解压缩一个可变缓冲区
 	SAPPHIRE_API VectorBuffer DecompressVectorBuffer(VectorBuffer& src);
 
 

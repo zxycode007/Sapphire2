@@ -11,6 +11,7 @@
 #include "Mesh.h"
 #include "Line.h"
 #include "VideoDriver.h"
+#include "Vertex.h"
 
 #pragma comment(lib,"opengl32.lib")
 
@@ -135,10 +136,13 @@ void render()
 	smesh->DrawMesh();
 
 	Sapphire::Line3d lines(Sapphire::Vector3(0.5, -0.8, 1.0), Sapphire::Vector3(-0.5, -0.8, 1.0));
+	Sapphire::Line3d lines2(Sapphire::Vector3(-0.2, -0.8, 1.0), Sapphire::Vector3(0.7, 0.8, 1.0));
 	lines.setColor(Sapphire::Color(1.0, 0.0, 0.0, 1.0));
+	lines2.setColor(Sapphire::Color(1.0, 1.0, 0.0, 1.0));
 	OpenGLVideoDriver* vd = new OpenGLVideoDriver();
 	vd->Load(shader);
 	vd->drawLine(lines);
+	vd->drawLine(lines2);
 	delete vd;
 
 }

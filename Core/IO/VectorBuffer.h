@@ -6,7 +6,7 @@
 namespace Sapphire
 {
 
-	/// Dynamically sized buffer that can be read and written to as a stream.
+	/// 可以作为一个流来读写的动态分配缓冲区
 	class SAPPHIRE_API VectorBuffer : public Deserializer, public Serializer
 	{
 	public:

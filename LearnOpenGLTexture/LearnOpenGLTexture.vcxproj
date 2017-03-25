@@ -120,6 +120,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EmptyRefException.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ShaderManager.h" />
@@ -129,6 +132,7 @@
     <ClInclude Include="VideoDriver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ShaderManager.cpp" />

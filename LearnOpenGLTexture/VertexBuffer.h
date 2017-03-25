@@ -1,52 +1,152 @@
 #pragma once
+#include "Vertex.h"
+#include <vector>
+#include "EmptyRefException.h"
 
-/// 顶点元素
-enum VertexElement
+namespace Sapphire
 {
-	ELEMENT_POSITION = 0,
-	ELEMENT_NORMAL,
-	ELEMENT_COLOR,
-	ELEMENT_TEXCOORD1,
-	ELEMENT_TEXCOORD2,
-	ELEMENT_CUBETEXCOORD1,
-	ELEMENT_CUBETEXCOORD2,
-	ELEMENT_TANGENT,
-	ELEMENT_BLENDWEIGHTS,
-	ELEMENT_BLENDINDICES,
-	ELEMENT_INSTANCEMATRIX1,
-	ELEMENT_INSTANCEMATRIX2,
-	ELEMENT_INSTANCEMATRIX3,
-	MAX_VERTEX_ELEMENTS
-};
+
+	class VertexBuffer
+	{
+
+		class IVertexArray
+		{
+		public:
+			virtual void AddVertex(Vertex& v) = 0;
+			virtual int  getElementSize() = 0;
+			virtual bool getData(byte* buf, ULONG& size, UINT32& stride) = 0;
+			virtual Vertex&      operator[] (const UINT32 index) const = 0;
+			virtual int  getStride() = 0;
+			
+
+		};
+
+		template<class T>
+		class VertexArray : public IVertexArray
+		{
+		public:
+
+			VertexArray() {};
+
+			void AddVertex(Vertex& v)
+			{
+				mVertices.push_back((T&)v);
+			};
+			int  getElementSize()
+			{
+				return mVertices.size();
+			}
+			bool getData(byte* buf, ULONG& size, UINT32& stride)
+			{
+				if (mVertices.size() > 0)
+				{
+					/*buf = new byte[sizeof(T)*mVertices.size()];
+					memcpy(buf, mVertices.begin(), mVertices.size() * sizeof(T));*/
+					buf = (byte*)mVertices.begin()._Ptr;
+					size = mVertices.size() * sizeof(T);
+					stride = getStride();
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+
+			}
+			T&  operator[] (const UINT32 index) const
+			{
+				if (index < mVertices.size())
+				{
+					return (T&)mVertices[index];
+				}
+				else
+				{
+					throw EmptyRefException("INVALID REF!");
+				}
+			}
+			int getStride() { return sizeof(T); };
+
+		private:
+
+			std::vector<T> mVertices;
+
+		};
 
 
-//顶点元素掩码
-static const unsigned MASK_NONE = 0x0;
-static const unsigned MASK_POSITION = 0x1;
-static const unsigned MASK_NORMAL = 0x2;
-static const unsigned MASK_COLOR = 0x4;
-static const unsigned MASK_TEXCOORD1 = 0x8;
-static const unsigned MASK_TEXCOORD2 = 0x10;
-static const unsigned MASK_CUBETEXCOORD1 = 0x20;
-static const unsigned MASK_CUBETEXCOORD2 = 0x40;
-static const unsigned MASK_TANGENT = 0x80;
-static const unsigned MASK_BLENDWEIGHTS = 0x100;
-static const unsigned MASK_BLENDINDICES = 0x200;
-static const unsigned MASK_INSTANCEMATRIX1 = 0x400;
-static const unsigned MASK_INSTANCEMATRIX2 = 0x800;
-static const unsigned MASK_INSTANCEMATRIX3 = 0x1000;
-static const unsigned MASK_DEFAULT = 0xffffffff;
-static const unsigned NO_ELEMENT = 0xffffffff;
+		typedef VertexArray<Vertex>  VertexList;
+		typedef VertexArray<VertexColor>  VertexColorList;
+		typedef VertexArray<VertexNormal>  VertexNormalList;
+		typedef VertexArray<VertexTcoord>  VertexTcoordList;
 
-class VertexBuffer
-{
-public:
+	public:
 
-private:
+		VertexBuffer(EVertexType type)
+		{
+			setType(type);
+		}
 
-	unsigned int  mVertexCount;
-	unsigned int  mVertexSize;
-	unsigned      mElementMask;
-	//元素偏移地址
-	unsigned int  mElementOffset[MAX_VERTEX_ELEMENTS];
-};
+		//注意改变这个缓冲区类型，会清空内容
+		void setType(EVertexType type)
+		{
+			IVertexArray* vertices = 0;
+			mVertexType = type;
+			switch (mVertexType)
+			{
+			case EVT_STARNDRD:
+				vertices = new VertexList();
+				break;
+			case EVT_COLOR:
+				vertices = new VertexColorList();
+				break;
+			case EVT_NORMAL:
+				vertices = new VertexNormalList();
+				break;
+			case EVT_TCOORD:
+				vertices = new VertexTcoordList();
+				break;
+			default:
+				vertices = new VertexList();
+				break;
+			}
+			if (mVertices)
+			{
+				delete mVertices;
+			}
+			mVertices = vertices;
+		}
+		EVertexType getType()
+		{
+			return mVertexType;
+		}
+
+		int  getStride()
+		{
+			return mVertices->getStride();
+		}
+
+		bool getData(byte* buf, ULONG& size, UINT32& stride)
+		{
+			return mVertices->getData(buf, size, stride);
+		}
+
+		UINT getBufferSize()
+		{
+			return mVertices->getElementSize();
+		}
+
+		void AddVertex(Vertex& v)
+		{
+			mVertices->AddVertex(v);
+		}
+
+	private:
+
+		IVertexArray* mVertices;
+		EVertexType   mVertexType;
+
+
+
+	};
+	
+
+}
