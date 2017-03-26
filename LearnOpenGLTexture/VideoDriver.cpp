@@ -112,7 +112,7 @@ void OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const char* shade
 		int _indexs[6];
 		memcpy(_indexs, indexs, ibSize);
 		Sapphire::VertexColor _vertices[4];
-		memcpy(_vertices, vertices, sizeof(Sapphire::VertexColor)*4);
+		memcpy(_vertices, vertices, vbSize);
 		int i = 0;
 	
 	}
