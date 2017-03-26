@@ -1,10 +1,46 @@
 #pragma once
-#include "Vertex.h"
+
 #include <vector>
 #include "EmptyRefException.h"
+#include "Vertex.h"
 
 namespace Sapphire
 {
+
+	enum EVertexAttribute
+	{
+		EVA_NULL,
+		EVA_POSITION,
+		EVA_COLOR,
+		EVA_NORMAL,
+		EVA_TCOORD,
+		EVA_2TCOORD,
+		EVA_TANGENT,
+		MAX_EVA
+	};
+
+	struct VertexAttributeInfo
+	{
+		EVertexAttribute id;
+		int              length;
+		int              offset;
+		VertexAttributeInfo()
+		{
+			memset(this, 0, sizeof(VertexAttributeInfo));
+		};
+		VertexAttributeInfo(EVertexAttribute id, int len, int offset)
+		{
+			this->id = id;
+			this->length = len;
+			this->offset = offset;
+		}
+		int getOffset()
+		{
+			return offset + 4;
+		}
+	};
+
+	typedef std::vector<VertexAttributeInfo>  VertexAttributeInfoList;
 
 	class VertexBuffer
 	{
@@ -14,7 +50,7 @@ namespace Sapphire
 		public:
 			virtual void AddVertex(Vertex& v) = 0;
 			virtual int  getElementSize() = 0;
-			virtual bool getData(byte* buf, ULONG& size, UINT32& stride) = 0;
+			virtual void* getData(ULONG& size, UINT32& stride) = 0;
 			virtual Vertex&      operator[] (const UINT32 index) const = 0;
 			virtual int  getStride() = 0;
 			
@@ -36,20 +72,19 @@ namespace Sapphire
 			{
 				return mVertices.size();
 			}
-			bool getData(byte* buf, ULONG& size, UINT32& stride)
+			void* getData(ULONG& size, UINT32& stride)
 			{
 				if (mVertices.size() > 0)
 				{
 					/*buf = new byte[sizeof(T)*mVertices.size()];
 					memcpy(buf, mVertices.begin(), mVertices.size() * sizeof(T));*/
-					buf = (byte*)mVertices.begin()._Ptr;
 					size = mVertices.size() * sizeof(T);
 					stride = getStride();
-					return true;
+					return (byte*)mVertices.begin()._Ptr;
 				}
 				else
 				{
-					return false;
+					return NULL;
 				}
 
 			}
@@ -82,6 +117,7 @@ namespace Sapphire
 
 		VertexBuffer(EVertexType type)
 		{
+			mVertices = 0;
 			setType(type);
 		}
 
@@ -90,22 +126,55 @@ namespace Sapphire
 		{
 			IVertexArray* vertices = 0;
 			mVertexType = type;
+			mAttributesInfo.clear();
 			switch (mVertexType)
 			{
 			case EVT_STARNDRD:
-				vertices = new VertexList();
+			   {
+				  vertices = new VertexList();
+				  VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), 4);
+				  mAttributesInfo.push_back(pos);
+			    }
 				break;
 			case EVT_COLOR:
+			    {
 				vertices = new VertexColorList();
+				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), 4);
+				mAttributesInfo.push_back(pos);
+				VertexAttributeInfo color(EVA_COLOR, sizeof(Color), 8+sizeof(Vector3));
+				mAttributesInfo.push_back(color);
+			    }
 				break;
 			case EVT_NORMAL:
+			    {
 				vertices = new VertexNormalList();
+				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), 4);
+				mAttributesInfo.push_back(pos);
+				VertexAttributeInfo color(EVA_COLOR, sizeof(Color), 8 + sizeof(Vector3));
+				mAttributesInfo.push_back(color);
+				VertexAttributeInfo normal(EVA_NORMAL, sizeof(Vector3), 12 + sizeof(Vector3) + sizeof(Color));
+				mAttributesInfo.push_back(normal);
+			    }
 				break;
 			case EVT_TCOORD:
+			    {
 				vertices = new VertexTcoordList();
+				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), 4);
+				mAttributesInfo.push_back(pos);
+				VertexAttributeInfo color(EVA_COLOR, sizeof(Color), 8 + sizeof(Vector3));
+				mAttributesInfo.push_back(color);
+				VertexAttributeInfo normal(EVA_NORMAL, sizeof(Vector3), 12 + sizeof(Vector3) + sizeof(Color));
+				mAttributesInfo.push_back(normal);
+				VertexAttributeInfo tcoord(EVA_TCOORD, sizeof(Vector2), 16 + sizeof(Vector3) + sizeof(Color) + sizeof(Vector3));
+				mAttributesInfo.push_back(tcoord);
+			    }
 				break;
 			default:
+			   {
 				vertices = new VertexList();
+				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), 4);
+				mAttributesInfo.push_back(pos);
+			    }
 				break;
 			}
 			if (mVertices)
@@ -124,9 +193,14 @@ namespace Sapphire
 			return mVertices->getStride();
 		}
 
-		bool getData(byte* buf, ULONG& size, UINT32& stride)
+		void* getData(ULONG& size, UINT32& stride)
 		{
-			return mVertices->getData(buf, size, stride);
+			return mVertices->getData(size, stride);
+		}
+
+		ULONG32 getDataSize()
+		{
+			return getStride()*getBufferSize();
 		}
 
 		UINT getBufferSize()
@@ -139,10 +213,16 @@ namespace Sapphire
 			mVertices->AddVertex(v);
 		}
 
+		const VertexAttributeInfoList& getAttributeInfo()
+		{
+			return mAttributesInfo;
+		}
+
 	private:
 
 		IVertexArray* mVertices;
 		EVertexType   mVertexType;
+		VertexAttributeInfoList  mAttributesInfo;
 
 
 

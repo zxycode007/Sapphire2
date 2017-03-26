@@ -17,8 +17,8 @@ namespace Sapphire
 		EVT_NORMAL,
 		EVT_TCOORD,
 		EVT_2TCOORD,
-		EVT_TANGENTS
-
+		EVT_TANGENTS,
+		MAX_EVT
 	};
 
 	enum EIndexType
@@ -27,11 +27,11 @@ namespace Sapphire
 		EIT_32BIT
 	};
 
+	
+
 	class Vertex
 	{
 	public:
-
-
 
 		Vertex()
 		{

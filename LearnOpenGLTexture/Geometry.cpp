@@ -13,16 +13,6 @@ namespace Sapphire
 		mType = type;
 	}
 
-	Geometry::~Geometry()
-	{
-		
-		
-	}
-
-	void Geometry::draw()
-	{
-
-	}
 
 	void Geometry::setVertexBuffer(VertexBuffer * pBuf)
 	{

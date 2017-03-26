@@ -125,6 +125,7 @@
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Quad.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Vertex.h" />
@@ -139,6 +140,8 @@
     <ClCompile Include="VideoDriver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="colorPs.glsl" />
+    <None Include="colorVs.glsl" />
     <None Include="packages.config" />
     <None Include="ps.glsl" />
     <None Include="vs.glsl" />

@@ -16,6 +16,12 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{d997e9b9-8495-46ca-ad6b-2e55e1ca2b00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\lineShader">
+      <UniqueIdentifier>{d5dc8880-883f-403d-b6a4-7539a9498c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\quadShader">
+      <UniqueIdentifier>{a2771f69-3664-4d6c-8f08-174bdf5b6983}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderManager.h">
@@ -48,6 +54,9 @@
     <ClInclude Include="Geometry.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -68,11 +77,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="vs.glsl">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="ps.glsl">
-      <Filter>Shaders</Filter>
+      <Filter>Shaders\lineShader</Filter>
+    </None>
+    <None Include="vs.glsl">
+      <Filter>Shaders\lineShader</Filter>
+    </None>
+    <None Include="colorVs.glsl">
+      <Filter>Shaders\quadShader</Filter>
+    </None>
+    <None Include="colorPs.glsl">
+      <Filter>Shaders\quadShader</Filter>
     </None>
   </ItemGroup>
 </Project>

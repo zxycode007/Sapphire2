@@ -6,6 +6,7 @@ namespace Sapphire
 	class VertexBuffer;
 	class IndexBuffer;
 	//! 枚举图元类型
+	// 决定绘制图元的方法
 	enum EPRIMITIVE_TYPE
 	{
 		//单个顶点
@@ -54,8 +55,10 @@ namespace Sapphire
 			mType = EPT_TRIANGLES;
 		};
 		Geometry(VertexBuffer* pVb, IndexBuffer* pIb, EPRIMITIVE_TYPE type);
-		~Geometry();
-		void draw();
+		~Geometry()
+		{
+			release();
+		};
 		void setVertexBuffer(VertexBuffer* pBuf);
 		VertexBuffer* getVertexBuffer();
 		void setIndexBuffer(IndexBuffer* pBuf);

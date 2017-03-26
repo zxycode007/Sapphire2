@@ -11,13 +11,13 @@
 #include "Mesh.h"
 #include "Line.h"
 #include "VideoDriver.h"
-#include "Vertex.h"
+#include "Quad.h"
 
 #pragma comment(lib,"opengl32.lib")
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-void render();
+void render(GLFWwindow* window);
 
 GLFWwindow*  init();
 
@@ -36,7 +36,7 @@ int main(char* argc[], int argv)
 
 	while (!glfwWindowShouldClose(window))
 	{
-		render();
+		render(window);
 		glfwSwapBuffers(window);
 		//检查，如果事件被激活(按键，鼠标移动)调用合适的响应函数
 		glfwPollEvents();
@@ -84,16 +84,23 @@ GLFWwindow* init()
 	return window;
 }
 
-void render()
+void render(GLFWwindow * window)
 {
 	string vs_source = readTextFile("vs.glsl");
 	string ps_source = readTextFile("ps.glsl");
+	string vs2_source = readTextFile("colorVs.glsl");
+	string ps2_source = readTextFile("colorPs.glsl");
 
 	ShaderManager* shaderMgr = new ShaderManager();
-	shaderMgr->CreateShaderProgram("shader1", vs_source.c_str(), ps_source.c_str());
-	ShaderStruct* shader = shaderMgr->FindShader("shader1");
+	shaderMgr->CreateShaderProgram("lineShader", vs_source.c_str(), ps_source.c_str());	
+	ShaderStruct* shader = shaderMgr->FindShader("lineShader");
 	shaderMgr->CompileAndLink(shader);
+	shaderMgr->CreateShaderProgram("QuadShader", vs2_source.c_str(), ps2_source.c_str());
 	shaderMgr->PrintLogs();
+	ShaderStruct* shader2 = shaderMgr->FindShader("QuadShader");
+	shaderMgr->CompileAndLink(shader2);
+	shaderMgr->PrintLogs();
+	
 
 	//顶点集合
 	/*
@@ -139,10 +146,31 @@ void render()
 	Sapphire::Line3d lines2(Sapphire::Vector3(-0.2, -0.8, 1.0), Sapphire::Vector3(0.7, 0.8, 1.0));
 	lines.setColor(Sapphire::Color(1.0, 0.0, 0.0, 1.0));
 	lines2.setColor(Sapphire::Color(1.0, 1.0, 0.0, 1.0));
-	OpenGLVideoDriver* vd = new OpenGLVideoDriver();
-	vd->Load(shader);
-	vd->drawLine(lines);
-	vd->drawLine(lines2);
+	IVideoDriver* vd = new OpenGLVideoDriver(window, shaderMgr);
+	vd->drawLine(lines,"lineShader");
+	vd->drawLine(lines2,"lineShader");
+	
+	{
+		Sapphire::VertexColor leftTop(Sapphire::Vector3(-0.5, 0.9, 0), Sapphire::Color::BLUE);
+		Sapphire::VertexColor rightTop(Sapphire::Vector3(0.5, 0.9, 0), Sapphire::Color::RED);
+		Sapphire::VertexColor leftBottom(Sapphire::Vector3(-0.5, -0.9, 0), Sapphire::Color::GREEN);
+		Sapphire::VertexColor rightBottom(Sapphire::Vector3(0.5, -0.9, 0), Sapphire::Color::BLACK);
+		UINT vertexColorSize = sizeof(leftTop);
+		UINT vertexSize = sizeof(Sapphire::Vertex);
+		UINT tstSize = sizeof(Sapphire::Vector3) + sizeof(Sapphire::Color) + sizeof(Sapphire::EVertexType);
+		Sapphire::ColorQuad quad(leftTop, rightTop, leftBottom, rightBottom);
+		byte* seek = (byte*)&leftTop;
+		//前4字节是类的虚表占用，后面才是成员变量
+		seek += 4;
+		Sapphire::Vector3* v = (Sapphire::Vector3*)seek;
+		seek += sizeof(Sapphire::Vector3)+4;
+		Sapphire::Color* color = (Sapphire::Color*)seek;
+		Sapphire::Geometry*  geometry = quad.toGeometry();
+		vd->drawGeometry(geometry, "QuadShader");
+		delete geometry;
+	}
+	
+	vd->release();
 	delete vd;
 
 }

@@ -137,7 +137,7 @@ void MeshBuffer::DrawMeshBuffer(ShaderStruct * shader)
 
 	glBindVertexArray(mVao);
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_LINE_LOOP, 6, GL_UNSIGNED_INT, 0);
 	GLenum errorcode = glGetError();
 	glBindVertexArray(0);
 

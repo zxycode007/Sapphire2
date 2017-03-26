@@ -7,40 +7,53 @@
 #include "Geometry.h"
 
 typedef ShaderStruct;
-typedef GLFWwindow * WindowHandle;
+typedef GLFWwindow WindowsHandle;
 
-class OpenGLVideoDriver
+class IVideoDriver
 {
 public:
-	typedef std::vector<Sapphire::Geometry> RenderList;
+
+	virtual void        SetWindow(WindowsHandle* window) = 0;
+	virtual WindowsHandle*  GetWindow() = 0;
+	virtual void        drawLine(const Sapphire::Line3d& line, const char* shaderName) = 0;
+	virtual void        drawGeometry(Sapphire::Geometry* geo, const char* shaderName) = 0;
+	virtual void        SetShaderManager(ShaderManager* manager) = 0;
+	virtual ShaderManager*  GetShaderManager() = 0;
+	virtual void release() = 0;
+
+};
+
+class OpenGLVideoDriver : public IVideoDriver
+{
+public:
+	
 
 	OpenGLVideoDriver()
 	{
 		m_pShaderManager = 0;
 		mWindow = 0;
-		mCurShader = 0;
 	}
 
-	OpenGLVideoDriver(WindowHandle* handle, ShaderManager* pShaderManager)
+	OpenGLVideoDriver(WindowsHandle* handle, ShaderManager* pShaderManager)
 	{
 		mWindow = handle;
 		m_pShaderManager = pShaderManager;
 	}
-
-	bool Load(ShaderStruct* shader);
-	ShaderStruct*  GetShader() { return mCurShader; };
-	WindowHandle*  GetWindow() { return mWindow; };
-	void        SetWindow(WindowHandle* window) { mWindow = window; };
-	void        drawLine(const Sapphire::Line3d& line);
-	void        drawRenderList();
+   
+	WindowsHandle*  GetWindow() { return mWindow; };
+	void        SetWindow(WindowsHandle* window) { mWindow = window; };
+	void        SetShaderManager(ShaderManager* manager) { m_pShaderManager = manager; };
+	void        drawLine(const Sapphire::Line3d& line, const char* shaderName);
+	void        drawGeometry(Sapphire::Geometry* geo, const char* shaderName);
+	ShaderManager*  GetShaderManager();
+	void        release();
 
 private:
+
+
 	//要绘图的窗口句柄
-	WindowHandle* mWindow;
-	//当前临时shader
-	ShaderStruct* mCurShader;
+	WindowsHandle* mWindow;
 	//shader管理器
 	ShaderManager* m_pShaderManager;
-	//渲染列表
-	RenderList       mRenderList;
+
 };

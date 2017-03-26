@@ -14,7 +14,7 @@ namespace Sapphire
 			virtual void AddIndex(UINT32 index) = 0;
 			virtual UINT32 getSize() = 0;
 			virtual int getStride() = 0;
-			virtual bool getData(byte* buf, ULONG& size, int& stride) = 0;
+			virtual void* getData(ULONG& size, UINT& stride) = 0;
 			virtual UINT32  operator[] (UINT32 index) = 0;
 			virtual bool setValue(UINT32 index, ULONG value) = 0;
 
@@ -40,16 +40,16 @@ namespace Sapphire
 				return sizeof(T);
 			}
 
-			bool getData(byte* buf, ULONG& size, int& stride)
+			void* getData(ULONG& size, UINT& stride)
 			{
 				if (mIndexs.size() > 0)
 				{
-					buf = (byte*)mIndexs.begin()._Ptr;
+					
 					size = getSize()*getStride();
 					stride = getStride();
-					return true;
+					return (void*)mIndexs.begin()._Ptr;
 				}
-				return false;
+				return NULL;
 			};
 
 			UINT32   operator[](UINT32 index)
@@ -77,8 +77,9 @@ namespace Sapphire
 
 	public:
 
-		IndexBuffer(EIndexType type)
+		IndexBuffer(EIndexType type = EIT_16BIT)
 		{
+			mIndexList = 0;
 			setType(type);
 
 		}
@@ -132,9 +133,14 @@ namespace Sapphire
 			mIndexList->setValue(index, value);
 		}
 
-		bool getData(byte* buf, ULONG& size, int& stride)
+		void* getData(ULONG& size, UINT& stride)
 		{
-			return mIndexList->getData(buf, size, stride);
+			return mIndexList->getData(size, stride);
+		}
+
+		EIndexType getType()
+		{
+			return mType;
 		}
 
 	private:
