@@ -85,7 +85,6 @@ void OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const char* shade
 	GLfloat* vertices = NULL;
 	GLuint   vbStride = 0;
 	vertices = (GLfloat*)pVb->getData(vbSize, vbStride);
-	byte*  vbData = 0;
 	ULONG ibSize = 0;
 	GLuint* indexs = NULL;
 	GLuint  ibStride = 0;
@@ -106,16 +105,6 @@ void OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const char* shade
 	glBufferData(GL_ARRAY_BUFFER, vbSize, vertices, GL_STATIC_DRAW);
 
 	Sapphire::VertexAttributeInfoList attributesInfo = pVb->getAttributeInfo();
-
-	{
-		
-		int _indexs[6];
-		memcpy(_indexs, indexs, ibSize);
-		Sapphire::VertexColor _vertices[4];
-		memcpy(_vertices, vertices, vbSize);
-		int i = 0;
-	
-	}
 
 	//设置VAO
 	{
@@ -141,14 +130,15 @@ void OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const char* shade
 	glBindVertexArray(vao);
 	if (pIb->getType() == Sapphire::EIT_16BIT)
 	{
-		glDrawElements(GL_TRIANGLES, pIb->size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, pIb->size(), GL_UNSIGNED_SHORT, 0);
 	}
 	else
 	{
-		glDrawElements(GL_LINE_LOOP, pIb->size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, pIb->size(), GL_UNSIGNED_INT, 0);
 		
 	}
-	//GLenum errorcode = glGetError();
+	GLenum errorcode = glGetError();
+	//取消绑定VAO
 	glBindVertexArray(0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

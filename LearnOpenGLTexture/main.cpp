@@ -151,10 +151,10 @@ void render(GLFWwindow * window)
 	vd->drawLine(lines2,"lineShader");
 	
 	{
-		Sapphire::VertexColor leftTop(Sapphire::Vector3(-0.5, 0.9, 0), Sapphire::Color::BLUE);
-		Sapphire::VertexColor rightTop(Sapphire::Vector3(0.5, 0.9, 0), Sapphire::Color::RED);
-		Sapphire::VertexColor leftBottom(Sapphire::Vector3(-0.5, -0.9, 0), Sapphire::Color::GREEN);
-		Sapphire::VertexColor rightBottom(Sapphire::Vector3(0.5, -0.9, 0), Sapphire::Color::BLACK);
+		Sapphire::VertexColor leftTop(Sapphire::Vector3(-0.3, 0.4, 0), Sapphire::Color::BLUE);
+		Sapphire::VertexColor rightTop(Sapphire::Vector3(0.3, 0.4, 0), Sapphire::Color::RED);
+		Sapphire::VertexColor leftBottom(Sapphire::Vector3(-0.3, -0.4, 0), Sapphire::Color::GREEN);
+		Sapphire::VertexColor rightBottom(Sapphire::Vector3(0.3, -0.4, 0), Sapphire::Color::BLACK);
 		UINT vertexColorSize = sizeof(leftTop);
 		UINT vertexSize = sizeof(Sapphire::Vertex);
 		UINT tstSize = sizeof(Sapphire::Vector3) + sizeof(Sapphire::Color) + sizeof(Sapphire::EVertexType);

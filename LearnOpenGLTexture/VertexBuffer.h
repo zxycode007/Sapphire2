@@ -36,7 +36,7 @@ namespace Sapphire
 		}
 		int getOffset()
 		{
-			return offset + 4;
+			return offset;
 		}
 	};
 

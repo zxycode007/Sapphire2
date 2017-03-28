@@ -129,6 +129,9 @@
     <ClInclude Include="Resource\Resource.h">
       <Filter>头文件\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceCache.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Condition.cpp">

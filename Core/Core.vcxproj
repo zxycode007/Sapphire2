@@ -96,6 +96,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ProcessUtil.h" />
     <ClInclude Include="profiler.h" />
+    <ClInclude Include="ResourceCache.h" />
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="Spline.h" />
     <ClInclude Include="StringUtil.h" />

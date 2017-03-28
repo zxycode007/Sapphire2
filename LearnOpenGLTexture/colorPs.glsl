@@ -1,4 +1,4 @@
-#version 330 core  //定义版本 openGL 3.3 core profile
+#version 420 core  //定义版本 openGL 3.3 core profile
  #pragma optimize (off)
  //输入的流变量要和vertex shader里输出的一致
 in vec4 vertexColor;
