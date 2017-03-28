@@ -117,22 +117,22 @@ namespace Sapphire
 		Resource* GetResource(StringHash type, const String& name, bool sendEventOnFailure = true);
 		///  加载一个资源并不保存到资源缓存中，如果资源能安全的完全加载，那么可以被非主线程调用。(例如：GPU数据就不行)
 		SharedPtr<Resource> GetTempResource(StringHash type, const String& name, bool sendEventOnFailure = true);
-		/// Background load a resource. An event will be sent when complete. Return true if successfully stored to the load queue, false if eg. already exists. Can be called from outside the main thread.
+		/// 后台加载一个资源。 当完成时发送一个事件。 如果成功返回true并保存到加载队列。    如果已经存在返回false， 可以被非主线程调用
 		bool BackgroundLoadResource(StringHash type, const String& name, bool sendEventOnFailure = true, Resource* caller = 0);
-		/// Return number of pending background-loaded resources.
+		/// 返回后台要加载的资源数
 		unsigned GetNumBackgroundLoadResources() const;
-		/// Return all loaded resources of a specific type.
+		/// 返回所有加载的特定类型的资源
 		void GetResources(PODVector<Resource*>& result, StringHash type) const;
-		/// Return an already loaded resource of specific type & name, or null if not found. Will not load if does not exist.
+		/// 返回一个特定类型和名字的已加载资源。如果没找到返回空
 		Resource* GetExistingResource(StringHash type, const String& name);
 
-		/// Return all loaded resources.
+		/// 返回所有已加载资源
 		const HashMap<StringHash, ResourceGroup>& GetAllResources() const { return resourceGroups_; }
 
-		/// Return added resource load directories.
+		/// 返回所有添加的资源加载目录
 		const Vector<String>& GetResourceDirs() const { return resourceDirs_; }
 
-		/// Return added package files.
+		/// 返回所有添加的包文件
 		const Vector<SharedPtr<PackageFile> >& GetPackageFiles() const { return packages_; }
 
 		/// Template version of returning a resource by name.
