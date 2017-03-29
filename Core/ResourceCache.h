@@ -141,91 +141,91 @@ namespace Sapphire
 		template <class T> T* GetExistingResource(const String& name);
 		/// 获取没有保存在缓存中的资源
 		template <class T> SharedPtr<T> GetTempResource(const String& name, bool sendEventOnFailure = true);
-		/// Template version of queueing a resource background load.
+		/// 后台加载资源的模板化版本
 		template <class T> bool BackgroundLoadResource(const String& name, bool sendEventOnFailure = true, Resource* caller = 0);
-		/// Template version of returning loaded resources of a specific type.
+		/// 加载特定类型资源的模板化版本
 		template <class T> void GetResources(PODVector<T*>& result) const;
-		/// Return whether a file exists by name.
+		/// 返回一个文件是否存在
 		bool Exists(const String& name) const;
-		/// Return memory budget for a resource type.
+		/// 返回一个资源类型的内存预估
 		unsigned long long GetMemoryBudget(StringHash type) const;
-		/// Return total memory use for a resource type.
+		/// 返回一个资源类型的总内存占用
 		unsigned long long GetMemoryUse(StringHash type) const;
-		/// Return total memory use for all resources.
+		/// 返回所有资源占用的总内存
 		unsigned long long GetTotalMemoryUse() const;
-		/// Return full absolute file name of resource if possible.
+		/// 如果可以返回文件名的绝对路径
 		String GetResourceFileName(const String& name) const;
 
-		/// Return whether automatic resource reloading is enabled.
+		/// 返回自动加载资源是否打开
 		bool GetAutoReloadResources() const { return autoReloadResources_; }
 
-		/// Return whether resources that failed to load are returned.
+		/// 返回是否返回加载失败的资源
 		bool GetReturnFailedResources() const { return returnFailedResources_; }
 
-		/// Return whether when getting resources should check package files or directories first.
+		/// 返回是否搜索包优先
 		bool GetSearchPackagesFirst() const { return searchPackagesFirst_; }
 
-		/// Return how many milliseconds maximum to spend on finishing background loaded resources.
+		/// 返回花在后台加载资源的最大毫秒数
 		int GetFinishBackgroundResourcesMs() const { return finishBackgroundResourcesMs_; }
 
-		/// Return a resource router by index.
+		/// 取得一个资源router
 		ResourceRouter* GetResourceRouter(unsigned index) const;
 
-		/// Return either the path itself or its parent, based on which of them has recognized resource subdirectories.
+		/// 返回路径或它的父路径阻止的资源子目录
 		String GetPreferredResourceDir(const String& path) const;
-		/// Remove unsupported constructs from the resource name to prevent ambiguity, and normalize absolute filename to resource path relative if possible.
+		/// 从资源名移除不支持的构造函数，避免二义性。并且如果可以标准化绝对文件名到资源路径的相对路径
 		String SanitateResourceName(const String& name) const;
-		/// Remove unnecessary constructs from a resource directory name and ensure it to be an absolute path.
+		/// 从一个资源目录名移除不必要的构造器并且确保它作为一个绝对路径
 		String SanitateResourceDirName(const String& name) const;
-		/// Store a dependency for a resource. If a dependency file changes, the resource will be reloaded.
+		/// 保存一个资源的依赖。 如果依赖文件改变， 这个资源将会重载
 		void StoreResourceDependency(Resource* resource, const String& dependency);
-		/// Reset dependencies for a resource.
+		/// 重载一个资源的依赖的关系
 		void ResetDependencies(Resource* resource);
 
-		/// Returns a formatted string containing the memory actively used.
+		/// 返回一个包含内存使用状态的格式化的字符串
 		String PrintMemoryUsage() const;
 
 	private:
-		/// Find a resource.
+		/// 查找资源
 		const SharedPtr<Resource>& FindResource(StringHash type, StringHash nameHash);
-		/// Find a resource by name only. Searches all type groups.
+		/// 只通过名字查找资源。搜索所有的类型组
 		const SharedPtr<Resource>& FindResource(StringHash nameHash);
-		/// Release resources loaded from a package file.
+		/// 从一个包文件释放加载的资源
 		void ReleasePackageResources(PackageFile* package, bool force = false);
-		/// Update a resource group. Recalculate memory use and release resources if over memory budget.
+		/// 更新一个资源组。 如果超过内存预算，重新计算内存使用量并释放资源
 		void UpdateResourceGroup(StringHash type);
-		/// Handle begin frame event. Automatic resource reloads and the finalization of background loaded resources are processed here.
+		/// 处理begin frame事件. 资源自动重载并且结束后台加载资源的处理
 		void HandleBeginFrame(StringHash eventType, VariantMap& eventData);
-		/// Search FileSystem for file.
+		/// 从目录搜索文件
 		File* SearchResourceDirs(const String& nameIn);
-		/// Search resource packages for file.
+		/// 从包搜索文件
 		File* SearchPackages(const String& nameIn);
 
-		/// Mutex for thread-safe access to the resource directories, resource packages and resource dependencies.
+		/// 线程安全访问资源目录，资源包和资源依赖的互斥量
 		mutable Mutex resourceMutex_;
-		/// Resources by type.
+		/// 资源类型
 		HashMap<StringHash, ResourceGroup> resourceGroups_;
-		/// Resource load directories.
+		/// 资源加载目录
 		Vector<String> resourceDirs_;
-		/// File watchers for resource directories, if automatic reloading enabled.
+		/// 资源目录的文件观察者，如果打开自动重载的话
 		Vector<SharedPtr<FileWatcher> > fileWatchers_;
-		/// Package files.
+		/// 包文件
 		Vector<SharedPtr<PackageFile> > packages_;
-		/// Dependent resources. Only used with automatic reload to eg. trigger reload of a cube texture when any of its faces change.
+		/// 资源依赖。 只用于自动重载。 
 		HashMap<StringHash, HashSet<StringHash> > dependentResources_;
-		/// Resource background loader.
+		/// 后台资源加载器
 		SharedPtr<BackgroundLoader> backgroundLoader_;
-		/// Resource routers.
+		/// 资源Router
 		Vector<SharedPtr<ResourceRouter> > resourceRouters_;
-		/// Automatic resource reloading flag.
+		/// 资源自动重载标志
 		bool autoReloadResources_;
-		/// Return failed resources flag.
+		/// 返回失败的资源标志
 		bool returnFailedResources_;
-		/// Search priority flag.
+		/// 搜索优先级标志
 		bool searchPackagesFirst_;
-		/// Resource routing flag to prevent endless recursion.
+		/// 资源routing标志，避免无限递归
 		mutable bool isRouting_;
-		/// How many milliseconds maximum per frame to spend on finishing background loaded resources.
+		/// 每帧用在后台加载资源的最大毫秒数
 		int finishBackgroundResourcesMs_;
 	};
 
@@ -255,8 +255,11 @@ namespace Sapphire
 
 	template <class T> void ResourceCache::GetResources(PODVector<T*>& result) const
 	{
+		//转换资源类型
 		PODVector<Resource*>& resources = reinterpret_cast<PODVector<Resource*>&>(result);
+		//获取类型信息
 		StringHash type = T::GetTypeStatic();
+		//获取资源
 		GetResources(resources, type);
 
 		for (unsigned i = 0; i < result.Size(); ++i)
