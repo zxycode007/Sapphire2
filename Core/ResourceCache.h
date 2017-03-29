@@ -135,11 +135,11 @@ namespace Sapphire
 		/// 返回所有添加的包文件
 		const Vector<SharedPtr<PackageFile> >& GetPackageFiles() const { return packages_; }
 
-		/// Template version of returning a resource by name.
+		/// 获取模板类型的资源
 		template <class T> T* GetResource(const String& name, bool sendEventOnFailure = true);
-		/// Template version of returning an existing resource by name.
+		/// 获取一个已存在的资源
 		template <class T> T* GetExistingResource(const String& name);
-		/// Template version of loading a resource without storing it to the cache.
+		/// 获取没有保存在缓存中的资源
 		template <class T> SharedPtr<T> GetTempResource(const String& name, bool sendEventOnFailure = true);
 		/// Template version of queueing a resource background load.
 		template <class T> bool BackgroundLoadResource(const String& name, bool sendEventOnFailure = true, Resource* caller = 0);
