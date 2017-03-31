@@ -40,21 +40,21 @@ namespace Sapphire
 		/// 返回被观察的目录
 		const String& GetPath() const { return path_; }
 
-		/// Return the delay in seconds for notifying file changes.
+		/// 返回文件改变后延迟通知的毫秒数
 		float GetDelay() const { return delay_; }
 
 	private:
-		/// Filesystem.
+		/// 文件系统
 		SharedPtr<FileSystem> fileSystem_;
-		/// The path being watched.
+		/// 观察路径
 		String path_;
-		/// Pending changes. These will be returned and removed from the list when their timer has exceeded the delay.
+		/// 等待改变，当他们的timer超时，会从列表中返回和移除
 		HashMap<String, Timer> changes_;
-		/// Mutex for the change buffer.
+		/// 缓冲区改变的互斥量
 		Mutex changesMutex_;
-		/// Delay in seconds for notifying changes.
+		/// 改变后通知的延迟秒数
 		float delay_;
-		/// Watch subdirectories flag.
+		/// 是否观察子目录
 		bool watchSubDirs_;
 
 #ifdef WIN32
@@ -64,16 +64,16 @@ namespace Sapphire
 
 #elif __linux__
 
-		/// HashMap for the directory and sub-directories (needed for inotify's int handles).
+		/// 目录和子目录的句柄 
 		HashMap<int, String> dirHandle_;
-		/// Linux inotify needs a handle.
+		/// linux需要的句柄
 		int watchHandle_;
 
 #elif defined(__APPLE__) && !defined(IOS)
 
-		/// Flag indicating whether the running OS supports individual file watching.
+		/// 是否允许允许OS单独文件观察标志
 		bool supported_;
-		/// Pointer to internal MacFileWatcher delegate.
+		///指向MacFileWatcher内部代理的指针
 		void* watcher_;
 
 #endif
