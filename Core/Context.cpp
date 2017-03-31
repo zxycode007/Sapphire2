@@ -36,7 +36,7 @@ namespace Sapphire
 		eventHandler_(0)
 	{
 #ifdef ANDROID
-		// Always reset the random seed on Android, as the Urho3D library might not be unloaded between runs
+		// Always reset the random seed on Android, as the SAPPHIRE library might not be unloaded between runs
 		SetRandomSeed(1);
 #endif
 

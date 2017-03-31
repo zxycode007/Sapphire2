@@ -37,6 +37,9 @@
     <Filter Include="头文件\Resource">
       <UniqueIdentifier>{dfa15502-0c6f-446a-8139-17516295c18f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Core\Resource">
+      <UniqueIdentifier>{c8d7fcbb-45a3-4e8e-ad51-f18383d2b241}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h">
@@ -126,10 +129,40 @@
     <ClInclude Include="Input\InputEvents.h">
       <Filter>头文件\Input</Filter>
     </ClInclude>
+    <ClInclude Include="Resource\BackgroundLoader.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Decompress.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Image.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\JSONFile.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\JSONValue.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Localization.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\PListFile.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
     <ClInclude Include="Resource\Resource.h">
       <Filter>头文件\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceCache.h">
+    <ClInclude Include="Resource\ResourceCache.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\ResourceEvents.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\XMLElement.h">
+      <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\XMLFile.h">
       <Filter>头文件\Resource</Filter>
     </ClInclude>
   </ItemGroup>
@@ -202,6 +235,15 @@
     </ClCompile>
     <ClCompile Include="IO\VectorBuffer.cpp">
       <Filter>源文件\Core\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Resource.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\ResourceCache.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\PListFile.cpp">
+      <Filter>源文件\Core\Resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

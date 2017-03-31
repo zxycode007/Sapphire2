@@ -139,7 +139,7 @@ namespace Sapphire
 
 #if defined(ANDROID)
 		int androidLevel = ANDROID_LOG_DEBUG + level;
-		__android_log_print(androidLevel, "Urho3D", "%s", message.CString());
+		__android_log_print(androidLevel, "Sapphire", "%s", message.CString());
 #elif defined(IOS)
 		SDL_IOS_LogMessage(message.CString());
 #else
@@ -195,10 +195,10 @@ namespace Sapphire
 		if (logInstance->quiet_)
 		{
 			if (error)
-				__android_log_print(ANDROID_LOG_ERROR, "Urho3D", message.CString());
+				__android_log_print(ANDROID_LOG_ERROR, "Sapphire", message.CString());
 		}
 		else
-			__android_log_print(error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "Urho3D", message.CString());
+			__android_log_print(error ? ANDROID_LOG_ERROR : ANDROID_LOG_INFO, "Sapphire", message.CString());
 #elif defined(IOS)
 		SDL_IOS_LogMessage(message.CString());
 #else

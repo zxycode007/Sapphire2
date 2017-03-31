@@ -90,7 +90,7 @@ namespace Sapphire
 
 	void InitFPU()
 	{
-#if !defined(URHO3D_LUAJIT) && !defined(ANDROID) && !defined(IOS) && !defined(RPI) && !defined(__x86_64__) && !defined(_M_AMD64) && !defined(__EMSCRIPTEN__)
+#if !defined(SAPPHIRE_LUAJIT) && !defined(ANDROID) && !defined(IOS) && !defined(RPI) && !defined(__x86_64__) && !defined(_M_AMD64) && !defined(__EMSCRIPTEN__)
 		// Make sure FPU is in round-to-nearest, single precision mode
 		// This ensures Direct3D and OpenGL behave similarly, and all threads behave similarly
 #ifdef _MSC_VER
@@ -248,7 +248,7 @@ namespace Sapphire
 	String GetConsoleInput()
 	{
 		String ret;
-#ifdef URHO3D_TESTING
+#ifdef SAPPHIRE_TESTING
 		// When we are running automated tests, reading the console may block. Just return empty in that case
 		return ret;
 #endif

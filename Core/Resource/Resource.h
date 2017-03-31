@@ -16,9 +16,9 @@ namespace Sapphire
 		ASYNC_DONE = 0,
 		/// 异步加载的查询
 		ASYNC_QUEUED = 1,
-		/// 在工作线程中调用BeginLoad()的进度
+		/// 工作线程中调用BeginLoad()的过程
 		ASYNC_LOADING = 2,
-		/// BeginLoad() 成功。 EndLoad()将会被主线程调用
+		/// BeginLoad() 成功。 主线程将会调用EndLoad()
 		ASYNC_SUCCESS = 3,
 		/// BeginLoad() 失败.
 		ASYNC_FAIL = 4

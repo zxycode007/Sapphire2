@@ -62,7 +62,7 @@ namespace Sapphire
 			return false;
 		}
 
-		// Stop any previous watching
+		// 先停止之前的观察
 		StopWatching();
 
 #if defined(SAPPHIRE_FILEWATCHER) && defined(SAPPHIRE_THREADING)
@@ -70,6 +70,7 @@ namespace Sapphire
 		String nativePath = GetNativePath(RemoveTrailingSlash(pathName));
 
 		//调windows 本地函数
+		//获取目录句柄
 		dirHandle_ = (void*)CreateFileW(
 			WString(nativePath).CString(),
 			FILE_LIST_DIRECTORY,
@@ -90,6 +91,7 @@ namespace Sapphire
 		}
 		else
 		{
+			//目录不存在
 			SAPPHIRE_LOGERROR("Failed to start watching path " + pathName);
 			return false;
 		}
@@ -213,6 +215,7 @@ namespace Sapphire
 
 		while (shouldRun_)
 		{
+			//读取目录的改变信息
 			if (ReadDirectoryChangesW((HANDLE)dirHandle_,
 				buffer,
 				BUFFERSIZE,
@@ -297,7 +300,7 @@ namespace Sapphire
 	{
 		MutexLock lock(changesMutex_);
 
-		// Reset the timer associated with the filename. Will be notified once timer exceeds the delay
+		// 重载相关文件名的计时器。 
 		changes_[fileName].Reset();
 	}
 
