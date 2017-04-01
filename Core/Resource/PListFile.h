@@ -8,7 +8,7 @@ namespace Sapphire
 
 	class XMLElement;
 
-	/// PList value types.
+	/// PList value 类型.
 	enum PListValueType
 	{
 		PLVT_NONE = 0,
@@ -25,83 +25,84 @@ namespace Sapphire
 	/// PList value map.
 	typedef HashMap<String, PListValue> PListValueMap;
 
-	/// Vector of PList value.
+	/// PList value数组
 	typedef Vector<PListValue> PListValueVector;
 
 	/// PList value.
 	class SAPPHIRE_API PListValue
 	{
 	public:
-		// Construct.
+		 
 		PListValue();
-		// Construct from int.
+		 
 		PListValue(int value);
-		// Construct from boolean.
+		 
 		PListValue(bool value);
-		// Construct from float.
+		 
 		PListValue(float value);
-		// Construct from string.
+		 
 		PListValue(const String& value);
-		// Construct from value map.
+		 
 		PListValue(PListValueMap& valueMap);
-		// Construct from value vector.
+		 
 		PListValue(PListValueVector& valueVector);
-		// Construct from another value.
+		 
 		PListValue(const PListValue& value);
-		/// Destruct.
+		 
 		~PListValue();
 
-		/// Assign operator.
+		 
 		PListValue& operator =(const PListValue& rhs);
 
-		/// Return true if is valid.
+		/// 返回是否有效
 		operator bool() const { return type_ != PLVT_NONE; }
 
-		/// Set int.
+	 
 		void SetInt(int value);
-		/// Set boolean.
+	 
 		void SetBool(bool value);
-		/// Set float.
+		 
 		void SetFloat(float value);
-		/// Set string.
+		 
 		void SetString(const String& value);
-		/// Set value map.
+		 
 		void SetValueMap(const PListValueMap& valueMap);
-		/// Set value vector.
+	 
 		void SetValueVector(const PListValueVector& valueVector);
 
-		/// Return type.
+		/// 返回类型
 		PListValueType GetType() const { return type_; }
 
-		/// Return int.
+		 
 		int GetInt() const;
-		/// Return boolean.
+		 
 		bool GetBool() const;
-		/// Return float.
+		 
 		float GetFloat() const;
-		/// Return string.
+		 
 		const String& GetString() const;
-		/// Return IntRect, for string type.
+		 
+		//从一个字符串转到IntRect
 		IntRect GetIntRect() const;
-		/// Return IntVector2, for string type.
+		//从一个字符串转到IntVector
 		IntVector2 GetIntVector2() const;
-		/// Return value map.
+		 
 		const PListValueMap& GetValueMap() const;
-		/// Return value vector.
+		 
 		const PListValueVector& GetValueVector() const;
 
-		/// Convert to value map (internal use only).
+		/// 转换到value map  
 		PListValueMap& ConvertToValueMap();
-		/// Convert to value vector (internal use only).
+		/// 转换到value vector  
 		PListValueVector& ConvertToValueVector();
 
 	private:
-		/// Reset.
+		/// 重载.
 		void Reset();
 
-		/// Type.
+		 
 		PListValueType type_;
-		/// Values.
+	 
 		union
 		{
 			int int_;
@@ -119,28 +120,28 @@ namespace Sapphire
 		SAPPHIRE_OBJECT(PListFile, Resource);
 
 	public:
-		/// Construct.
+		 
 		PListFile(Context* context);
-		/// Destruct.
+		 
 		virtual ~PListFile();
-		/// Register object factory.
+		/// 注册对象工厂
 		static void RegisterObject(Context* context);
 
-		/// Load resource from stream. May be called from a worker thread. Return true if successful.
+		/// 从流中加载资源。可以从工作线程中调用，如果成功返回true
 		virtual bool BeginLoad(Deserializer& source);
 
-		/// Return root.
+		/// 返回根
 		const PListValueMap& GetRoot() const { return root_; }
 
 	private:
-		/// Load dictionary.
+		/// 加载字典
 		bool LoadDict(PListValueMap& dict, const XMLElement& dictElem);
-		/// Load array.
+		/// 加载数组
 		bool LoadArray(PListValueVector& array, const XMLElement& arrayElem);
-		/// Load value.
+		/// 加载值
 		bool LoadValue(PListValue& value, const XMLElement& valueElem);
 
-		/// Root dictionary.
+		/// 根字典 
 		PListValueMap root_;
 	};
 }

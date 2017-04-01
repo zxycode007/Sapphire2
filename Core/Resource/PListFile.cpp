@@ -194,6 +194,7 @@ namespace Sapphire
 			return IntRect::ZERO;
 
 		int x, y, w, h;
+		//将格式{{%d,%d},{%d,%d}}的字符串转换到IntRect
 		sscanf(string_->CString(), "{{%d,%d},{%d,%d}}", &x, &y, &w, &h);
 		return IntRect(x, y, x + w, y + h);
 	}
@@ -204,6 +205,7 @@ namespace Sapphire
 			return IntVector2::ZERO;
 
 		int x, y;
+		//将格式{{%d,%d}}的字符串转换到IntVector2
 		sscanf(string_->CString(), "{%d,%d}", &x, &y);
 		return IntVector2(x, y);
 	}
