@@ -5,14 +5,14 @@
 namespace Sapphire
 {
 
-	/// Log message event.
+	/// Log message事件
 	SAPPHIRE_EVENT(E_LOGMESSAGE, LogMessage)
 	{
 		SAPPHIRE_PARAM(P_MESSAGE, Message);              // String
 		SAPPHIRE_PARAM(P_LEVEL, Level);                  // int
 	}
 
-	/// Async system command execution finished.
+	/// 异步系统命令执行完成
 	SAPPHIRE_EVENT(E_ASYNCEXECFINISHED, AsyncExecFinished)
 	{
 		SAPPHIRE_PARAM(P_REQUESTID, RequestID);          // unsigned

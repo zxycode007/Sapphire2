@@ -76,24 +76,24 @@ namespace Sapphire
 		//改变文件名。用于资源系统
 		void SetName(const String& name);
 
-		/// Return the open mode.
+		/// 返回打开模式
 		FileMode GetMode() const { return mode_; }
 
-		/// Return whether is open.
+		/// 返回是否打开
 		bool IsOpen() const;
 
-		/// Return the file handle.
+		/// 返回文件句柄
 		void* GetHandle() const { return handle_; }
 
-		/// Return whether the file originates from a package.
+		/// 返回这个文件是否从一个创建
 		bool IsPackaged() const { return offset_ != 0; }
 
 	private:
-		/// File name.
+		/// 文件名
 		String fileName_;
-		/// Open mode.
+		/// 打开模式.
 		FileMode mode_;
-		/// File handle.
+		/// 文件句柄
 		void* handle_;
 #ifdef ANDROID
 		// 安卓资源加载的SDL RWops 环境

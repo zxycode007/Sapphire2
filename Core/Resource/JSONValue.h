@@ -189,65 +189,65 @@ namespace Sapphire
 		void Push(const JSONValue& value);
 		/// 移除最后添加的JSON 值
 		void Pop();
-		/// Insert an JSON value at position.
+		/// 在指定位置插入一个JSON值
 		void Insert(unsigned pos, const JSONValue& value);
-		/// Erase a range of JSON values.
+		/// 删除一定范围的JSON值
 		void Erase(unsigned pos, unsigned length = 1);
-		/// Resize array.
+		/// 重设数值大小
 		void Resize(unsigned newSize);
-		/// Return size of array.
+		/// 返回大小
 		unsigned Size() const;
 
-		// JSON object functions
-		/// Return JSON value with key.
+		// JSON 对象函数
+		/// 返回key对应的JSON 值
 		JSONValue& operator [](const String& key);
-		/// Return JSON value with key.
+		/// 返回Key对应的JSON值
 		const JSONValue& operator [](const String& key) const;
-		/// Set JSON value with key.
+		/// 设置JSON值
 		void Set(const String& key, const JSONValue& value);
-		/// Return JSON value with key.
+		/// 返回JSON值
 		const JSONValue& Get(const String& key) const;
-		/// Erase a pair by key.
+		/// 删除一个pair
 		bool Erase(const String& key);
-		/// Return whether contains a pair with key.
+		/// 返回是否包含key
 		bool Contains(const String& key) const;
-		/// Return iterator to the beginning.
+		/// 返回起始迭代器
 		JSONObjectIterator Begin();
-		/// Return iterator to the beginning.
+	 
 		ConstJSONObjectIterator Begin() const;
-		/// Return iterator to the end.
+	 
 		JSONObjectIterator End();
-		/// Return iterator to the beginning.
+		 
 		ConstJSONObjectIterator End() const;
 
-		/// Clear array or object.
+		/// 清空数组
 		void Clear();
 
-		/// Set value type and number type, internal function.
+		///设置值类型和数值类型 
 		void SetType(JSONValueType valueType, JSONNumberType numberType = JSONNT_NAN);
 
-		/// Set variant, context must provide for resource ref.
+		/// 设置variant context必须提供资源引用
 		void SetVariant(const Variant& variant, Context* context = 0);
-		/// Return a variant.
+		/// 返回variant
 		Variant GetVariant() const;
-		/// Set variant value, context must provide for resource ref.
+		/// 设置variant，context必须提供资源引用
 		void SetVariantValue(const Variant& variant, Context* context = 0);
-		/// Return a variant with type.
+		/// 返回variant类型
 		Variant GetVariantValue(VariantType type) const;
-		/// Set variant map, context must provide for resource ref.
+		/// 设置 variant map.
 		void SetVariantMap(const VariantMap& variantMap, Context* context = 0);
-		/// Return a variant map.
+		/// 返回variant map
 		VariantMap GetVariantMap() const;
-		/// Set variant vector, context must provide for resource ref.
+		/// 设置variant 数组， context必须提供资源引用
 		void SetVariantVector(const VariantVector& variantVector, Context* context = 0);
-		/// Return a variant vector.
+		/// 返回variant 数组
 		VariantVector GetVariantVector() const;
 
-		/// Empty JSON value.
+		/// 空JSON
 		static const JSONValue EMPTY;
-		/// Empty JSON array.
+		/// 空JSON数组
 		static const JSONArray emptyArray;
-		/// Empty JSON object.
+		/// 空JSON对象
 		static const JSONObject emptyObject;
 
 	private:

@@ -10,7 +10,7 @@ namespace Sapphire
 {
 	static const int COLOR_LUT_SIZE = 16;
 
-	/// Supported compressed image formats.
+	/// 支持的压缩图像格式
 	enum CompressedFormat
 	{
 		CF_NONE = 0,
@@ -25,10 +25,10 @@ namespace Sapphire
 		CF_PVRTC_RGBA_4BPP,
 	};
 
-	/// Compressed image mip level.
+	/// 压缩图像mip级别
 	struct CompressedLevel
 	{
-		/// Construct empty.
+		 
 		CompressedLevel() :
 			data_(0),
 			width_(0),
@@ -41,169 +41,165 @@ namespace Sapphire
 		{
 		}
 
-		/// Decompress to RGBA. The destination buffer required is width * height * 4 bytes. Return true if successful.
+		/// 解压到RGBA。 目标缓冲区必须是width * height * 4 bytes. 如果成功返回true
 		bool Decompress(unsigned char* dest);
 
-		/// Compressed image data.
+		/// 压缩的图像数据
 		unsigned char* data_;
-		/// Compression format.
+		/// 压缩格式
 		CompressedFormat format_;
-		/// Width.
+		 
 		int width_;
-		/// Height.
+		 
 		int height_;
-		/// Depth.
+	 
 		int depth_;
-		/// Block size in bytes.
+		/// 块大小
 		unsigned blockSize_;
-		/// Total data size in bytes.
+		/// 总的块大小
 		unsigned dataSize_;
-		/// Row size in bytes.
+		/// 行大小
 		unsigned rowSize_;
-		/// Number of rows.
+		/// 行数
 		unsigned rows_;
 	};
 
-	/// %Image resource.
+	/// %Image 资源.
 	class SAPPHIRE_API Image : public Resource
 	{
 		SAPPHIRE_OBJECT(Image, Resource);
 
 	public:
-		/// Construct empty.
+		 
 		Image(Context* context);
-		/// Destruct.
+		 
 		virtual ~Image();
-		/// Register object factory.
+		/// 注册对象工厂
 		static void RegisterObject(Context* context);
 
-		/// Load resource from stream. May be called from a worker thread. Return true if successful.
+		/// 从流中加载资源。 
 		virtual bool BeginLoad(Deserializer& source);
-		/// Save the image to a stream. Regardless of original format, the image is saved as png. Compressed image data is not supported. Return true if successful.
+		/// 保存图像到一个流中。 (不管原来的格式，图片保存为png，不支持压缩图像数据）
 		virtual bool Save(Serializer& dest) const;
 
-		/// Set 2D size and number of color components. Old image data will be destroyed and new data is undefined. Return true if successful.
+		/// 设置2d大小和颜色分类的数量.旧的图像数据会被破坏并且新的图像数据会是未定义。
 		bool SetSize(int width, int height, unsigned components);
-		/// Set 3D size and number of color components. Old image data will be destroyed and new data is undefined. Return true if successful.
+		///  设置3d大小，深度和颜色分类的数量.旧的图像数据会被破坏并且新的图像数据会是未定义。
 		bool SetSize(int width, int height, int depth, unsigned components);
-		/// Set new image data.
+		///  设置新的图像数据
 		void SetData(const unsigned char* pixelData);
-		/// Set a 2D pixel.
+		/// 设置一个2d像素的颜色
 		void SetPixel(int x, int y, const Color& color);
-		/// Set a 3D pixel.
+		/// 设置一个3d像素的颜色
 		void SetPixel(int x, int y, int z, const Color& color);
-		/// Set a 2D pixel with an integer color. R component is in the 8 lowest bits.
+		/// 设置一个2d像素的整形颜色，R分类在最低8位
 		void SetPixelInt(int x, int y, unsigned uintColor);
-		/// Set a 3D pixel with an integer color. R component is in the 8 lowest bits.
+		/// 设置一个3d像素的整形颜色，R分类在最低8位
 		void SetPixelInt(int x, int y, int z, unsigned uintColor);
-		/// Load as color LUT. Return true if successful.
+		/// 加载颜色查找表。
 		bool LoadColorLUT(Deserializer& source);
-		/// Flip image horizontally. Return true if successful.
+		/// 水平翻转图像
 		bool FlipHorizontal();
-		/// Flip image vertically. Return true if successful.
+		/// 垂直翻转图像
 		bool FlipVertical();
-		/// Resize image by bilinear resampling. Return true if successful.
+		///  用双线性重新采样改变图像大小
 		bool Resize(int width, int height);
-		/// Clear the image with a color.
+		/// 用一个颜色清空图像
 		void Clear(const Color& color);
-		/// Clear the image with an integer color. R component is in the 8 lowest bits.
+		/// 用一个整形颜色清空图像.R分量在最低8位
 		void ClearInt(unsigned uintColor);
-		/// Save in BMP format. Return true if successful.
+		 
 		bool SaveBMP(const String& fileName) const;
-		/// Save in PNG format. Return true if successful.
+		 
 		bool SavePNG(const String& fileName) const;
-		/// Save in TGA format. Return true if successful.
+		 
 		bool SaveTGA(const String& fileName) const;
-		/// Save in JPG format with compression quality. Return true if successful.
+		 
 		bool SaveJPG(const String& fileName, int quality) const;
-		/// Whether this texture is detected as a cubemap, only relevant for DDS.
+		/// 该纹理是否用作立方体贴图。只针对DDS
 		bool IsCubemap() const { return cubemap_; }
-		/// Whether this texture has been detected as a volume, only relevant for DDS.
+		/// 该纹理是否用作volume texture。 只针对DDS
 		bool IsArray() const { return array_; }
-		/// Whether this texture is in sRGB, only relevant for DDS.
+		/// 该纹理是否在sRGB颜色空间，只针对DDS
 		bool IsSRGB() const { return sRGB_; }
 
-		/// Return a 2D pixel color.
+		/// 返回一个2d像素颜色
 		Color GetPixel(int x, int y) const;
-		/// Return a 3D pixel color.
+		/// 返回一个2d像素颜色
 		Color GetPixel(int x, int y, int z) const;
-		/// Return a 2D pixel integer color. R component is in the 8 lowest bits.
+		/// 返回一个整形2d像素颜色  R分量在最低8位
 		unsigned GetPixelInt(int x, int y) const;
-		/// Return a 3D pixel integer color. R component is in the 8 lowest bits.
+		/// 返回一个整形3d像素颜色  R分量在最低8位
 		unsigned GetPixelInt(int x, int y, int z) const;
-		/// Return a bilinearly sampled 2D pixel color. X and Y have the range 0-1.
+		/// 返回一个双线性采样的2d像素颜色。 X和Y的范围0-1
 		Color GetPixelBilinear(float x, float y) const;
-		/// Return a trilinearly sampled 3D pixel color. X, Y and Z have the range 0-1.
+		/// 返回一个三线性采样的3d像素颜色。 X和Y的范围0-1
 		Color GetPixelTrilinear(float x, float y, float z) const;
 
-		/// Return width.
 		int GetWidth() const { return width_; }
 
-		/// Return height.
 		int GetHeight() const { return height_; }
 
-		/// Return depth.
 		int GetDepth() const { return depth_; }
 
-		/// Return number of color components.
+		/// 返回颜色分量数
 		unsigned GetComponents() const { return components_; }
 
-		/// Return pixel data.
+		/// 返现像素数据指针
 		unsigned char* GetData() const { return data_; }
 
-		/// Return whether is compressed.
+		/// 返回是否压缩
 		bool IsCompressed() const { return compressedFormat_ != CF_NONE; }
 
-		/// Return compressed format.
+		/// 返回压缩格式 
 		CompressedFormat GetCompressedFormat() const { return compressedFormat_; }
 
-		/// Return number of compressed mip levels.
+		/// 返回压缩mip 级别数
 		unsigned GetNumCompressedLevels() const { return numCompressedLevels_; }
 
-		/// Return next mip level by bilinear filtering.
+		/// 返回下一个双线性滤波的mip级别
 		SharedPtr<Image> GetNextLevel() const;
-		/// Return the next sibling image of an array or cubemap.
+		/// 返回立方体贴图数组下一个临近的兄弟图像
 		SharedPtr<Image> GetNextSibling() const { return nextSibling_; }
-		/// Return image converted to 4-component (RGBA) to circumvent modern rendering API's not supporting e.g. the luminance-alpha format.
+		/// 返回图像转换到4分量RGBA.
 		SharedPtr<Image> ConvertToRGBA() const;
-		/// Return a compressed mip level.
+		/// 返回一个压缩的mip级别
 		CompressedLevel GetCompressedLevel(unsigned index) const;
-		/// Return subimage from the image by the defined rect or null if failed. 3D images are not supported. You must free the subimage yourself.
+		/// 获取从一个图像中定义的区域的子图像，如果失败返回null.不支持3d图像。必须手动释放子图像
 		Image* GetSubimage(const IntRect& rect) const;
-		/// Return an SDL surface from the image, or null if failed. Only RGB images are supported. Specify rect to only return partial image. You must free the surface yourself.
+		/// 从一个图像返回SDL surface。如果失败返回null。 只支持RGB图像。 指定区域将返回部分图像，必须手动释放内存
 		SDL_Surface* GetSDLSurface(const IntRect& rect = IntRect::ZERO) const;
-		/// Precalculate the mip levels. Used by asynchronous texture loading.
+		/// 预先计数mip级别， 用于异步纹理加载
 		void PrecalculateLevels();
 
 	private:
-		/// Decode an image using stb_image.
+		/// 用stb_image 解码图像
 		static unsigned char* GetImageData(Deserializer& source, int& width, int& height, unsigned& components);
-		/// Free an image file's pixel data.
+		/// 释放一个图像文件的像素数据
 		static void FreeImageData(unsigned char* pixelData);
 
-		/// Width.
 		int width_;
-		/// Height.
+
 		int height_;
-		/// Depth.
+
 		int depth_;
-		/// Number of color components.
+		/// 颜色分量数
 		unsigned components_;
-		/// Number of compressed mip levels.
+		/// 压缩mip级别数
 		unsigned numCompressedLevels_;
-		/// Cubemap status if DDS.
+		/// 如果是dds，立方体状态
 		bool cubemap_;
-		/// Texture array status if DDS.
+		/// 纹理数组状态 DDS
 		bool array_;
-		/// Data is sRGB.
+		/// 数据是sRGB
 		bool sRGB_;
-		/// Compressed format.
+		/// 压缩格式
 		CompressedFormat compressedFormat_;
-		/// Pixel data.
+		/// 像素数据
 		SharedArrayPtr<unsigned char> data_;
-		/// Precalculated mip level image.
+		/// 预计算mip级别图像
 		SharedPtr<Image> nextLevel_;
-		/// Next texture array or cube map image.
+		/// 下一个纹理数据或立方体纹理图像
 		SharedPtr<Image> nextSibling_;
 	};
 }

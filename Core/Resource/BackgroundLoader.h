@@ -14,48 +14,48 @@ namespace Sapphire
 	class Resource;
 	class ResourceCache;
 
-	/// Queue item for background loading of a resource.
+	/// 后台加载一个资源的队列项目
 	struct BackgroundLoadItem
 	{
-		/// Resource.
+		/// 资源指针.
 		SharedPtr<Resource> resource_;
-		/// Resources depended on for loading.
+		/// 加载所依赖的资源
 		HashSet<Pair<StringHash, StringHash> > dependencies_;
-		/// Resources that depend on this resource's loading.
+		/// 这个资源加载时依赖的资源
 		HashSet<Pair<StringHash, StringHash> > dependents_;
-		/// Whether to send failure event.
+		/// 是否发生失败事件
 		bool sendEventOnFailure_;
 	};
 
-	/// Background loader of resources. Owned by the ResourceCache.
+	/// 资源后台加载器，属于资源缓存ResourceCache.
 	class BackgroundLoader : public RefCounted, public Thread
 	{
 	public:
-		/// Construct.
+		 
 		BackgroundLoader(ResourceCache* owner);
 
-		/// Resource background loading loop.
+		/// 资源后台加载循环
 		virtual void ThreadFunction();
 
-		/// Queue loading of a resource. The name must be sanitated to ensure consistent format. Return true if queued (not a duplicate and resource was a known type).
+		/// 队列化一个资源加载。 名字必须确保一致的格式。如果队列化返回true (没有重复并且资源时已知的类型)
 		bool QueueResource(StringHash type, const String& name, bool sendEventOnFailure, Resource* caller);
-		/// Wait and finish possible loading of a resource when being requested from the cache.
+		///  等待并完成从缓存中请求加载的资源
 		void WaitForResource(StringHash type, StringHash nameHash);
-		/// Process resources that are ready to finish.
+		/// 处理准备完成的资源
 		void FinishResources(int maxMs);
 
-		/// Return amount of resources in the load queue.
+		/// 返回在加载队列的资源数量
 		unsigned GetNumQueuedResources() const;
 
 	private:
-		/// Finish one background loaded resource.
+		/// 终结一个后台加载资源项
 		void FinishBackgroundLoading(BackgroundLoadItem& item);
 
-		/// Resource cache.
+		/// 资源缓存
 		ResourceCache* owner_;
-		/// Mutex for thread-safe access to the background load queue.
+		/// 访问后台加载队列的线程安全互斥量
 		mutable Mutex backgroundLoadMutex_;
-		/// Resources that are queued for background loading.
+		/// 后台加载的队列化的资源
 		HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem> backgroundLoadQueue_;
 	};
 }
