@@ -7,48 +7,48 @@
 namespace Sapphire
 {
 
-	/// %Localization subsystem. Stores all the strings in all languages.
+	/// %本地化子系统。保存所有语言的所有字符串
 	class SAPPHIRE_API Localization : public Object
 	{
 		SAPPHIRE_OBJECT(Localization, Object);
 
 	public:
-		/// Construct.
+		/// 构造器
 		Localization(Context* context);
-		/// Destruct. Free all resources.
+		/// 析构。释放所有资源
 		virtual ~Localization();
 
-		/// Return the number of languages.
+		/// 返回语言的数量
 		int GetNumLanguages() const { return (int)languages_.Size(); }
 
-		/// Return the index number of current language. The index is determined by the order of loading.
+		/// 取得当前语言的索引号。 
 		int GetLanguageIndex() const { return languageIndex_; }
 
-		/// Return the index number of language. The index is determined by the order of loading.
+		/// 取得当前语言的索引号。
 		int GetLanguageIndex(const String& language);
-		/// Return the name of current language.
+		/// 返回当前语言的名字
 		String GetLanguage();
-		/// Return the name of language.
+		/// 返回当前语言名
 		String GetLanguage(int index);
-		/// Set current language.
+		/// 设置当前语言
 		void SetLanguage(int index);
-		/// Set current language.
+		/// 设置当前语言
 		void SetLanguage(const String& language);
-		/// Return a string in the current language. Returns String::EMPTY if id is empty. Returns id if translation is not found and logs a warning.
+		/// 返回一个当前语言的字符。 返回String::Empty为空
 		String Get(const String& id);
-		/// Clear all loaded strings.
+		/// 清空所有加载的字符串
 		void Reset();
-		/// Load strings from JSONValue.
+		/// 从JSONValue中加载字符串
 		void LoadJSON(const JSONValue& source);
-		/// Load strings from JSONFile. The file should be UTF8 without BOM.
+		/// 从JSON文件中加载字符串。文件应该是UTF8不带bom编码
 		void LoadJSONFile(const String& name);
 
 	private:
-		/// Language names.
+		/// 语言名
 		Vector<String> languages_;
-		/// Index of current language.
+		/// 当前语言索引
 		int languageIndex_;
-		/// Storage strings: <Language <StringId, Value> >.
+		/// 存储字符串 <Language <StringId, Value> >.
 		HashMap<StringHash, HashMap<StringHash, String> > strings_;
 	};
 }

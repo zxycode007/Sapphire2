@@ -283,16 +283,17 @@ namespace Sapphire
 
 	bool PListFile::BeginLoad(Deserializer& source)
 	{
+		//从流中加载
 		if (GetName().Empty())
 			SetName(source.GetName());
-
+		//准备读取XML文件
 		XMLFile xmlFile(context_);
 		if (!xmlFile.Load(source))
 		{
 			SAPPHIRE_LOGERROR("Could not load property list");
 			return false;
 		}
-
+		//取得根
 		XMLElement plistElem = xmlFile.GetRoot("plist");
 		if (!plistElem)
 		{
@@ -301,11 +302,11 @@ namespace Sapphire
 		}
 
 		root_.Clear();
-
+		//取得dict节点
 		XMLElement dictElem = plistElem.GetChild("dict");
 		if (!LoadDict(root_, dictElem))
 			return false;
-
+		//设置内存使用量
 		SetMemoryUse(source.GetSize());
 
 		return true;
@@ -315,8 +316,9 @@ namespace Sapphire
 	{
 		if (!dictElem)
 			return false;
-
+		//读取key
 		XMLElement keyElem = dictElem.GetChild("key");
+		//读取key对应的value
 		XMLElement valueElem = keyElem.GetNext();
 		while (keyElem && valueElem)
 		{
@@ -340,7 +342,7 @@ namespace Sapphire
 	{
 		if (!arrayElem)
 			return false;
-
+		//读取数组
 		for (XMLElement valueElem = arrayElem.GetChild(); valueElem; valueElem = valueElem.GetNext())
 		{
 			PListValue value;

@@ -114,7 +114,7 @@ namespace Sapphire
 		};
 	};
 
-	/// Property list (plist).
+	/// Property list (plist).ios的plist文件资源
 	class SAPPHIRE_API PListFile : public Resource
 	{
 		SAPPHIRE_OBJECT(PListFile, Resource);

@@ -7,187 +7,187 @@
 
 namespace Sapphire
 {
-	/// JSON value type.
+	/// JSON 值类型
 	enum JSONValueType
 	{
-		/// JSON null type.
+		 
 		JSON_NULL = 0,
-		/// JSON boolean type.
+	 
 		JSON_BOOL,
-		/// JSON number type.
+	 
 		JSON_NUMBER,
-		/// JSON string type.
+		 
 		JSON_STRING,
-		/// JSON array type.
+	 
 		JSON_ARRAY,
-		/// JSON object type.
+		//无序集合键值对
 		JSON_OBJECT,
 	};
 
-	/// JSON number type.
+	/// JSON数字类型
 	enum JSONNumberType
 	{
-		/// Not a number.
+		/// 不是一个数字
 		JSONNT_NAN = 0,
-		/// Integer.
+		/// 整形.
 		JSONNT_INT,
-		/// Unsigned integer.
+		/// 无符号整形
 		JSONNT_UINT,
-		/// Float or double.
+		/// 单精度或双精度浮点
 		JSONNT_FLOAT_DOUBLE,
 	};
 
 	class JSONValue;
 
-	/// JSON array type.
+	/// JSON 数组类型
 	typedef Vector<JSONValue> JSONArray;
-	/// JSON object type.
+	/// JSON Object
 	typedef HashMap<String, JSONValue> JSONObject;
 	/// JSON object iterator.
 	typedef JSONObject::Iterator JSONObjectIterator;
 	/// Constant JSON object iterator.
 	typedef JSONObject::ConstIterator ConstJSONObjectIterator;
 
-	/// JSON value class.
+	/// JSON value 
 	class SAPPHIRE_API JSONValue
 	{
 	public:
-		/// Construct null value.
+		 
 		JSONValue() :
 			type_(0)
 		{
 		}
-		/// Construct with a boolean.
+		 
 		JSONValue(bool value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Construct with a integer.
+		 
 		JSONValue(int value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Construct with a unsigned integer.
+		 
 		JSONValue(unsigned value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Construct with a float.
+		 
 		JSONValue(float value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Construct with a double.
+		 
 		JSONValue(double value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Construct with a string.
+		 
 		JSONValue(const String& value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Construct with a C string.
+		 
 		JSONValue(const char* value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Construct with a JSON array.
+		 
 		JSONValue(const JSONArray& value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Construct with a JSON object.
+		 
 		JSONValue(const JSONObject& value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Copy-construct from another JSON value.
+		 
 		JSONValue(const JSONValue& value) :
 			type_(0)
 		{
 			*this = value;
 		}
-		/// Destruct.
+		 
 		~JSONValue()
 		{
 			SetType(JSON_NULL);
 		}
 
-		/// Assign from a boolean.
+	 
 		JSONValue& operator =(bool rhs);
-		/// Assign from an integer.
+		 
 		JSONValue& operator =(int rhs);
-		/// Assign from an unsigned integer.
+		 
 		JSONValue& operator =(unsigned rhs);
-		/// Assign from a float.
+		 
 		JSONValue& operator =(float rhs);
-		/// Assign from a double.
+		 
 		JSONValue& operator =(double rhs);
-		/// Assign from a string.
+		 
 		JSONValue& operator =(const String& rhs);
-		/// Assign from a C string.
+		 
 		JSONValue& operator =(const char* rhs);
-		/// Assign from a JSON array.
+		 
 		JSONValue& operator =(const JSONArray& rhs);
-		/// Assign from a JSON object.
+		 
 		JSONValue& operator =(const JSONObject& rhs);
-		/// Assign from another JSON value.
+		 
 		JSONValue& operator =(const JSONValue& rhs);
 
-		/// Return value type.
+		 
 		JSONValueType GetValueType() const;
-		/// Return number type.
+		 
 		JSONNumberType GetNumberType() const;
-		/// Check is null.
+		 
 		bool IsNull() const { return GetValueType() == JSON_NULL; }
-		/// Check is boolean.
+	 
 		bool IsBool() const { return GetValueType() == JSON_BOOL; }
-		/// Check is number.
+		 
 		bool IsNumber() const { return GetValueType() == JSON_NUMBER; }
-		/// Check is string.
+		 
 		bool IsString() const { return GetValueType() == JSON_STRING; }
-		/// Check is array.
+		 
 		bool IsArray() const { return GetValueType() == JSON_ARRAY; }
-		/// Check is object.
+		 
 		bool IsObject() const { return GetValueType() == JSON_OBJECT; }
 
-		/// Return boolean value.
+		 
 		bool GetBool() const { return IsBool() ? boolValue_ : false; }
-		/// Return integer value.
+		 
 		int GetInt() const { return IsNumber() ? (int)numberValue_ : 0; }
-		/// Return unsigned integer value.
+		 
 		unsigned GetUInt() const { return IsNumber() ? (unsigned)numberValue_ : 0; }
-		/// Return float value.
+		 
 		float GetFloat() const { return IsNumber() ? (float)numberValue_ : 0.0f; }
-		/// Return double value.
+		 
 		double GetDouble() const { return IsNumber() ? numberValue_ : 0.0; }
-		/// Return string value.
+		 
 		const String& GetString() const { return IsString() ? *stringValue_ : String::EMPTY; }
-		/// Return C string value.
+	 
 		const char* GetCString() const { return IsString() ? stringValue_->CString() : 0; }
-		/// Return JSON array value.
+		 
 		const JSONArray& GetArray() const { return IsArray() ? *arrayValue_ : emptyArray; }
-		/// Return JSON object value.
+		 
 		const JSONObject& GetObject() const { return IsObject() ? *objectValue_ : emptyObject; }
 
-		// JSON array functions
-		/// Return JSON value at index.
+		// JSON 函数
+		/// 返回指定索引JSON值
 		JSONValue& operator [](unsigned index);
-		/// Return JSON value at index.
+		/// 返回指定索引JSON值
 		const JSONValue& operator [](unsigned index) const;
-		/// Add JSON value at end.
+		/// 添加JSON 值
 		void Push(const JSONValue& value);
-		/// Remove the last JSON value.
+		/// 移除最后添加的JSON 值
 		void Pop();
 		/// Insert an JSON value at position.
 		void Insert(unsigned pos, const JSONValue& value);
@@ -251,19 +251,19 @@ namespace Sapphire
 		static const JSONObject emptyObject;
 
 	private:
-		/// type.
+		/// 类型.
 		unsigned type_;
 		union
 		{
-			/// Boolean value.
+			/// Boolean.
 			bool boolValue_;
-			/// Number value.
+			/// 数值
 			double numberValue_;
-			/// String value.
+			/// 字符串
 			String* stringValue_;
-			/// Array value.
+			/// 数组
 			JSONArray* arrayValue_;
-			/// Object value.
+			/// 对象
 			JSONObject* objectValue_;
 		};
 	};

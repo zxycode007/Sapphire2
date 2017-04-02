@@ -5,29 +5,29 @@
 
 namespace Sapphire
 {
-	/// JSON document resource.
+	/// JSON 文档资源
 	class SAPPHIRE_API JSONFile : public Resource
 	{
 		SAPPHIRE_OBJECT(JSONFile, Resource);
 
 	public:
-		/// Construct.
+		 
 		JSONFile(Context* context);
-		/// Destruct.
+		 
 		virtual ~JSONFile();
-		/// Register object factory.
+		/// 注册对象工厂
 		static void RegisterObject(Context* context);
 
-		/// Load resource from stream. May be called from a worker thread. Return true if successful.
+		/// 从流中加载资源。可以从工作线程调用。如果成功返回true
 		virtual bool BeginLoad(Deserializer& source);
-		/// Save resource with default indentation (one tab). Return true if successful.
+		/// 用默认的缩进保存资源。如果成功返回true
 		virtual bool Save(Serializer& dest) const;
-		/// Save resource with user-defined indentation, only the first character (if any) of the string is used and the length of the string defines the character count. Return true if successful.
+		/// 用用户定义的缩进保存资源
 		bool Save(Serializer& dest, const String& indendation) const;
 
-		/// Return root value.
+		/// 返回root
 		JSONValue& GetRoot() { return root_; }
-		/// Return root value.
+		/// 返回root
 		const JSONValue& GetRoot() const { return root_; }
 
 	private:

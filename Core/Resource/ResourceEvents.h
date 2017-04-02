@@ -4,47 +4,47 @@
 
 namespace Sapphire
 {
-	/// Resource reloading started.
+	/// 资源重加载开始
 	SAPPHIRE_EVENT(E_RELOADSTARTED, ReloadStarted)
 	{
 	}
 
-	/// Resource reloading finished successfully.
+	/// 资源重加载完成
 	SAPPHIRE_EVENT(E_RELOADFINISHED, ReloadFinished)
 	{
 	}
 
-	/// Resource reloading failed.
+	/// 资源重加载失败
 	SAPPHIRE_EVENT(E_RELOADFAILED, ReloadFailed)
 	{
 	}
 
-	/// Tracked file changed in the resource directories.
+	/// 在资源目录中跟踪到文件发生改变
 	SAPPHIRE_EVENT(E_FILECHANGED, FileChanged)
 	{
 		SAPPHIRE_PARAM(P_FILENAME, FileName);                    // String
 		SAPPHIRE_PARAM(P_RESOURCENAME, ResourceName);            // String
 	}
 
-	/// Resource loading failed.
+	/// 资源加载失败
 	SAPPHIRE_EVENT(E_LOADFAILED, LoadFailed)
 	{
 		SAPPHIRE_PARAM(P_RESOURCENAME, ResourceName);            // String
 	}
 
-	/// Resource not found.
+	/// 资源没有找到
 	SAPPHIRE_EVENT(E_RESOURCENOTFOUND, ResourceNotFound)
 	{
 		SAPPHIRE_PARAM(P_RESOURCENAME, ResourceName);            // String
 	}
 
-	/// Unknown resource type.
+	/// 未知的资源类型
 	SAPPHIRE_EVENT(E_UNKNOWNRESOURCETYPE, UnknownResourceType)
 	{
 		SAPPHIRE_PARAM(P_RESOURCETYPE, ResourceType);            // StringHash
 	}
 
-	/// Resource background loading finished.
+	/// 资源后台加载完成
 	SAPPHIRE_EVENT(E_RESOURCEBACKGROUNDLOADED, ResourceBackgroundLoaded)
 	{
 		SAPPHIRE_PARAM(P_RESOURCENAME, ResourceName);            // String
@@ -52,7 +52,7 @@ namespace Sapphire
 		SAPPHIRE_PARAM(P_RESOURCE, Resource);                    // Resource pointer
 	}
 
-	/// Language changed.
+	/// 语言改变
 	SAPPHIRE_EVENT(E_CHANGELANGUAGE, ChangeLanguage)
 	{
 	}
