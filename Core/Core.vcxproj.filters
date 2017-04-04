@@ -245,5 +245,20 @@
     <ClCompile Include="Resource\PListFile.cpp">
       <Filter>源文件\Core\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\Localization.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\JSONFile.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\JSONValue.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\XMLFile.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\XMLElement.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

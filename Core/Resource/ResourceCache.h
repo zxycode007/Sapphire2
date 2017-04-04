@@ -171,7 +171,7 @@ namespace Sapphire
 		/// 取得一个资源router
 		ResourceRouter* GetResourceRouter(unsigned index) const;
 
-		/// 返回路径或它的父路径阻止的资源子目录
+		/// 返回路径或它的父路径组织的资源子目录
 		String GetPreferredResourceDir(const String& path) const;
 		/// 从资源名移除不支持的构造函数，避免二义性。并且如果可以标准化绝对文件名到资源路径的相对路径
 		String SanitateResourceName(const String& name) const;

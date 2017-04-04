@@ -437,9 +437,10 @@ namespace  Sapphire
 		}
 	}
 
+	//添加router
 	void ResourceCache::AddResourceRouter(ResourceRouter* router, bool addAsFirst)
 	{
-		// Check for duplicate
+		// 检查重复的
 		for (unsigned i = 0; i < resourceRouters_.Size(); ++i)
 		{
 			if (resourceRouters_[i] == router)
@@ -464,23 +465,26 @@ namespace  Sapphire
 		}
 	}
 
+	//取得文件 （需要ResourceRouter）
 	SharedPtr<File> ResourceCache::GetFile(const String& nameIn, bool sendEventOnFailure)
 	{
+		//上锁
 		MutexLock lock(resourceMutex_);
 
 		String name = SanitateResourceName(nameIn);
+		//是否使用Routing
 		if (!isRouting_)
 		{
 			isRouting_ = true;
 			for (unsigned i = 0; i < resourceRouters_.Size(); ++i)
-				resourceRouters_[i]->Route(name, RESOURCE_GETFILE);
+				resourceRouters_[i]->Route(name, RESOURCE_GETFILE); 
 			isRouting_ = false;
 		}
 
 		if (name.Length())
 		{
 			File* file = 0;
-
+			//首先搜索资源包
 			if (searchPackagesFirst_)
 			{
 				file = SearchPackages(name);
@@ -489,15 +493,16 @@ namespace  Sapphire
 			}
 			else
 			{
+				//再次搜索目录
 				file = SearchResourceDirs(name);
 				if (!file)
 					file = SearchPackages(name);
 			}
-
+			//如果找到返回文件
 			if (file)
 				return SharedPtr<File>(file);
 		}
-
+		//否则发送错误
 		if (sendEventOnFailure)
 		{
 			if (resourceRouters_.Size() && name.Empty() && !nameIn.Empty())
@@ -514,7 +519,7 @@ namespace  Sapphire
 				SendEvent(E_RESOURCENOTFOUND, eventData);
 			}
 		}
-
+		//返回空文件资源
 		return SharedPtr<File>();
 	}
 
@@ -528,7 +533,7 @@ namespace  Sapphire
 			return 0;
 		}
 
-		// If empty name, return null pointer immediately
+		//如果名字为空,返回空指针
 		if (name.Empty())
 			return 0;
 
@@ -548,30 +553,32 @@ namespace  Sapphire
 			return 0;
 		}
 
-		// If empty name, return null pointer immediately
+		// 如果为空，返回空指针
 		if (name.Empty())
 			return 0;
 
 		StringHash nameHash(name);
 
 #ifdef SAPPHIRE_THREADING
-		// Check if the resource is being background loaded but is now needed immediately
+		// 检查资源是否被后台加载，而现在立即需要
 		backgroundLoader_->WaitForResource(type, nameHash);
 #endif
-
+		//查找资源
 		const SharedPtr<Resource>& existing = FindResource(type, nameHash);
 		if (existing)
 			return existing;
 
 		SharedPtr<Resource> resource;
-		// Make sure the pointer is non-null and is a Resource subclass
-		resource = DynamicCast<Resource>(context_->CreateObject(type));
+		// 确定指针非空并且是一个资源的子类
+		resource = DynamicCast<Resource>(context_->CreateObject(type));  //创建指定类型的对象
 		if (!resource)
 		{
+			//未知的资源类型
 			SAPPHIRE_LOGERROR("Could not load unknown resource type " + String(type));
 
 			if (sendEventOnFailure)
 			{
+				//发送错误事件
 				using namespace UnknownResourceType;
 
 				VariantMap& eventData = GetEventDataMap();
@@ -582,17 +589,17 @@ namespace  Sapphire
 			return 0;
 		}
 
-		// Attempt to load the resource
+		// 尝试加载这个资源
 		SharedPtr<File> file = GetFile(name, sendEventOnFailure);
 		if (!file)
-			return 0;   // Error is already logged
+			return 0;   // 错误
 
 		SAPPHIRE_LOGDEBUG("Loading resource " + name);
 		resource->SetName(name);
-
+		//加载资源
 		if (!resource->Load(*(file.Get())))
 		{
-			// Error should already been logged by corresponding resource descendant class
+			// 发送错误事件
 			if (sendEventOnFailure)
 			{
 				using namespace LoadFailed;
@@ -606,44 +613,45 @@ namespace  Sapphire
 				return 0;
 		}
 
-		// Store to cache
+		// 保存到缓存， 重置用户计时器
 		resource->ResetUseTimer();
-		resourceGroups_[type].resources_[nameHash] = resource;
-		UpdateResourceGroup(type);
+		resourceGroups_[type].resources_[nameHash] = resource;  //资源组
+		UpdateResourceGroup(type);  //更新资源组
 
 		return resource;
 	}
 
+	//后台加载资源
 	bool ResourceCache::BackgroundLoadResource(StringHash type, const String& nameIn, bool sendEventOnFailure, Resource* caller)
 	{
 #ifdef SAPPHIRE_THREADING
-		// If empty name, fail immediately
+		// 如果名字为空，立即失败
 		String name = SanitateResourceName(nameIn);
 		if (name.Empty())
 			return false;
 
-		// First check if already exists as a loaded resource
+		// 首先检查是否已经加载
 		StringHash nameHash(name);
 		if (FindResource(type, nameHash) != noResource)
 			return false;
-
+		//队列化资源
 		return backgroundLoader_->QueueResource(type, name, sendEventOnFailure, caller);
 #else
-		// When threading not supported, fall back to synchronous loading
+		// 不支持线程，回退到同步加载
 		return GetResource(type, nameIn, sendEventOnFailure);
 #endif
 	}
-
+	//获取临时资源
 	SharedPtr<Resource> ResourceCache::GetTempResource(StringHash type, const String& nameIn, bool sendEventOnFailure)
 	{
 		String name = SanitateResourceName(nameIn);
 
-		// If empty name, return null pointer immediately
+		// 如果文件名为空，返回一个空指针
 		if (name.Empty())
 			return SharedPtr<Resource>();
 
 		SharedPtr<Resource> resource;
-		// Make sure the pointer is non-null and is a Resource subclass
+		// 确定指针非空并且是一个资源的子类
 		resource = DynamicCast<Resource>(context_->CreateObject(type));
 		if (!resource)
 		{
@@ -661,7 +669,7 @@ namespace  Sapphire
 			return SharedPtr<Resource>();
 		}
 
-		// Attempt to load the resource
+		// 尝试加载这个资源
 		SharedPtr<File> file = GetFile(name, sendEventOnFailure);
 		if (!file)
 			return SharedPtr<Resource>();  // Error is already logged
@@ -671,7 +679,7 @@ namespace  Sapphire
 
 		if (!resource->Load(*(file.Get())))
 		{
-			// Error should already been logged by corresponding resource descendant class
+			// 加载不成功
 			if (sendEventOnFailure)
 			{
 				using namespace LoadFailed;
@@ -687,6 +695,7 @@ namespace  Sapphire
 		return resource;
 	}
 
+	//获取后台加载资源数
 	unsigned ResourceCache::GetNumBackgroundLoadResources() const
 	{
 #ifdef SAPPHIRE_THREADING
@@ -699,9 +708,11 @@ namespace  Sapphire
 	void ResourceCache::GetResources(PODVector<Resource*>& result, StringHash type) const
 	{
 		result.Clear();
+		//到资源组中查找类型
 		HashMap<StringHash, ResourceGroup>::ConstIterator i = resourceGroups_.Find(type);
 		if (i != resourceGroups_.End())
 		{
+			//遍历该资源组的资源，添加到result
 			for (HashMap<StringHash, SharedPtr<Resource> >::ConstIterator j = i->second_.resources_.Begin();
 				j != i->second_.resources_.End(); ++j)
 				result.Push(j->second_);
@@ -713,6 +724,7 @@ namespace  Sapphire
 		MutexLock lock(resourceMutex_);
 
 		String name = SanitateResourceName(nameIn);
+		//是否Routing
 		if (!isRouting_)
 		{
 			isRouting_ = true;
@@ -726,21 +738,24 @@ namespace  Sapphire
 
 		for (unsigned i = 0; i < packages_.Size(); ++i)
 		{
+			//包中是否存在
 			if (packages_[i]->Exists(name))
 				return true;
 		}
 
 		FileSystem* fileSystem = GetSubsystem<FileSystem>();
+		//遍历资源目录
 		for (unsigned i = 0; i < resourceDirs_.Size(); ++i)
 		{
 			if (fileSystem->FileExists(resourceDirs_[i] + name))
 				return true;
 		}
 
-		// Fallback using absolute path
+		// 回退到使用绝对目录
 		return fileSystem->FileExists(name);
 	}
 
+	//获取内存预算
 	unsigned long long ResourceCache::GetMemoryBudget(StringHash type) const
 	{
 		HashMap<StringHash, ResourceGroup>::ConstIterator i = resourceGroups_.Find(type);
@@ -766,6 +781,7 @@ namespace  Sapphire
 		MutexLock lock(resourceMutex_);
 
 		FileSystem* fileSystem = GetSubsystem<FileSystem>();
+		//查找文件名
 		for (unsigned i = 0; i < resourceDirs_.Size(); ++i)
 		{
 			if (fileSystem->FileExists(resourceDirs_[i] + name))
@@ -799,6 +815,7 @@ namespace  Sapphire
 		}
 		if (!pathHasKnownDirs)
 		{
+			//获得父目录
 			String parentPath = GetParentPath(fixedPath);
 			for (unsigned i = 0; checkDirs[i] != 0; ++i)
 			{
@@ -808,7 +825,7 @@ namespace  Sapphire
 					break;
 				}
 			}
-			// If path does not have known subdirectories, but the parent path has, use the parent instead
+			// 如果目录没有已知的子目录，用父目录代替
 			if (parentHasKnownDirs)
 				fixedPath = parentPath;
 		}
@@ -818,29 +835,33 @@ namespace  Sapphire
 
 	String ResourceCache::SanitateResourceName(const String& nameIn) const
 	{
-		// Sanitate unsupported constructs from the resource name
+		// 从这个资源名清理不支持的构造构造器
 		String name = GetInternalPath(nameIn);
 		name.Replace("../", "");
 		name.Replace("./", "");
 
-		// If the path refers to one of the resource directories, normalize the resource name
+		// 如果路径引用到资源目录之一， 正规化资源名
 		FileSystem* fileSystem = GetSubsystem<FileSystem>();
 		if (resourceDirs_.Size())
 		{
+			//获取完整路径中的路径部分
 			String namePath = GetPath(name);
+			//获得程序目录
 			String exePath = fileSystem->GetProgramDir();
 			for (unsigned i = 0; i < resourceDirs_.Size(); ++i)
 			{
+				//取得资源目录i相对路径
 				String relativeResourcePath = resourceDirs_[i];
+				//是否是以程序目录开头
 				if (relativeResourcePath.StartsWith(exePath))
 					relativeResourcePath = relativeResourcePath.Substring(exePath.Length());
-
+				//是否以资源目录开头
 				if (namePath.StartsWith(resourceDirs_[i], false))
 					namePath = namePath.Substring(resourceDirs_[i].Length());
 				else if (namePath.StartsWith(relativeResourcePath, false))
 					namePath = namePath.Substring(relativeResourcePath.Length());
 			}
-
+			//加上文件名和扩展名
 			name = namePath + GetFileNameAndExtension(name);
 		}
 
@@ -853,24 +874,25 @@ namespace  Sapphire
 		if (!IsAbsolutePath(fixedPath))
 			fixedPath = GetSubsystem<FileSystem>()->GetCurrentDir() + fixedPath;
 
-		// Sanitate away /./ construct
 		fixedPath.Replace("/./", "/");
 
 		return fixedPath.Trimmed();
 	}
 
+	//保存资源依赖
 	void ResourceCache::StoreResourceDependency(Resource* resource, const String& dependency)
 	{
 		if (!resource)
 			return;
 
 		MutexLock lock(resourceMutex_);
-
+		//获取资源名
 		StringHash nameHash(resource->GetName());
 		HashSet<StringHash>& dependents = dependentResources_[dependency];
 		dependents.Insert(nameHash);
 	}
 
+	//重置依赖关系
 	void ResourceCache::ResetDependencies(Resource* resource)
 	{
 		if (!resource)
@@ -891,6 +913,7 @@ namespace  Sapphire
 		}
 	}
 
+	//打印内存使用
 	String ResourceCache::PrintMemoryUsage() const
 	{
 		String output = "Resource Type                 Cnt       Avg       Max    Budget     Total\n\n";
@@ -950,6 +973,7 @@ namespace  Sapphire
 		return output;
 	}
 
+	//查找资源
 	const SharedPtr<Resource>& ResourceCache::FindResource(StringHash type, StringHash nameHash)
 	{
 		MutexLock lock(resourceMutex_);
@@ -978,6 +1002,7 @@ namespace  Sapphire
 		return noResource;
 	}
 
+	//释放包资源
 	void ResourceCache::ReleasePackageResources(PackageFile* package, bool force)
 	{
 		HashSet<StringHash> affectedGroups;
@@ -987,13 +1012,13 @@ namespace  Sapphire
 		{
 			StringHash nameHash(i->first_);
 
-			// We do not know the actual resource type, so search all type containers
+			//不知道实际的资源类型，所以搜索所有的类型容器
 			for (HashMap<StringHash, ResourceGroup>::Iterator j = resourceGroups_.Begin(); j != resourceGroups_.End(); ++j)
 			{
 				HashMap<StringHash, SharedPtr<Resource> >::Iterator k = j->second_.resources_.Find(nameHash);
 				if (k != j->second_.resources_.End())
 				{
-					// If other references exist, do not release, unless forced
+					// 如果其他引用存在，不要释放，除非强制
 					if ((k->second_.Refs() == 1 && k->second_.WeakRefs() == 0) || force)
 					{
 						j->second_.resources_.Erase(k);
@@ -1003,11 +1028,12 @@ namespace  Sapphire
 				}
 			}
 		}
-
+		//更新资源组
 		for (HashSet<StringHash>::Iterator i = affectedGroups.Begin(); i != affectedGroups.End(); ++i)
 			UpdateResourceGroup(*i);
 	}
 
+	//更新资源组
 	void ResourceCache::UpdateResourceGroup(StringHash type)
 	{
 		HashMap<StringHash, ResourceGroup>::Iterator i = resourceGroups_.Find(type);
@@ -1016,10 +1042,12 @@ namespace  Sapphire
 
 		for (;;)
 		{
+			//重新计算内存占用
 			unsigned totalSize = 0;
 			unsigned oldestTimer = 0;
 			HashMap<StringHash, SharedPtr<Resource> >::Iterator oldestResource = i->second_.resources_.End();
 
+			//重新统计资源大小，使用时间
 			for (HashMap<StringHash, SharedPtr<Resource> >::Iterator j = i->second_.resources_.Begin();
 				j != i->second_.resources_.End(); ++j)
 			{
@@ -1034,8 +1062,7 @@ namespace  Sapphire
 
 			i->second_.memoryUse_ = totalSize;
 
-			// If memory budget defined and is exceeded, remove the oldest resource and loop again
-			// (resources in use always return a zero timer and can not be removed)
+			// 如果内存预算超出， 移除最老的资源并重复
 			if (i->second_.memoryBudget_ && i->second_.memoryUse_ > i->second_.memoryBudget_ &&
 				oldestResource != i->second_.resources_.End())
 			{
@@ -1055,9 +1082,10 @@ namespace  Sapphire
 			String fileName;
 			while (fileWatchers_[i]->GetNextChange(fileName))
 			{
+				//重新载入资源和依赖
 				ReloadResourceWithDependencies(fileName);
 
-				// Finally send a general file changed event even if the file was not a tracked resource
+				// 发送文件改变事件
 				using namespace FileChanged;
 
 				VariantMap& eventData = GetEventDataMap();
@@ -1067,7 +1095,7 @@ namespace  Sapphire
 			}
 		}
 
-		// Check for background loaded resources that can be finished
+		// 检查后台加载资源是否可以完成
 #ifdef SAPPHIRE_THREADING
 	{
 		SAPPHIRE_PROFILE(FinishBackgroundResources);
@@ -1083,15 +1111,14 @@ namespace  Sapphire
 		{
 			if (fileSystem->FileExists(resourceDirs_[i] + nameIn))
 			{
-				// Construct the file first with full path, then rename it to not contain the resource path,
-				// so that the file's name can be used in further GetFile() calls (for example over the network)
+				// 构造文件首先要用完整路径， 重命名不能包含资源路径，所以文件名可以用于GetFile()
 				File* file(new File(context_, resourceDirs_[i] + nameIn));
 				file->SetName(nameIn);
 				return file;
 			}
 		}
 
-		// Fallback using absolute path
+		// 回退到使用绝对路径
 		if (fileSystem->FileExists(nameIn))
 			return new File(context_, nameIn);
 

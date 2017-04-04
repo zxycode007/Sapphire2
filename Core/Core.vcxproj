@@ -49,7 +49,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../ThirdParty;../Math;../Container;../Sapphire/;../ThirdParty/LZ4;../Core/IO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../ThirdParty;../Math;../Container;../Sapphire/;../ThirdParty/PugiXml;../ThirdParty/rapidjson/include;../ThirdParty/LZ4;../Core/IO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/D _CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -133,9 +133,14 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ProcessUtil.cpp" />
     <ClCompile Include="profiler.cpp" />
+    <ClCompile Include="Resource\JSONFile.cpp" />
+    <ClCompile Include="Resource\JSONValue.cpp" />
+    <ClCompile Include="Resource\Localization.cpp" />
     <ClCompile Include="Resource\PListFile.cpp" />
     <ClCompile Include="Resource\Resource.cpp" />
     <ClCompile Include="Resource\ResourceCache.cpp" />
+    <ClCompile Include="Resource\XMLElement.cpp" />
+    <ClCompile Include="Resource\XMLFile.cpp" />
     <ClCompile Include="Spline.cpp" />
     <ClCompile Include="StringUtil.cpp" />
     <ClCompile Include="Thread.cpp" />
