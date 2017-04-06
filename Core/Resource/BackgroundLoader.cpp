@@ -28,7 +28,7 @@ namespace Sapphire
 		{
 			backgroundLoadMutex_.Acquire();
 
-			// Search for a queued resource that has not been loaded yet
+			// 查询没有被加载的队列资源
 			HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem>::Iterator i = backgroundLoadQueue_.Begin();
 			while (i != backgroundLoadQueue_.End())
 			{
@@ -40,7 +40,7 @@ namespace Sapphire
 
 			if (i == backgroundLoadQueue_.End())
 			{
-				// No resources to load found
+				//没有资源需要被加载
 				backgroundLoadMutex_.Release();
 				Time::Sleep(5);
 			}
@@ -48,20 +48,21 @@ namespace Sapphire
 			{
 				BackgroundLoadItem& item = i->second_;
 				Resource* resource = item.resource_;
-				// We can be sure that the item is not removed from the queue as long as it is in the
-				// "queued" or "loading" state
+				// 需确保项目未从队列中移除，状态是queue或load
 				backgroundLoadMutex_.Release();
 
 				bool success = false;
 				SharedPtr<File> file = owner_->GetFile(resource->GetName(), item.sendEventOnFailure_);
 				if (file)
 				{
+					//加载状态
 					resource->SetAsyncLoadState(ASYNC_LOADING);
+					//开始加载文件
 					success = resource->BeginLoad(*file);
 				}
 
-				// Process dependencies now
-				// Need to lock the queue again when manipulating other entries
+				// 现在处理依赖关系
+				// 当操作别的入口需要对队列加锁
 				Pair<StringHash, StringHash> key = MakePair(resource->GetType(), resource->GetNameHash());
 				backgroundLoadMutex_.Acquire();
 				if (item.dependents_.Size())
@@ -69,20 +70,22 @@ namespace Sapphire
 					for (HashSet<Pair<StringHash, StringHash> >::Iterator i = item.dependents_.Begin();
 						i != item.dependents_.End(); ++i)
 					{
+						//在后台加载队列中寻找依赖项
 						HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem>::Iterator j = backgroundLoadQueue_.Find(*i);
-						if (j != backgroundLoadQueue_.End())
-							j->second_.dependencies_.Erase(key);
+						if (j != backgroundLoadQueue_.End())   //没找到
+							j->second_.dependencies_.Erase(key);  
 					}
 
 					item.dependents_.Clear();
 				}
-
+				//设置加载状态
 				resource->SetAsyncLoadState(success ? ASYNC_SUCCESS : ASYNC_FAIL);
 				backgroundLoadMutex_.Release();
 			}
 		}
 	}
 
+	//加资源加入加载队列
 	bool BackgroundLoader::QueueResource(StringHash type, const String& name, bool sendEventOnFailure, Resource* caller)
 	{
 		StringHash nameHash(name);
@@ -90,14 +93,16 @@ namespace Sapphire
 
 		MutexLock lock(backgroundLoadMutex_);
 
-		// Check if already exists in the queue
+		// 是否不存在
 		if (backgroundLoadQueue_.Find(key) != backgroundLoadQueue_.End())
 			return false;
 
+		//取出该后台下载项
 		BackgroundLoadItem& item = backgroundLoadQueue_[key];
+		//设置否发送失败事件
 		item.sendEventOnFailure_ = sendEventOnFailure;
 
-		// Make sure the pointer is non-null and is a Resource subclass
+		// 确定指针非空并且是资源的子类
 		item.resource_ = DynamicCast<Resource>(owner_->GetContext()->CreateObject(type));
 		if (!item.resource_)
 		{

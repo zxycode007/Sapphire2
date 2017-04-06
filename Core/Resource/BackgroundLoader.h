@@ -56,6 +56,7 @@ namespace Sapphire
 		/// 访问后台加载队列的线程安全互斥量
 		mutable Mutex backgroundLoadMutex_;
 		/// 后台加载的队列化的资源
+		// pair<资源类型，资源名>
 		HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem> backgroundLoadQueue_;
 	};
 }

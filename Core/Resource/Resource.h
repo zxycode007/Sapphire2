@@ -14,7 +14,7 @@ namespace Sapphire
 	{
 		/// 没有异步操作
 		ASYNC_DONE = 0,
-		/// 异步加载的查询
+		/// 异步加载的排队状态
 		ASYNC_QUEUED = 1,
 		/// 工作线程中调用BeginLoad()的过程
 		ASYNC_LOADING = 2,
