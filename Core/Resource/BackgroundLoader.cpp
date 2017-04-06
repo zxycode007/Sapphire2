@@ -24,11 +24,12 @@ namespace Sapphire
 
 	void BackgroundLoader::ThreadFunction()
 	{
+		//循环加载
 		while (shouldRun_)
 		{
 			backgroundLoadMutex_.Acquire();
 
-			// 查询没有被加载的队列资源
+			// 查询没有被加载的队列资源项
 			HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem>::Iterator i = backgroundLoadQueue_.Begin();
 			while (i != backgroundLoadQueue_.End())
 			{
@@ -37,7 +38,7 @@ namespace Sapphire
 				else
 					++i;
 			}
-
+			//没找到
 			if (i == backgroundLoadQueue_.End())
 			{
 				//没有资源需要被加载
@@ -45,13 +46,14 @@ namespace Sapphire
 				Time::Sleep(5);
 			}
 			else
-			{
+			{   //取得该后台加载项目
 				BackgroundLoadItem& item = i->second_;
 				Resource* resource = item.resource_;
 				// 需确保项目未从队列中移除，状态是queue或load
 				backgroundLoadMutex_.Release();
 
 				bool success = false;
+				//从该加载器所属的资源缓存中获取文件
 				SharedPtr<File> file = owner_->GetFile(resource->GetName(), item.sendEventOnFailure_);
 				if (file)
 				{
@@ -67,13 +69,14 @@ namespace Sapphire
 				backgroundLoadMutex_.Acquire();
 				if (item.dependents_.Size())
 				{
+					//遍历该资源依赖的所有资源
 					for (HashSet<Pair<StringHash, StringHash> >::Iterator i = item.dependents_.Begin();
 						i != item.dependents_.End(); ++i)
 					{
 						//在后台加载队列中寻找依赖项
 						HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem>::Iterator j = backgroundLoadQueue_.Find(*i);
-						if (j != backgroundLoadQueue_.End())   //没找到
-							j->second_.dependencies_.Erase(key);  
+						if (j != backgroundLoadQueue_.End())   //该项依赖资源在后台已有加载项
+							j->second_.dependencies_.Erase(key);    //移除从属资源
 					}
 
 					item.dependents_.Clear();
