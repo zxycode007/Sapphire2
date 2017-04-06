@@ -260,5 +260,14 @@
     <ClCompile Include="Resource\XMLElement.cpp">
       <Filter>源文件\Core\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\BackgroundLoader.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Decompress.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Image.cpp">
+      <Filter>源文件\Core\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

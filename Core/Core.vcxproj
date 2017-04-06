@@ -49,7 +49,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../ThirdParty;../Math;../Container;../Sapphire/;../ThirdParty/PugiXml;../ThirdParty/rapidjson/include;../ThirdParty/LZ4;../Core/IO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../ThirdParty;../Math;../Container;../Sapphire/;../ThirdParty/PugiXml;../ThirdParty/SDL;../ThirdParty/rapidjson/include;../ThirdParty/LZ4;../Core/IO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/D _CRT_SECURE_NO_WARNINGS %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -133,6 +133,9 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ProcessUtil.cpp" />
     <ClCompile Include="profiler.cpp" />
+    <ClCompile Include="Resource\BackgroundLoader.cpp" />
+    <ClCompile Include="Resource\Decompress.cpp" />
+    <ClCompile Include="Resource\Image.cpp" />
     <ClCompile Include="Resource\JSONFile.cpp" />
     <ClCompile Include="Resource\JSONValue.cpp" />
     <ClCompile Include="Resource\Localization.cpp" />
