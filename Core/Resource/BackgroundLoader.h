@@ -19,9 +19,9 @@ namespace Sapphire
 	{
 		/// 资源指针.
 		SharedPtr<Resource> resource_;
-		/// 加载所依赖的资源
+		/// 这个资源依赖的资源
 		HashSet<Pair<StringHash, StringHash> > dependencies_;
-		/// 这个资源加载时依赖的资源
+		/// 依赖这个资源的资源
 		HashSet<Pair<StringHash, StringHash> > dependents_;
 		/// 是否发生失败事件
 		bool sendEventOnFailure_;

@@ -76,7 +76,7 @@ namespace Sapphire
 						//在后台加载队列中寻找依赖项
 						HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem>::Iterator j = backgroundLoadQueue_.Find(*i);
 						if (j != backgroundLoadQueue_.End())   //该项依赖资源在后台已有加载项
-							j->second_.dependencies_.Erase(key);    //移除从属资源
+							j->second_.dependencies_.Erase(key);    //从调用者的依赖列表中移除该资源
 					}
 
 					item.dependents_.Clear();
@@ -129,23 +129,23 @@ namespace Sapphire
 		item.resource_->SetName(name);
 		item.resource_->SetAsyncLoadState(ASYNC_QUEUED);
 
-		// If this is a resource calling for the background load of more resources, mark the dependency as necessary
-		if (caller)
+		// 如果这个资源有被更多的后台资源调用， 必须标记依赖关系
+		if (caller)  //调用者
 		{
 			Pair<StringHash, StringHash> callerKey = MakePair(caller->GetType(), caller->GetNameHash());
 			HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem>::Iterator j = backgroundLoadQueue_.Find(callerKey);
 			if (j != backgroundLoadQueue_.End())
 			{
 				BackgroundLoadItem& callerItem = j->second_;
-				item.dependents_.Insert(callerKey);
-				callerItem.dependencies_.Insert(key);
+				item.dependents_.Insert(callerKey);      //为该资源添加调用者关系
+				callerItem.dependencies_.Insert(key);  //为调用者添加依赖资源
 			}
 			else
 				SAPPHIRE_LOGWARNING("Resource " + caller->GetName() +
 				" requested for a background loaded resource but was not in the background load queue");
 		}
 
-		// Start the background loader thread now
+		// 现在开始后台加载器
 		if (!IsStarted())
 			Run();
 
