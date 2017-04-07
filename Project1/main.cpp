@@ -11,6 +11,9 @@
 #include "DebugNew.h"
 #include <vector>
 #include "FileSystem.h"
+#include "WorkQueue.h"
+#include "Resource\ResourceCache.h"
+#include  "Resource\Image.h"
 #include "Test.h"
 #include "CoreEvents.h"
 
@@ -284,8 +287,22 @@ int main()
 
 	delete v;
 	delete c;
-
-	getchar();
+	char flag = 0;
+	SharedPtr<Context> context = SharedPtr<Context>(new Context());
+	context->RegisterSubsystem(new FileSystem(context));
+	context->RegisterSubsystem(new ResourceCache(context));
+	context->RegisterSubsystem(new WorkQueue(context));
+	ResourceCache* pResourceCache = context->GetSubsystem<ResourceCache>();
+	SharedPtr<Image> img = DynamicCast<Image>(context->CreateObject(Image::GetTypeInfoStatic()->GetType()));
+	img->SetName("testImage");
+	//pResourceCache->AddManualResource(NULL);
+	while (flag != 'q')
+	{
+		
+		Sleep(10);
+		flag = getchar();
+	}
+	
 	_CrtDumpMemoryLeaks();
 	return 0;
 }

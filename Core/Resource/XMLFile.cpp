@@ -79,12 +79,12 @@ namespace Sapphire
 		}
 
 		XMLElement rootElem = GetRoot();
+		//获取依赖的资源
 		String inherit = rootElem.GetAttribute("inherit");
 		if (!inherit.Empty())
 		{
-			// The existence of this attribute indicates this is an RFC 5261 patch file
 			ResourceCache* cache = GetSubsystem<ResourceCache>();
-			// If being async loaded, GetResource() is not safe, so use GetTempResource() instead
+			// 如果在异步加载，获取资源部不安全，使用 GetTempResource()代替
 			XMLFile* inheritedXMLFile = GetAsyncLoadState() == ASYNC_DONE ? cache->GetResource<XMLFile>(inherit) :
 				cache->GetTempResource<XMLFile>(inherit);
 			if (!inheritedXMLFile)
@@ -100,10 +100,9 @@ namespace Sapphire
 			Patch(rootElem);
 			delete patchDocument;
 
-			// Store resource dependencies so we know when to reload/repatch when the inherited resource changes
+			// 保存资源依赖，当依赖资源改变的时候回重载
 			cache->StoreResourceDependency(this, inherit);
 
-			// Approximate patched data size
 			dataSize += inheritedXMLFile->GetMemoryUse();
 		}
 

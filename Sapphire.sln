@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sapphire", "Sapphire\Sapphire.vcxproj", "{B0DE70F3-CBE0-44C3-93B5-015A616B2DEF}"
 EndProject
@@ -30,6 +30,12 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LearnOpenGLTexture", "LearnOpenGLTexture\LearnOpenGLTexture.vcxproj", "{215F0900-94EE-4793-A918-BB57AEEF8FA3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "Graphics\Graphics.vcxproj", "{5438C0BA-92E5-41C3-93CE-1D7F2636B780}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PugiXml", "PugiXml\PugiXml.vcxproj", "{FE744FE2-5428-495A-9546-0534F4CBD154}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StbImage", "StbImage\StbImage.vcxproj", "{C98652C8-17E0-4377-8EFF-CB985E9C11C8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jompeg", "jompeg\jompeg.vcxproj", "{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +141,30 @@ Global
 		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Release|Win32.ActiveCfg = Release|Win32
 		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Release|Win32.Build.0 = Release|Win32
 		{5438C0BA-92E5-41C3-93CE-1D7F2636B780}.Release|x64.ActiveCfg = Release|Win32
+		{FE744FE2-5428-495A-9546-0534F4CBD154}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FE744FE2-5428-495A-9546-0534F4CBD154}.Debug|Win32.Build.0 = Debug|Win32
+		{FE744FE2-5428-495A-9546-0534F4CBD154}.Debug|x64.ActiveCfg = Debug|x64
+		{FE744FE2-5428-495A-9546-0534F4CBD154}.Debug|x64.Build.0 = Debug|x64
+		{FE744FE2-5428-495A-9546-0534F4CBD154}.Release|Win32.ActiveCfg = Release|Win32
+		{FE744FE2-5428-495A-9546-0534F4CBD154}.Release|Win32.Build.0 = Release|Win32
+		{FE744FE2-5428-495A-9546-0534F4CBD154}.Release|x64.ActiveCfg = Release|x64
+		{FE744FE2-5428-495A-9546-0534F4CBD154}.Release|x64.Build.0 = Release|x64
+		{C98652C8-17E0-4377-8EFF-CB985E9C11C8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C98652C8-17E0-4377-8EFF-CB985E9C11C8}.Debug|Win32.Build.0 = Debug|Win32
+		{C98652C8-17E0-4377-8EFF-CB985E9C11C8}.Debug|x64.ActiveCfg = Debug|x64
+		{C98652C8-17E0-4377-8EFF-CB985E9C11C8}.Debug|x64.Build.0 = Debug|x64
+		{C98652C8-17E0-4377-8EFF-CB985E9C11C8}.Release|Win32.ActiveCfg = Release|Win32
+		{C98652C8-17E0-4377-8EFF-CB985E9C11C8}.Release|Win32.Build.0 = Release|Win32
+		{C98652C8-17E0-4377-8EFF-CB985E9C11C8}.Release|x64.ActiveCfg = Release|x64
+		{C98652C8-17E0-4377-8EFF-CB985E9C11C8}.Release|x64.Build.0 = Release|x64
+		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Debug|Win32.Build.0 = Debug|Win32
+		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Debug|x64.ActiveCfg = Debug|x64
+		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Debug|x64.Build.0 = Debug|x64
+		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Release|Win32.ActiveCfg = Release|Win32
+		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Release|Win32.Build.0 = Release|Win32
+		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Release|x64.ActiveCfg = Release|x64
+		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

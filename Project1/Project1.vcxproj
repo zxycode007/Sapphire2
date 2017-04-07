@@ -53,7 +53,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>version.lib;winmm.lib;imm32.lib;Core.lib;LibCpuId.lib;Container.lib;Math.lib;LZ4.lib;SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>version.lib;winmm.lib;imm32.lib;Core.lib;LibCpuId.lib;Container.lib;Math.lib;LZ4.lib;SDL.lib;StbImage.lib;PugiXml.lib;jompeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
       <MapExports>true</MapExports>
