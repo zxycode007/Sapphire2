@@ -106,9 +106,10 @@ namespace Sapphire
 		item.sendEventOnFailure_ = sendEventOnFailure;
 
 		// 确定指针非空并且是资源的子类
-		item.resource_ = DynamicCast<Resource>(owner_->GetContext()->CreateObject(type));
+		item.resource_ = DynamicCast<Resource>(owner_->GetContext()->CreateObject(type)); //创建一个空资源对象
 		if (!item.resource_)
 		{
+			//创建失败
 			SAPPHIRE_LOGERROR("Could not load unknown resource type " + String(type));
 
 			if (sendEventOnFailure && Thread::IsMainThread())
@@ -119,14 +120,16 @@ namespace Sapphire
 				eventData[P_RESOURCETYPE] = type;
 				owner_->SendEvent(E_UNKNOWNRESOURCETYPE, eventData);
 			}
-
+			//从队列中移除
 			backgroundLoadQueue_.Erase(key);
 			return false;
 		}
 
 		SAPPHIRE_LOGDEBUG("Background loading resource " + name);
 
+		//设置资源名
 		item.resource_->SetName(name);
+		//队列状态
 		item.resource_->SetAsyncLoadState(ASYNC_QUEUED);
 
 		// 如果这个资源有被更多的后台资源调用， 必须标记依赖关系
@@ -152,11 +155,12 @@ namespace Sapphire
 		return true;
 	}
 
+	//等待资源
 	void BackgroundLoader::WaitForResource(StringHash type, StringHash nameHash)
 	{
 		backgroundLoadMutex_.Acquire();
 
-		// Check if the resource in question is being background loaded
+		// 查询资源是否在加载状态
 		Pair<StringHash, StringHash> key = MakePair(type, nameHash);
 		HashMap<Pair<StringHash, StringHash>, BackgroundLoadItem>::Iterator i = backgroundLoadQueue_.Find(key);
 		if (i != backgroundLoadQueue_.End())
@@ -165,20 +169,22 @@ namespace Sapphire
 
 			{
 				Resource* resource = i->second_.resource_;
-				HiresTimer waitTimer;
+				HiresTimer waitTimer;   //等待计时器
 				bool didWait = false;
 
 				for (;;)
 				{
+					//依赖资源的数量
 					unsigned numDeps = i->second_.dependencies_.Size();
-					AsyncLoadState state = resource->GetAsyncLoadState();
+					AsyncLoadState state = resource->GetAsyncLoadState();  //获取异步加载状态
 					if (numDeps > 0 || state == ASYNC_QUEUED || state == ASYNC_LOADING)
 					{
+						//未加载完成
 						didWait = true;
 						Time::Sleep(1);
 					}
 					else
-						break;
+						break;  //完成加载或失败退出循环
 				}
 
 				if (didWait)
@@ -186,17 +192,18 @@ namespace Sapphire
 					resource->GetName());
 			}
 
-			// This may take a long time and may potentially wait on other resources, so it is important we do not hold the mutex during this
+			// 可能花上很长时间等待其它资源，不能放mutex
 			FinishBackgroundLoading(i->second_);
 
 			backgroundLoadMutex_.Acquire();
-			backgroundLoadQueue_.Erase(i);
+			backgroundLoadQueue_.Erase(i);  //删除该加载项目
 			backgroundLoadMutex_.Release();
 		}
 		else
 			backgroundLoadMutex_.Release();
 	}
 
+	//清理掉已完成的资源加载项
 	void BackgroundLoader::FinishResources(int maxMs)
 	{
 		if (IsStarted())
@@ -215,15 +222,14 @@ namespace Sapphire
 					++i;
 				else
 				{
-					// Finishing a resource may need it to wait for other resources to load, in which case we can not
-					// hold on to the mutex
+					// 终结一个资源可能需要等待其它的资源的加载， 这里不放互斥量
 					backgroundLoadMutex_.Release();
 					FinishBackgroundLoading(i->second_);
 					backgroundLoadMutex_.Acquire();
 					i = backgroundLoadQueue_.Erase(i);
 				}
 
-				// Break when the time limit passed so that we keep sufficient FPS
+				// 超时判断
 				if (timer.GetUSec(false) >= maxMs * 1000)
 					break;
 			}
@@ -232,18 +238,20 @@ namespace Sapphire
 		}
 	}
 
+	//获取加载队列的资源项数目
 	unsigned BackgroundLoader::GetNumQueuedResources() const
 	{
 		MutexLock lock(backgroundLoadMutex_);
 		return backgroundLoadQueue_.Size();
 	}
 
+	//终结加载项
 	void BackgroundLoader::FinishBackgroundLoading(BackgroundLoadItem& item)
 	{
 		Resource* resource = item.resource_;
 
 		bool success = resource->GetAsyncLoadState() == ASYNC_SUCCESS;
-		// If BeginLoad() phase was successful, call EndLoad() and get the final success/failure result
+		// 如果BeginLoad() 阶段成果，调用EndLoad()终结成功或失败的结果
 		if (success)
 		{
 #ifdef SAPPHIRE_PROFILING
@@ -261,8 +269,9 @@ namespace Sapphire
 				profiler->EndBlock();
 #endif
 		}
+		//设置资源状态
 		resource->SetAsyncLoadState(ASYNC_DONE);
-
+		//不成功发送事件
 		if (!success && item.sendEventOnFailure_)
 		{
 			using namespace LoadFailed;
@@ -272,7 +281,7 @@ namespace Sapphire
 			owner_->SendEvent(E_LOADFAILED, eventData);
 		}
 
-		// Send event, either success or failure
+		// 发送事件，除了成功就是失败
 	{
 		using namespace ResourceBackgroundLoaded;
 
@@ -283,7 +292,7 @@ namespace Sapphire
 		owner_->SendEvent(E_RESOURCEBACKGROUNDLOADED, eventData);
 	}
 
-	// Store to the cache; use same mechanism as for manual resources
+	//保存到缓存， 使用手动资源的机制
 	if (success || owner_->GetReturnFailedResources())
 		owner_->AddManualResource(resource);
 	}
