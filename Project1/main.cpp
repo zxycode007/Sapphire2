@@ -315,7 +315,7 @@ int main()
 			PODVector<Image*> pV;
 			pResourceCache->GetResources<Image>(pV);
 			String msg = "pV size = " + String(pV.Size());
-			 
+			Image* img = pResourceCache->GetResource<Image>(name, true);
 			SAPPHIRE_LOGDEBUG(msg);
 
 		}
