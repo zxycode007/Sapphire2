@@ -304,18 +304,21 @@ int main()
 	int i = 0;
 	while (flag != 'q')
 	{
-		const String name = "1.png";
+		const String name = "test.jpg";
 		//获取资源
 		//Image* img = pResourceCache->GetResource<Image>(name, true);
 		bool bRet = pResourceCache->BackgroundLoadResource<Image>(name, true);
 		int time = pResourceCache->GetFinishBackgroundResourcesMs();
 		
-		if (i == 2)
+		if (i > 2)
 		{
 			PODVector<Image*> pV;
-			pResourceCache->GetResources<Image>(pV);
-			String msg = "pV size = " + String(pV.Size());
+			pResourceCache->GetResources<Image>(pV);			
 			Image* img = pResourceCache->GetResource<Image>(name, true);
+			int memSize = img->GetMemoryUse();
+			bRet = img->SaveTGA("1.tga");
+			String msg = "pV size = " + String(pV.Size());
+			msg = msg + L"内存占用:" + String(memSize);
 			SAPPHIRE_LOGDEBUG(msg);
 
 		}

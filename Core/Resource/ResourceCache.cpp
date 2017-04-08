@@ -560,7 +560,7 @@ namespace  Sapphire
 		StringHash nameHash(name);
 
 #ifdef SAPPHIRE_THREADING
-		// 检查资源是否被后台加载，而现在立即需要
+		// 检查资源是否被后台加载，而现在立即就需要， 会卡主线程
 		backgroundLoader_->WaitForResource(type, nameHash);
 #endif
 		//查找资源
@@ -1075,6 +1075,7 @@ namespace  Sapphire
 		}
 	}
 
+	//每帧开始的操作
 	void ResourceCache::HandleBeginFrame(StringHash eventType, VariantMap& eventData)
 	{
 		for (unsigned i = 0; i < fileWatchers_.Size(); ++i)

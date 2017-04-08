@@ -148,14 +148,14 @@ namespace Sapphire
 				" requested for a background loaded resource but was not in the background load queue");
 		}
 
-		// 现在开始后台加载器
+		// 如果台加载线程没开始，则开启
 		if (!IsStarted())
 			Run();
 
 		return true;
 	}
 
-	//等待资源
+	//等待资源的完成
 	void BackgroundLoader::WaitForResource(StringHash type, StringHash nameHash)
 	{
 		backgroundLoadMutex_.Acquire();
@@ -179,7 +179,7 @@ namespace Sapphire
 					AsyncLoadState state = resource->GetAsyncLoadState();  //获取异步加载状态
 					if (numDeps > 0 || state == ASYNC_QUEUED || state == ASYNC_LOADING)
 					{
-						//未加载完成
+						//未加载完成，稍微等待一下
 						didWait = true;
 						Time::Sleep(1);
 					}
@@ -187,7 +187,7 @@ namespace Sapphire
 						break;  //完成加载或失败退出循环
 				}
 
-				if (didWait)
+				if (didWait) //加载超时了
 					SAPPHIRE_LOGDEBUG("Waited " + String(waitTimer.GetUSec(false) / 1000) + " ms for background loaded resource " +
 					resource->GetName());
 			}
@@ -292,7 +292,7 @@ namespace Sapphire
 		owner_->SendEvent(E_RESOURCEBACKGROUNDLOADED, eventData);
 	}
 
-	//保存到缓存， 使用手动资源的机制
+	//保存到资源缓存系统中， 使用手动添加资源的方式
 	if (success || owner_->GetReturnFailedResources())
 		owner_->AddManualResource(resource);
 	}
