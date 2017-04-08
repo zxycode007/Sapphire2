@@ -513,7 +513,7 @@ namespace Sapphire
 #ifdef WIN32
 		wchar_t path[MAX_PATH];
 		path[0] = 0;
-		GetCurrentDirectoryW(MAX_PATH, path);
+		GetCurrentDirectoryW(MAX_PATH, path);  //获取当前进程的目录
 		return AddTrailingSlash(String(path));
 #else
 		char path[MAX_PATH];
@@ -684,7 +684,7 @@ namespace Sapphire
 #elif defined(WIN32)
 		wchar_t exeName[MAX_PATH];
 		exeName[0] = 0;
-		GetModuleFileNameW(0, exeName, MAX_PATH);
+		GetModuleFileNameW(0, exeName, MAX_PATH);  //获取程序文件所在目录
 		programDir_ = GetPath(String(exeName));
 #elif defined(__APPLE__)
 		char exeName[MAX_PATH];

@@ -163,8 +163,8 @@ void testFileModule()
 	Sapphire::File*  file = new Sapphire::File(context);
 	Sapphire::FileSystem* fs = new Sapphire::FileSystem(context);
 	Sapphire::String path = fs->GetCurrentDir();
+	path = fs->GetProgramDir();
 	path += "test.jpg";
-
 	bool ret = file->Open(path.CString());
 	unsigned fileSize = file->GetSize();
 	int pos = file->Seek((unsigned)(fileSize - sizeof(unsigned)));
@@ -296,11 +296,32 @@ int main()
 	SharedPtr<Image> img = DynamicCast<Image>(context->CreateObject(Image::GetTypeInfoStatic()->GetType()));
 	img->SetName("testImage");
 	//pResourceCache->AddManualResource(NULL);
+	FileSystem* pFileSys = context->GetSubsystem<FileSystem>();
+	String path = pFileSys->GetProgramDir();
+	AddTrailingSlash(path);
+	path += "resources";
+	bool ret = pResourceCache->AddResourceDir(path);
+	int i = 0;
 	while (flag != 'q')
 	{
+		const String name = "1.png";
+		//获取资源
+		//Image* img = pResourceCache->GetResource<Image>(name, true);
+		bool bRet = pResourceCache->BackgroundLoadResource<Image>(name, true);
+		int time = pResourceCache->GetFinishBackgroundResourcesMs();
 		
+		if (i == 2)
+		{
+			PODVector<Image*> pV;
+			pResourceCache->GetResources<Image>(pV);
+			String msg = "pV size = " + String(pV.Size());
+			 
+			SAPPHIRE_LOGDEBUG(msg);
+
+		}
 		Sleep(10);
 		flag = getchar();
+		i++;
 	}
 	
 	_CrtDumpMemoryLeaks();
