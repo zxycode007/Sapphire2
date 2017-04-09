@@ -102,6 +102,7 @@ namespace  Sapphire
 		// 如果开启自动重载， 为这个目录创建一个文件观察者
 		if (autoReloadResources_)
 		{
+			//创建文件观察者
 			SharedPtr<FileWatcher> watcher(new FileWatcher(context_));
 			watcher->StartWatching(fixedPath, true);
 			fileWatchers_.Push(watcher);
@@ -764,12 +765,14 @@ namespace  Sapphire
 
 	unsigned long long ResourceCache::GetMemoryUse(StringHash type) const
 	{
+		//统计某一类型的资源的内存占用
 		HashMap<StringHash, ResourceGroup>::ConstIterator i = resourceGroups_.Find(type);
 		return i != resourceGroups_.End() ? i->second_.memoryUse_ : 0;
 	}
 
 	unsigned long long ResourceCache::GetTotalMemoryUse() const
 	{
+		//遍历所有资源统计总的内存占用
 		unsigned long long total = 0;
 		for (HashMap<StringHash, ResourceGroup>::ConstIterator i = resourceGroups_.Begin(); i != resourceGroups_.End(); ++i)
 			total += i->second_.memoryUse_;

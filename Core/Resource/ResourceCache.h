@@ -121,9 +121,9 @@ namespace Sapphire
 		bool BackgroundLoadResource(StringHash type, const String& name, bool sendEventOnFailure = true, Resource* caller = 0);
 		/// 返回后台要加载的资源数
 		unsigned GetNumBackgroundLoadResources() const;
-		/// 返回所有加载的特定类型的资源
+		/// 从缓存中返回所有加载的特定类型的资源
 		void GetResources(PODVector<Resource*>& result, StringHash type) const;
-		/// 返回一个特定类型和名字的已加载资源。如果没找到返回空
+		/// 从缓存中找一个特定类型和名字的已加载资源。如果没找到返回空
 		Resource* GetExistingResource(StringHash type, const String& name);
 
 		/// 返回所有已加载资源
@@ -137,7 +137,7 @@ namespace Sapphire
 
 		/// 获取模板类型的资源
 		template <class T> T* GetResource(const String& name, bool sendEventOnFailure = true);
-		/// 获取一个已存在的资源
+		/// 获取一个已存在缓存中的资源
 		template <class T> T* GetExistingResource(const String& name);
 		/// 获取没有保存在缓存中的资源
 		template <class T> SharedPtr<T> GetTempResource(const String& name, bool sendEventOnFailure = true);
@@ -186,7 +186,7 @@ namespace Sapphire
 		String PrintMemoryUsage() const;
 
 	private:
-		/// 查找资源
+		/// 查找从已经加载的资源组中查询资源
 		const SharedPtr<Resource>& FindResource(StringHash type, StringHash nameHash);
 		/// 只通过名字查找资源。搜索所有的类型组
 		const SharedPtr<Resource>& FindResource(StringHash nameHash);
@@ -194,7 +194,8 @@ namespace Sapphire
 		void ReleasePackageResources(PackageFile* package, bool force = false);
 		/// 更新一个资源组。 如果超过内存预算，重新计算内存使用量并释放资源
 		void UpdateResourceGroup(StringHash type);
-		/// 处理begin frame事件. 资源自动重载并且结束后台加载资源的处理
+		/// 处理begin frame事件. 资源自动重载并且结束后台完成的加载资源的处理
+		//  每帧起始的时候处理后台进程加载完成的项目
 		void HandleBeginFrame(StringHash eventType, VariantMap& eventData);
 		/// 从目录搜索文件
 		File* SearchResourceDirs(const String& nameIn);
@@ -203,7 +204,7 @@ namespace Sapphire
 
 		/// 线程安全访问资源目录，资源包和资源依赖的互斥量
 		mutable Mutex resourceMutex_;
-		/// 资源类型
+		/// 按资源类型分组
 		HashMap<StringHash, ResourceGroup> resourceGroups_;
 		/// 资源加载目录
 		Vector<String> resourceDirs_;

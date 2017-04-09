@@ -302,31 +302,53 @@ int main()
 	path += "resources";
 	bool ret = pResourceCache->AddResourceDir(path);
 	int i = 0;
-	while (flag != 'q')
+	const String name = "test.jpg";
+	//异步加载方式
+	bool bRet = pResourceCache->BackgroundLoadResource<Image>(name, true);
+	while (i < 1000)
 	{
-		const String name = "test.jpg";
-		//获取资源
-		//Image* img = pResourceCache->GetResource<Image>(name, true);
-		bool bRet = pResourceCache->BackgroundLoadResource<Image>(name, true);
-		int time = pResourceCache->GetFinishBackgroundResourcesMs();
-		
-		if (i > 2)
 		{
-			PODVector<Image*> pV;
-			pResourceCache->GetResources<Image>(pV);			
-			Image* img = pResourceCache->GetResource<Image>(name, true);
+			//发送开始帧事件
+			using namespace BeginFrame;
+
+			VariantMap& eventData = pResourceCache->GetEventDataMap();
+			eventData[P_FRAMENUMBER] = i;
+			eventData[P_TIMESTEP] = i * 100;
+			pResourceCache->SendEvent(E_BEGINFRAME, eventData);
+		}
+		//获取资源
+		//Image* img = pResourceCache->GetResource<Image>(name, true);	
+		String msg;
+		PODVector<Image*> pV;
+		pResourceCache->GetResources<Image>(pV);
+		//同步加载
+		//Image* img = pResourceCache->GetResource<Image>(name, true);
+		//获取已在缓存中的资源
+		Image* img = pResourceCache->GetExistingResource<Image>(name);
+		if (img)
+		{
 			int memSize = img->GetMemoryUse();
 			bRet = img->SaveTGA("1.tga");
-			String msg = "pV size = " + String(pV.Size());
+			msg = "pV size = " + String(pV.Size());
 			msg = msg + L"内存占用:" + String(memSize);
-			SAPPHIRE_LOGDEBUG(msg);
+		}
+		else
+		{
+			msg = L"加载未成功";
+		}
+		SAPPHIRE_LOGDEBUG(msg);
+		Sleep(100);
+		i++;
+		
+		{
+			//发送结束帧
+			using namespace EndFrame;
+			VariantMap& eventData = pResourceCache->GetEventDataMap();
+			pResourceCache->SendEvent(E_ENDFRAME, eventData);
 
 		}
-		Sleep(10);
-		flag = getchar();
-		i++;
 	}
-	
+	getchar();
 	_CrtDumpMemoryLeaks();
 	return 0;
 }

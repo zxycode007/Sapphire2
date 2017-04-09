@@ -184,7 +184,7 @@ namespace Sapphire
 						Time::Sleep(1);
 					}
 					else
-						break;  //完成加载或失败退出循环
+						break;  //完成加载ASYNC_QUEUED或失败ASYNC_FAIL退出循环
 				}
 
 				if (didWait) //加载超时了
