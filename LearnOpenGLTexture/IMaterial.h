@@ -1,8 +1,7 @@
 #pragma once
-#include "HashMap.h"
-#include "Variant.h"
+#include "ShaderManager.h"
 
-class Shader;
+
 class ITexture;
 
 namespace Sapphire
