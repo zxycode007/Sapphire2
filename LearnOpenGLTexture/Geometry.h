@@ -41,6 +41,7 @@ namespace Sapphire
 		EPT_POINT_SPRITES
 	};
 
+	
 
 	class Geometry
 	{

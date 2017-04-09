@@ -53,4 +53,26 @@ private:
 
 
 };
+
+namespace Sapphire
+{
+	struct Shader
+	{
+		string  ShaderName;
+		string  VertexShaderSrc;
+		string  FragmentShaderSrc;
+		GLuint    ShaderProgram;
+		GLuint    VertexShaderHandle;
+		GLuint    FragmentShaderHandle;
+		bool    isCompiled;
+
+		Shader()
+		{
+			VertexShaderHandle = 0;
+			FragmentShaderHandle = 0;
+			ShaderProgram = 0;
+			isCompiled = false;
+		}
+	};
+}
 #pragma once

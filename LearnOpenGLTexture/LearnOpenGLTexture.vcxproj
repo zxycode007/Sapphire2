@@ -123,11 +123,15 @@
     <ClInclude Include="EmptyRefException.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="ITexture.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="IMaterial.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VideoDriver.h" />
@@ -135,8 +139,10 @@
   <ItemGroup>
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="VideoDriver.cpp" />
   </ItemGroup>
   <ItemGroup>

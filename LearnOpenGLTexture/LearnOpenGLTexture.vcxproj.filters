@@ -57,6 +57,18 @@
     <ClInclude Include="Quad.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ITexture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="IMaterial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -72,6 +84,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
