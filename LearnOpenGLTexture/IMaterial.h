@@ -1,11 +1,13 @@
 #pragma once
 #include "ShaderManager.h"
+#include "Vertex.h"
 
 
-class ITexture;
 
 namespace Sapphire
 {
+	class ITexture;
+
 	struct MaterialShaderParameter
 	{
 		String name_;
@@ -36,6 +38,8 @@ namespace Sapphire
 		virtual MaterialShaderParameter  GetShaderParameter(String name) = 0;
 		virtual void  SetShader(String name, Shader* shader) = 0;
 		virtual Shader*      GetShader(String name) = 0;
+		virtual EVertexType  GetVertexType() = 0;
+		virtual void         SetVertexType(EVertexType vType) = 0;
 
 	};
 }

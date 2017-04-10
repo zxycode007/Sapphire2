@@ -278,5 +278,69 @@ namespace Sapphire
 
 	};
 
+	class VertexTcoord2 : public VertexTcoord
+	{
+	public:
+
+
+
+		VertexTcoord2()
+		{
+			VertexTcoord();
+			mType = EVT_2TCOORD;
+		};
+		VertexTcoord2(float x, float y, float z, float r, float g, float b, float a, float nx, float ny, float nz, float tu, float tv, float tu2, float tv2)
+		{
+			VertexTcoord(x, y, z, r, g, b, a, nx, ny, nz, tu, tv);
+			mTcoord = Vector2(tu, tv);
+			mType = EVT_2TCOORD;
+
+		};
+		VertexTcoord2(Sapphire::Vector3 pos, Sapphire::Color color, Sapphire::Vector3 normal, Sapphire::Vector2 tcoord, Sapphire::Vector2 tcoord2)
+		{
+			VertexTcoord(pos, color, normal, tcoord);
+			mTcoord2 = tcoord2;
+			mType = EVT_2TCOORD;
+		}
+
+		VertexTcoord2(Sapphire::VertexNormal& v) : VertexTcoord(v)
+		{
+			mTcoord2 = Vector2::ZERO;
+			mType = EVT_2TCOORD;
+		}
+
+		virtual ~VertexTcoord2() {};
+
+		bool operator==(const VertexTcoord2& other)
+		{
+			return (static_cast<VertexTcoord>(*this) == other && mTcoord2 == other.getCTcoord2());
+		};
+
+		bool operator!=(const VertexTcoord2& other)
+		{
+			return (static_cast<VertexTcoord>(*this) != other || mTcoord2 != other.getCTcoord2());
+		}
+
+		Vector2& getTcoord2()
+		{
+			return mTcoord2;
+		}
+		const Vector2& getCTcoord2() const
+		{
+			return mTcoord2;
+		}
+
+		VertexTcoord2 Lerp(const VertexTcoord2& other, float d)
+		{
+			d = Clamp(d, 0.0f, 1.0f);
+			return VertexTcoord2(mPos.Lerp(other.getCPos(), d), mColor.Lerp(other.getCColor(), d), mNormal.Lerp(other.getCNormal(), d), mTcoord.Lerp(other.getCTcoord(), d), mTcoord2.Lerp(other.getCTcoord2(), d));
+		}
+
+	protected:
+
+		Vector2 mTcoord2;
+
+	};
+
 
 }

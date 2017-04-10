@@ -112,6 +112,7 @@ namespace Sapphire
 		typedef VertexArray<VertexColor>  VertexColorList;
 		typedef VertexArray<VertexNormal>  VertexNormalList;
 		typedef VertexArray<VertexTcoord>  VertexTcoordList;
+		typedef VertexArray<VertexTcoord2>  Vertex2TcoordList;
 
 	public:
 
@@ -169,6 +170,21 @@ namespace Sapphire
 				mAttributesInfo.push_back(tcoord);
 			    }
 				break;
+			case EVT_2TCOORD:
+			   {
+				vertices = new Vertex2TcoordList();
+				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), 4);
+				mAttributesInfo.push_back(pos);
+				VertexAttributeInfo color(EVA_COLOR, sizeof(Color), 8 + sizeof(Vector3));
+				mAttributesInfo.push_back(color);
+				VertexAttributeInfo normal(EVA_NORMAL, sizeof(Vector3), 12 + sizeof(Vector3) + sizeof(Color));
+				mAttributesInfo.push_back(normal);
+				VertexAttributeInfo tcoord(EVA_TCOORD, sizeof(Vector2), 16 + sizeof(Vector3) + sizeof(Color) + sizeof(Vector3));
+				mAttributesInfo.push_back(tcoord);
+				VertexAttributeInfo tcoord2(EVA_2TCOORD, sizeof(Vector2), 20 + sizeof(Vector3) + sizeof(Color) + sizeof(Vector3)+ sizeof(Vector2));
+				mAttributesInfo.push_back(tcoord2);
+			   }
+			   break;
 			default:
 			   {
 				vertices = new VertexList();

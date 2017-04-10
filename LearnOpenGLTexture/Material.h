@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IMaterial.h"
+#include "Vertex.h"
 
 
 namespace Sapphire
@@ -20,11 +21,14 @@ namespace Sapphire
 		virtual MaterialShaderParameter  GetShaderParameter(String name);
 		virtual void  SetShader(String name, Shader* shader);
 		virtual Shader*   GetShader(String name);
+		virtual EVertexType  GetVertexType();
+		virtual void         SetVertexType(EVertexType vType);
 
 	private:
 		HashMap<String, Shader*> mShaderMap;
 		HashMap<String, MaterialShaderParameter> mShaderParameters;
 		HashMap<String, ITexture*>   mTextureMap;
 		FillMode                     mFillMode;
+		EVertexType                  mVertexType;
 	};
 }

@@ -1,5 +1,6 @@
 #include "Material.h"
 #include "ShaderManager.h"
+#include "ITexture.h"
 
 Sapphire::Material::Material()
 {
@@ -42,7 +43,7 @@ void Sapphire::Material::SetFillMode(FillMode mode)
 	mFillMode = mode;
 }
 
-ITexture * Sapphire::Material::GetTexture(String name)
+Sapphire::ITexture * Sapphire::Material::GetTexture(String name)
 {
 	HashMap<String, ITexture*>::Iterator it = mTextureMap.Find(name);
 	if (it != mTextureMap.End())
@@ -82,5 +83,15 @@ void Sapphire::Material::SetShader(String name, Shader * shader)
 Sapphire::Shader * Sapphire::Material::GetShader(String name)
 {
 	return mShaderMap[name];
+}
+
+Sapphire::EVertexType Sapphire::Material::GetVertexType()
+{
+	return mVertexType;
+}
+
+void Sapphire::Material::SetVertexType(EVertexType vType)
+{
+	mVertexType = vType;
 }
 
