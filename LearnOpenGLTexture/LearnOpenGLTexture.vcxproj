@@ -151,6 +151,8 @@
     <None Include="colorVs.glsl" />
     <None Include="packages.config" />
     <None Include="ps.glsl" />
+    <None Include="texturePs.glsl" />
+    <None Include="textureVs.glsl" />
     <None Include="vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,6 +2,7 @@
 
 #include "IMaterial.h"
 #include "Vertex.h"
+#include "ITexture.h"
 
 
 namespace Sapphire
@@ -14,9 +15,9 @@ namespace Sapphire
 		virtual ~Material();
 
 		virtual void SetShaderParameter(String name, Variant parameter);
-		virtual void SetTexture(String name, ITexture* texture);
+		virtual void SetTexture(String name, ITexture2D* texture);
 		virtual void SetFillMode(FillMode mode) ;
-		virtual ITexture*   GetTexture(String name);
+		virtual ITexture2D*   GetTexture(String name);
 		virtual FillMode    GetFillMode();
 		virtual MaterialShaderParameter  GetShaderParameter(String name);
 		virtual void  SetShader(String name, Shader* shader);
@@ -27,7 +28,7 @@ namespace Sapphire
 	private:
 		HashMap<String, Shader*> mShaderMap;
 		HashMap<String, MaterialShaderParameter> mShaderParameters;
-		HashMap<String, ITexture*>   mTextureMap;
+		HashMap<String, ITexture2D*>   mTextureMap;
 		FillMode                     mFillMode;
 		EVertexType                  mVertexType;
 	};

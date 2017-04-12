@@ -52,6 +52,7 @@ namespace Sapphire
 
 	private:
 
+		 
 
 		//Òª»æÍ¼µÄ´°¿Ú¾ä±ú
 		WindowsHandle* mWindow;

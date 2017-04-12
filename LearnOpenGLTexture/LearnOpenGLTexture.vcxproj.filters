@@ -22,6 +22,9 @@
     <Filter Include="Shaders\quadShader">
       <UniqueIdentifier>{a2771f69-3664-4d6c-8f08-174bdf5b6983}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\textureShader">
+      <UniqueIdentifier>{47feda8f-b421-44d7-9df5-de7290c49ccd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderManager.h">
@@ -109,6 +112,12 @@
     </None>
     <None Include="colorPs.glsl">
       <Filter>Shaders\quadShader</Filter>
+    </None>
+    <None Include="textureVs.glsl">
+      <Filter>Shaders\textureShader</Filter>
+    </None>
+    <None Include="texturePs.glsl">
+      <Filter>Shaders\textureShader</Filter>
     </None>
   </ItemGroup>
 </Project>

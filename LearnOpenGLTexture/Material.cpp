@@ -27,15 +27,21 @@ void Sapphire::Material::SetShaderParameter(String name, Variant parameter)
 	}
 }
 
-void Sapphire::Material::SetTexture(String name, ITexture * texture)
+void Sapphire::Material::SetTexture(String name, ITexture2D * texture)
 {
-	HashMap<String, ITexture*>::Iterator it = mTextureMap.Find(name);
+	HashMap<String, ITexture2D*>::Iterator it = mTextureMap.Find(name);
 	if (it != mTextureMap.End())
 	{
-		ITexture* pTexture = it->second_;
+		ITexture2D* pTexture = it->second_;
 		delete pTexture;
+		it->second_ = texture;
 	}
-	it->second_ = texture;
+	else
+	{
+		mTextureMap[name] = texture;
+	}
+
+	
 }
 
 void Sapphire::Material::SetFillMode(FillMode mode)
@@ -43,9 +49,9 @@ void Sapphire::Material::SetFillMode(FillMode mode)
 	mFillMode = mode;
 }
 
-Sapphire::ITexture * Sapphire::Material::GetTexture(String name)
+Sapphire::ITexture2D * Sapphire::Material::GetTexture(String name)
 {
-	HashMap<String, ITexture*>::Iterator it = mTextureMap.Find(name);
+	HashMap<String, ITexture2D*>::Iterator it = mTextureMap.Find(name);
 	if (it != mTextureMap.End())
 	{
 		return it->second_;
@@ -75,8 +81,13 @@ void Sapphire::Material::SetShader(String name, Shader * shader)
 	{
 		Shader* pShader = it->second_;
 		delete pShader;
+		it->second_ = shader;
 	}
-	it->second_ = shader;
+	else
+	{
+		mShaderMap[name] = shader;
+	}
+	
 
 }
 

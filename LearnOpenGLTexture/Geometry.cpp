@@ -1,4 +1,5 @@
 #include "Geometry.h"
+#include "Material.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
@@ -6,11 +7,12 @@
 
 namespace Sapphire
 {
-	Geometry::Geometry(VertexBuffer * pVb, IndexBuffer * pIb, EPRIMITIVE_TYPE type)
+	Geometry::Geometry(VertexBuffer * pVb, IndexBuffer * pIb, IMaterial* material,EPRIMITIVE_TYPE type)
 	{
 		mVertexBuffer = pVb;
 		mIndexBuffer = pIb;
 		mType = type;
+		mMaterial = material;
 	}
 
 
@@ -58,6 +60,21 @@ namespace Sapphire
 			delete mIndexBuffer;
 			mIndexBuffer = 0;
 		}
+		if (mMaterial)
+		{
+			delete mMaterial;
+			mMaterial = 0;
+		}
+	}
+
+	void Geometry::setMaterial(IMaterial * material)
+	{
+		mMaterial = material;
+	}
+
+	IMaterial * Geometry::getMaterial()
+	{
+		return mMaterial;
 	}
 
 }

@@ -12,6 +12,12 @@
 #include "Line.h"
 #include "VideoDriver.h"
 #include "Quad.h"
+#include "Context.h"
+#include "Resource\Image.h"
+#include "FileSystem.h"
+#include "Resource\ResourceCache.h"
+#include "Material.h"
+#include "Texture2D.h"
 
 #pragma comment(lib,"opengl32.lib")
 
@@ -20,6 +26,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void render(GLFWwindow* window);
 
 GLFWwindow*  init();
+
+Sapphire::ShaderManager* shaderMgr;
+Sapphire::IMaterial* material;
+Sapphire::Geometry*  tgeometry;
 
 
 int main(char* argc[], int argv)
@@ -32,7 +42,55 @@ int main(char* argc[], int argv)
 	glfwGetFramebufferSize(window, &width, &height);
 	glViewport(0, 0, width, height);
 
+	string vs_source = readTextFile("vs.glsl");
+	string ps_source = readTextFile("ps.glsl");
+	string vs2_source = readTextFile("colorVs.glsl");
+	string ps2_source = readTextFile("colorPs.glsl");	
+	string vs3_source = readTextFile("textureVs.glsl");
+	string ps3_source = readTextFile("texturePs.glsl");
 
+	shaderMgr = new Sapphire::ShaderManager();
+	shaderMgr->CreateShaderProgram("lineShader", vs_source.c_str(), ps_source.c_str());
+	Sapphire::ShaderStruct* shader = shaderMgr->FindShader("lineShader");
+	shaderMgr->CompileAndLink(shader);
+	shaderMgr->CreateShaderProgram("QuadShader", vs2_source.c_str(), ps2_source.c_str());
+	shaderMgr->PrintLogs();
+	Sapphire::ShaderStruct* shader2 = shaderMgr->FindShader("QuadShader");
+	shaderMgr->CompileAndLink(shader2);
+	shaderMgr->PrintLogs();
+	shaderMgr->CreateShaderProgram("TQuadShader", vs3_source.c_str(), ps3_source.c_str());
+	shaderMgr->PrintLogs();
+	Sapphire::ShaderStruct* shader3 = shaderMgr->FindShader("TQuadShader");
+	shaderMgr->CompileAndLink(shader3);
+
+	Sapphire::SharedPtr<Sapphire::Context> context = Sapphire::SharedPtr<Sapphire::Context>(new Sapphire::Context());
+	context->RegisterSubsystem(new Sapphire::FileSystem(context));
+	context->RegisterSubsystem(new Sapphire::ResourceCache(context));
+	Sapphire::ResourceCache* pResourceCache = context->GetSubsystem<Sapphire::ResourceCache>();
+	Sapphire::SharedPtr<Sapphire::Image> img = Sapphire::DynamicCast<Sapphire::Image>(context->CreateObject(Sapphire::Image::GetTypeInfoStatic()->GetType()));
+	img->SetName("testImage");
+	Sapphire::FileSystem* pFileSys = context->GetSubsystem<Sapphire::FileSystem>();
+	Sapphire::String path = pFileSys->GetProgramDir();
+	AddTrailingSlash(path);
+	path += "resources";
+	bool ret = pResourceCache->AddResourceDir(path);
+	const Sapphire::String image_name = "test.jpg";
+	Sapphire::Image* image = pResourceCache->GetResource<Sapphire::Image>(image_name);
+	material = new Sapphire::Material();
+	material->SetFillMode(Sapphire::FillMode::FILL_SOLID);
+	Sapphire::ITexture2D* tex2d = new Sapphire::Texture2D();
+	tex2d->SetData(image);
+	tex2d->SetSize(image->GetWidth(), image->GetHeight(), 24);
+	material->SetTexture("tex1",tex2d);
+	material->SetVertexType(Sapphire::EVT_TCOORD);
+	material->SetShader("TQuadShader", shader3);
+
+	Sapphire::VertexTcoord leftTop(Sapphire::Vector3(-0.3, 0.4, 0), Sapphire::Color::BLUE, Sapphire::Vector3(0,0,0), Sapphire::Vector2(0,0));
+	Sapphire::VertexTcoord rightTop(Sapphire::Vector3(0.3, 0.4, 0), Sapphire::Color::RED, Sapphire::Vector3(0, 0, 0), Sapphire::Vector2(1, 0));
+	Sapphire::VertexTcoord leftBottom(Sapphire::Vector3(-0.3, -0.4, 0), Sapphire::Color::GREEN, Sapphire::Vector3(0, 0, 0), Sapphire::Vector2(0, 1));
+	Sapphire::VertexTcoord rightBottom(Sapphire::Vector3(0.3, -0.4, 0), Sapphire::Color::BLACK, Sapphire::Vector3(0, 0, 0), Sapphire::Vector2(1, 1));
+	Sapphire::TexturedQuad quad(leftTop, rightTop, leftBottom, rightBottom);
+	tgeometry = quad.toGeometry();
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -84,22 +142,14 @@ GLFWwindow* init()
 	return window;
 }
 
+void render2(GLFWwindow * window)
+{
+
+}
+
 void render(GLFWwindow * window)
 {
-	string vs_source = readTextFile("vs.glsl");
-	string ps_source = readTextFile("ps.glsl");
-	string vs2_source = readTextFile("colorVs.glsl");
-	string ps2_source = readTextFile("colorPs.glsl");
-
-	Sapphire::ShaderManager* shaderMgr = new Sapphire::ShaderManager();
-	shaderMgr->CreateShaderProgram("lineShader", vs_source.c_str(), ps_source.c_str());	
-	Sapphire::ShaderStruct* shader = shaderMgr->FindShader("lineShader");
-	shaderMgr->CompileAndLink(shader);
-	shaderMgr->CreateShaderProgram("QuadShader", vs2_source.c_str(), ps2_source.c_str());
-	shaderMgr->PrintLogs();
-	Sapphire::ShaderStruct* shader2 = shaderMgr->FindShader("QuadShader");
-	shaderMgr->CompileAndLink(shader2);
-	shaderMgr->PrintLogs();
+	
 	
 
 	//顶点集合
@@ -126,8 +176,9 @@ void render(GLFWwindow * window)
 		0, 1, 3, // 第一个三角形
 		1, 2, 3  // 第二个三角形
 	};
-
-	Sapphire::MeshStruct* mesh = new Sapphire::MeshStruct();
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	/*Sapphire::MeshStruct* mesh = new Sapphire::MeshStruct();
 	mesh->vertices = vertices;
 	mesh->vertexBufferSize = sizeof(vertices);
 	mesh->indices = indices;
@@ -136,38 +187,44 @@ void render(GLFWwindow * window)
 	mesh->attribCount = 3;
 	mesh->index = 0;
 	Sapphire::SMeshNode*  smesh = new Sapphire::SMeshNode();
+	Sapphire::ShaderStruct* shader = shaderMgr->FindShader("QuadShader");
 	smesh->Load(shader);
 	smesh->Load(mesh);
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-	smesh->DrawMesh();
+	
+	smesh->DrawMesh();*/
 
-	Sapphire::Line3d lines(Sapphire::Vector3(0.5, -0.8, 1.0), Sapphire::Vector3(-0.5, -0.8, 1.0));
+	/*Sapphire::Line3d lines(Sapphire::Vector3(0.5, -0.8, 1.0), Sapphire::Vector3(-0.5, -0.8, 1.0));
 	Sapphire::Line3d lines2(Sapphire::Vector3(-0.2, -0.8, 1.0), Sapphire::Vector3(0.7, 0.8, 1.0));
 	lines.setColor(Sapphire::Color(1.0, 0.0, 0.0, 1.0));
-	lines2.setColor(Sapphire::Color(1.0, 1.0, 0.0, 1.0));
+	lines2.setColor(Sapphire::Color(1.0, 1.0, 0.0, 1.0));*/
 	Sapphire::IVideoDriver* vd = new Sapphire::OpenGLVideoDriver(window, shaderMgr);
-	vd->drawLine(lines,"lineShader");
-	vd->drawLine(lines2,"lineShader");
+	/*vd->drawLine(lines,"lineShader");
+	vd->drawLine(lines2,"lineShader");*/
 	
 	{
-		Sapphire::VertexColor leftTop(Sapphire::Vector3(-0.3, 0.4, 0), Sapphire::Color::BLUE);
-		Sapphire::VertexColor rightTop(Sapphire::Vector3(0.3, 0.4, 0), Sapphire::Color::RED);
-		Sapphire::VertexColor leftBottom(Sapphire::Vector3(-0.3, -0.4, 0), Sapphire::Color::GREEN);
-		Sapphire::VertexColor rightBottom(Sapphire::Vector3(0.3, -0.4, 0), Sapphire::Color::BLACK);
-		UINT vertexColorSize = sizeof(leftTop);
-		UINT vertexSize = sizeof(Sapphire::Vertex);
-		UINT tstSize = sizeof(Sapphire::Vector3) + sizeof(Sapphire::Color) + sizeof(Sapphire::EVertexType);
-		Sapphire::ColorQuad quad(leftTop, rightTop, leftBottom, rightBottom);
-		byte* seek = (byte*)&leftTop;
-		//前4字节是类的虚表占用，后面才是成员变量
-		seek += 4;
-		Sapphire::Vector3* v = (Sapphire::Vector3*)seek;
-		seek += sizeof(Sapphire::Vector3)+4;
-		Sapphire::Color* color = (Sapphire::Color*)seek;
-		Sapphire::Geometry*  geometry = quad.toGeometry();
-		vd->drawGeometry(geometry, "QuadShader");
-		delete geometry;
+		//Sapphire::VertexColor leftTop(Sapphire::Vector3(-0.3, 0.4, 0), Sapphire::Color::BLUE);
+		//Sapphire::VertexColor rightTop(Sapphire::Vector3(0.3, 0.4, 0), Sapphire::Color::RED);
+		//Sapphire::VertexColor leftBottom(Sapphire::Vector3(-0.3, -0.4, 0), Sapphire::Color::GREEN);
+		//Sapphire::VertexColor rightBottom(Sapphire::Vector3(0.3, -0.4, 0), Sapphire::Color::BLACK);
+		//UINT vertexColorSize = sizeof(leftTop);
+		//UINT vertexSize = sizeof(Sapphire::Vertex);
+		//UINT tstSize = sizeof(Sapphire::Vector3) + sizeof(Sapphire::Color) + sizeof(Sapphire::EVertexType);
+		//Sapphire::ColorQuad quad(leftTop, rightTop, leftBottom, rightBottom);
+		//byte* seek = (byte*)&leftTop;
+		////前4字节是类的虚表占用，后面才是成员变量
+		//seek += 4;
+		//Sapphire::Vector3* v = (Sapphire::Vector3*)seek;
+		//seek += sizeof(Sapphire::Vector3)+4;
+		//Sapphire::Color* color = (Sapphire::Color*)seek;
+		//Sapphire::Geometry*  geometry = quad.toGeometry();
+		//vd->drawGeometry(geometry, "QuadShader");
+		//delete geometry;
+	}
+
+	{
+		
+		tgeometry->setMaterial(material);
+		vd->drawGeometry(tgeometry, "TQuadShader");
 	}
 	
 	vd->release();

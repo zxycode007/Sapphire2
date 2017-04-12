@@ -5,6 +5,7 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VideoDriver.h"
+#include "ITexture.h"
 
 
 void Sapphire::OpenGLVideoDriver::drawLine(const Sapphire::Line3d & line, const char* shaderName)
@@ -124,8 +125,51 @@ void Sapphire::OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const c
 		glBindVertexArray(0);
 
 	}
-	
 	glUseProgram(shader->ShaderProgram);
+	IMaterial* material = geo->getMaterial();
+	if (material)
+	{
+		EVertexType vType = material->GetVertexType();
+		switch (vType)
+		{
+		case EVT_COLOR:
+			break;
+		case EVT_NORMAL:
+			break;
+		case EVT_TCOORD:
+		{
+			ITexture2D* itexture = geo->getMaterial()->GetTexture("tex1");
+			shader = geo->getMaterial()->GetShader("TQuadShader");
+			GLuint textureHandle = 0;
+			glGenTextures(1, &textureHandle);
+			glBindTexture(GL_TEXTURE_2D, textureHandle);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			void* dataPtr = 0;
+			bool bRet = itexture->GetData(dataPtr);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, itexture->GetWidth(), itexture->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, dataPtr);
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, textureHandle);
+			glUniform1i(glGetUniformLocation(shader->ShaderProgram, "texture1"), 0);
+
+		}
+		break;
+		case EVT_2TCOORD:
+			break;
+		case EVT_TANGENTS:
+			break;
+		default:
+			break;
+		}
+	}
+
+	
+	 
+	
+	
 	//Ê¹ÓÃVAO
 	glBindVertexArray(vao);
 	if (pIb->getType() == Sapphire::EIT_16BIT)
@@ -147,8 +191,9 @@ void Sapphire::OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const c
 	glDeleteBuffers(1, &vbo);
 	glDeleteBuffers(1, &ebo);
 
-
 }
+
+
 
 Sapphire::ShaderManager * Sapphire::OpenGLVideoDriver::GetShaderManager()
 {

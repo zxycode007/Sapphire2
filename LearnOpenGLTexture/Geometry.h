@@ -1,10 +1,11 @@
 #pragma once
-
+#include "IMaterial.h"
 
 namespace Sapphire
 {
 	class VertexBuffer;
 	class IndexBuffer;
+
 	//! 枚举图元类型
 	// 决定绘制图元的方法
 	enum EPRIMITIVE_TYPE
@@ -54,8 +55,9 @@ namespace Sapphire
 			mVertexBuffer = 0;
 			mIndexBuffer = 0;
 			mType = EPT_TRIANGLES;
+			mMaterial = 0;
 		};
-		Geometry(VertexBuffer* pVb, IndexBuffer* pIb, EPRIMITIVE_TYPE type);
+		Geometry(VertexBuffer* pVb, IndexBuffer* pIb, IMaterial* material, EPRIMITIVE_TYPE type);
 		~Geometry()
 		{
 			release();
@@ -67,6 +69,8 @@ namespace Sapphire
 		EPRIMITIVE_TYPE  getType();
 		void          setType(EPRIMITIVE_TYPE type);
 		void release();
+		void   setMaterial(IMaterial* material);
+		IMaterial*  getMaterial();
 
 
 	private:
@@ -74,6 +78,7 @@ namespace Sapphire
 		VertexBuffer*  mVertexBuffer;
 		IndexBuffer*   mIndexBuffer;
 		EPRIMITIVE_TYPE  mType;
+		IMaterial*     mMaterial;
 		
 		
 	};

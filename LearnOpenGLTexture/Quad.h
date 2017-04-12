@@ -40,7 +40,7 @@ namespace Sapphire
 			pIb->AddIndex(2);
 			pIb->AddIndex(1);
 			pIb->AddIndex(3);			
-			Geometry* geometry = new Geometry(pVb, pIb, EPT_TRIANGLES);
+			Geometry* geometry = new Geometry(pVb, pIb, NULL, EPT_TRIANGLES);
 			return geometry;
 		}
 

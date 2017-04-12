@@ -17,7 +17,7 @@ namespace Sapphire
 		virtual int GetHeight();
 		virtual void SetData(Image* image);
 		virtual void SetData(void* data, int width, int height, int depth=32);
-		virtual bool GetData(void* dest);
+		virtual bool GetData(void*& dest);
 
 	private:
 		int     mWidth;

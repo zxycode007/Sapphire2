@@ -53,11 +53,12 @@ void Sapphire::Texture2D::SetData(void * data, int width, int height, int depth)
 	mHeight = height;
 }
 
-bool Sapphire::Texture2D::GetData(void * dest)
+bool Sapphire::Texture2D::GetData(void*& dest)
 {
 	if (mImage)
 	{
-		return mImage->GetData();
+		dest = mImage->GetData();
+		return true;
 	}
 	return false;
 }

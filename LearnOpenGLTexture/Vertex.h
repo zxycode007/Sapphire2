@@ -90,8 +90,6 @@ namespace Sapphire
 	{
 	public:
 
-
-
 		VertexColor()
 		{
 			mPos = Vector3::ZERO;
@@ -234,7 +232,9 @@ namespace Sapphire
 		};
 		VertexTcoord(Sapphire::Vector3 pos, Sapphire::Color color, Sapphire::Vector3 normal, Sapphire::Vector2 tcoord)
 		{
-			VertexNormal(pos, color, normal);
+			mPos = pos;
+			mColor = color;
+			mNormal = normal;
 			mTcoord = tcoord;
 			mType = EVT_TCOORD;
 		}
