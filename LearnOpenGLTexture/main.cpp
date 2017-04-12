@@ -91,13 +91,13 @@ void render(GLFWwindow * window)
 	string vs2_source = readTextFile("colorVs.glsl");
 	string ps2_source = readTextFile("colorPs.glsl");
 
-	ShaderManager* shaderMgr = new ShaderManager();
+	Sapphire::ShaderManager* shaderMgr = new Sapphire::ShaderManager();
 	shaderMgr->CreateShaderProgram("lineShader", vs_source.c_str(), ps_source.c_str());	
-	ShaderStruct* shader = shaderMgr->FindShader("lineShader");
+	Sapphire::ShaderStruct* shader = shaderMgr->FindShader("lineShader");
 	shaderMgr->CompileAndLink(shader);
 	shaderMgr->CreateShaderProgram("QuadShader", vs2_source.c_str(), ps2_source.c_str());
 	shaderMgr->PrintLogs();
-	ShaderStruct* shader2 = shaderMgr->FindShader("QuadShader");
+	Sapphire::ShaderStruct* shader2 = shaderMgr->FindShader("QuadShader");
 	shaderMgr->CompileAndLink(shader2);
 	shaderMgr->PrintLogs();
 	
@@ -127,7 +127,7 @@ void render(GLFWwindow * window)
 		1, 2, 3  // 第二个三角形
 	};
 
-	MeshStruct* mesh = new MeshStruct();
+	Sapphire::MeshStruct* mesh = new Sapphire::MeshStruct();
 	mesh->vertices = vertices;
 	mesh->vertexBufferSize = sizeof(vertices);
 	mesh->indices = indices;
@@ -135,7 +135,7 @@ void render(GLFWwindow * window)
 	mesh->offset = 0;
 	mesh->attribCount = 3;
 	mesh->index = 0;
-	SMeshNode*  smesh = new SMeshNode();
+	Sapphire::SMeshNode*  smesh = new Sapphire::SMeshNode();
 	smesh->Load(shader);
 	smesh->Load(mesh);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -146,7 +146,7 @@ void render(GLFWwindow * window)
 	Sapphire::Line3d lines2(Sapphire::Vector3(-0.2, -0.8, 1.0), Sapphire::Vector3(0.7, 0.8, 1.0));
 	lines.setColor(Sapphire::Color(1.0, 0.0, 0.0, 1.0));
 	lines2.setColor(Sapphire::Color(1.0, 1.0, 0.0, 1.0));
-	IVideoDriver* vd = new OpenGLVideoDriver(window, shaderMgr);
+	Sapphire::IVideoDriver* vd = new Sapphire::OpenGLVideoDriver(window, shaderMgr);
 	vd->drawLine(lines,"lineShader");
 	vd->drawLine(lines2,"lineShader");
 	

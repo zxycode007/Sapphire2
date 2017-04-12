@@ -25,3 +25,4 @@ using namespace std;
 #include "Timer.h"
 #include "Condition.h"
 #include "DebugNew.h"
+#include "Str.h"

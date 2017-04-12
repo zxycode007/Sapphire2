@@ -7,7 +7,7 @@
 #include "VideoDriver.h"
 
 
-void OpenGLVideoDriver::drawLine(const Sapphire::Line3d & line, const char* shaderName)
+void Sapphire::OpenGLVideoDriver::drawLine(const Sapphire::Line3d & line, const char* shaderName)
 {
 	Sapphire::Line3d l = line;
 	ShaderStruct* shader = m_pShaderManager->FindShader(shaderName);
@@ -63,7 +63,7 @@ void OpenGLVideoDriver::drawLine(const Sapphire::Line3d & line, const char* shad
 	glDeleteBuffers(1, &vbo);
 }
 
-void OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const char* shaderName)
+void Sapphire::OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const char* shaderName)
 {
 	if (!geo)
 	{
@@ -150,12 +150,12 @@ void OpenGLVideoDriver::drawGeometry(Sapphire::Geometry * geo, const char* shade
 
 }
 
-ShaderManager * OpenGLVideoDriver::GetShaderManager()
+Sapphire::ShaderManager * Sapphire::OpenGLVideoDriver::GetShaderManager()
 {
 	return m_pShaderManager;
 }
 
-void OpenGLVideoDriver::release()
+void Sapphire::OpenGLVideoDriver::release()
 {
 
 }

@@ -7,7 +7,7 @@
 
 
 
-bool SMeshNode::Load(MeshStruct* mesh, MeshBuffer::BufferMode mode)
+bool Sapphire::SMeshNode::Load(MeshStruct* mesh, MeshBuffer::BufferMode mode)
 {
 	if (!mesh)
 		return false;
@@ -15,7 +15,7 @@ bool SMeshNode::Load(MeshStruct* mesh, MeshBuffer::BufferMode mode)
 	return true;
 }
 
-bool SMeshNode::Load(ShaderStruct * shader)
+bool Sapphire::SMeshNode::Load(ShaderStruct * shader)
 {
 	if (!shader->isCompiled)
 	{
@@ -25,7 +25,7 @@ bool SMeshNode::Load(ShaderStruct * shader)
 	return true;
 }
 
-void SMeshNode::Release()
+void Sapphire::SMeshNode::Release()
 {
 	if (mMeshBuffer)
 	{
@@ -38,12 +38,12 @@ void SMeshNode::Release()
 	delete this;
 }
 
-void SMeshNode::DrawMesh()
+void Sapphire::SMeshNode::DrawMesh()
 {
 	mMeshBuffer->DrawMeshBuffer(mShader);
 }
 
-bool MeshBuffer::Initialize()
+bool Sapphire::MeshBuffer::Initialize()
 {
 	//´´½¨VBO»º³åÇø
 	glGenBuffers(1, &mVbo);
@@ -55,13 +55,13 @@ bool MeshBuffer::Initialize()
 	return true;
 }
 
-void MeshBuffer::Release()
+void Sapphire::MeshBuffer::Release()
 {
 	delete mMesh;
 	delete this;
 }
 
-void MeshBuffer::DrawMeshBuffer(ShaderStruct * shader)
+void Sapphire::MeshBuffer::DrawMeshBuffer(ShaderStruct * shader)
 {
 	if (shader == NULL || shader->isCompiled == false)
 	{
@@ -146,7 +146,7 @@ void MeshBuffer::DrawMeshBuffer(ShaderStruct * shader)
 
 }
 
-void MeshBuffer::Finish()
+void Sapphire::MeshBuffer::Finish()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

@@ -1,12 +1,12 @@
 #pragma once
-#include "ShaderManager.h"
-#include "Vertex.h"
-
-
+#include "Str.h"
+#include "Variant.h"
+#include "Shader.h"
 
 namespace Sapphire
 {
 	class ITexture;
+	enum EVertexType;
 
 	struct MaterialShaderParameter
 	{
@@ -21,8 +21,6 @@ namespace Sapphire
 		FILL_WIREFRAME,
 		FILL_POINT
 	};
-
-	
 
 	class IMaterial
 	{

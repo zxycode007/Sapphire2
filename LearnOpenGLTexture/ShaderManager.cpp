@@ -3,7 +3,7 @@
 #include <iostream>
 #include  <GL\glew.h>
 
-void ShaderManager::Release()
+void Sapphire::ShaderManager::Release()
 {
 	hash_map<string, ShaderStruct*>::iterator it = shaderMap.begin();
 
@@ -16,7 +16,7 @@ void ShaderManager::Release()
 	delete this;
 }
 
-ShaderStruct * ShaderManager::CreateShaderProgram(string shaderName, string vertexShaderSrc, string fragmentShaderSrc)
+Sapphire::ShaderStruct * Sapphire::ShaderManager::CreateShaderProgram(string shaderName, string vertexShaderSrc, string fragmentShaderSrc)
 {
 	ShaderStruct* shader = new ShaderStruct();
 	shader->ShaderName = shaderName;
@@ -32,7 +32,7 @@ ShaderStruct * ShaderManager::CreateShaderProgram(string shaderName, string vert
 	return shader;
 }
 
-bool ShaderManager::CompileAndLink(ShaderStruct* shader)
+bool Sapphire::ShaderManager::CompileAndLink(ShaderStruct* shader)
 {
 	const GLchar* vertexShaderSource = shader->VertexShaderSrc.c_str();
 	glShaderSource(shader->VertexShaderHandle, 1, &vertexShaderSource, NULL);
@@ -85,21 +85,21 @@ bool ShaderManager::CompileAndLink(ShaderStruct* shader)
 	return true;
 }
 
-ShaderStruct * ShaderManager::FindShader(string shaderName)
+Sapphire::ShaderStruct * Sapphire::ShaderManager::FindShader(string shaderName)
 {
 	ShaderStruct* shader = shaderMap[shaderName];
 	return shader;
 }
 
 
-void ShaderManager::ReleaseShader(string shaderName)
+void Sapphire::ShaderManager::ReleaseShader(string shaderName)
 {
 	ShaderStruct* shader = FindShader(shaderName);
 	DeleteShader(shader);
 
 }
 
-void ShaderManager::DeleteShader(ShaderStruct*& shader)
+void Sapphire::ShaderManager::DeleteShader(ShaderStruct*& shader)
 {
 	if (shader)
 		return;
@@ -124,7 +124,7 @@ void ShaderManager::DeleteShader(ShaderStruct*& shader)
 	shader = NULL;
 }
 
-void ShaderManager::PrintLogs()
+void Sapphire::ShaderManager::PrintLogs()
 {
 	for (int i = 0; i < logs.size(); i++)
 	{
