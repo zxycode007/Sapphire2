@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sapphire", "Sapphire\Sapphire.vcxproj", "{B0DE70F3-CBE0-44C3-93B5-015A616B2DEF}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StbImage", "StbImage\StbImage.vcxproj", "{C98652C8-17E0-4377-8EFF-CB985E9C11C8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jompeg", "jompeg\jompeg.vcxproj", "{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_Graphic", "01_Graphic\01_Graphic.vcxproj", "{6C755370-15EB-4C29-994F-01EE1FB289F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -165,6 +167,12 @@ Global
 		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Release|Win32.Build.0 = Release|Win32
 		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Release|x64.ActiveCfg = Release|x64
 		{CD4ED513-E9CE-4943-8CF5-E2146CC69B21}.Release|x64.Build.0 = Release|x64
+		{6C755370-15EB-4C29-994F-01EE1FB289F1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6C755370-15EB-4C29-994F-01EE1FB289F1}.Debug|Win32.Build.0 = Debug|Win32
+		{6C755370-15EB-4C29-994F-01EE1FB289F1}.Debug|x64.ActiveCfg = Debug|Win32
+		{6C755370-15EB-4C29-994F-01EE1FB289F1}.Release|Win32.ActiveCfg = Release|Win32
+		{6C755370-15EB-4C29-994F-01EE1FB289F1}.Release|Win32.Build.0 = Release|Win32
+		{6C755370-15EB-4C29-994F-01EE1FB289F1}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
