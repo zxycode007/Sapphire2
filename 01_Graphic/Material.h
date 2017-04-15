@@ -1,23 +1,34 @@
 #pragma once
 
-#include "IMaterial.h"
-#include "Vertex.h"
+#include "Str.h"
+#include "Variant.h"
+#include "GraphicDefs.h"
+#include "Shader.h"
 #include "ITexture.h"
+
 
 
 namespace Sapphire
 {
-	class Material : public IMaterial
+	struct MaterialShaderParameter
 	{
+		String name_;
+		Variant value_;
+	};
+
+	class SAPPHIRE_API Material : public Resource
+	{
+		SAPPHIRE_OBJECT(Material, Resource);
+
 	public:
 
-		Material();
+		Material(Context* context);
 		virtual ~Material();
 
 		virtual void SetShaderParameter(String name, Variant parameter);
-		virtual void SetTexture(String name, ITexture* texture);
+		virtual void SetTexture(String name, Texture* texture);
 		virtual void SetFillMode(FillMode mode);
-		virtual ITexture*   GetTexture(String name);
+		virtual Texture*   GetTexture(String name);
 		virtual FillMode    GetFillMode();
 		virtual MaterialShaderParameter  GetShaderParameter(String name);
 		virtual void  SetShader(String name, Shader* shader);
@@ -26,9 +37,9 @@ namespace Sapphire
 		virtual void         SetVertexType(EVertexType vType);
 
 	private:
-		HashMap<String, Shader*> mShaderMap;
+		HashMap<String, SharedPtr<Shader>> mShaderMap;
 		HashMap<String, MaterialShaderParameter> mShaderParameters;
-		HashMap<String, ITexture*>   mTextureMap;
+		HashMap<String, SharedPtr<Texture>>   mTextureMap;
 		FillMode                     mFillMode;
 		EVertexType                  mVertexType;
 	};

@@ -5,17 +5,30 @@ namespace Sapphire
 {
 	class Image;
 
-	class ITexture : public Resource
+	class SAPPHIRE_API Texture : public Resource
 	{
+		SAPPHIRE_OBJECT(Texture, Resource);
+
 	public:
 
-		virtual void SetSize(int weight, int height, int depth = 32) = 0;
-		virtual int GetDepth() = 0;
-		virtual int GetWidth() = 0;
-		virtual int GetHeight() = 0;
-		virtual void SetData(Image* image) = 0;
-		virtual void SetData(void* data, int width, int height, int depth = 32) = 0;
-		virtual bool GetData(void*& dest) = 0;
+		Texture(Context* ctx);
+		virtual ~Texture();
+
+		void SetSize(int width, int height, int depth = 32);
+		void SetWidth(int width);
+		void SetHeight(int height);
+		void SetDepth(int depth);
+		int GetDepth();
+	    int GetWidth();
+		int GetHeight();
+
+
+	private:
+
+		int m_width;
+		int m_height;
+		int m_depth;
+
 
 	};
 

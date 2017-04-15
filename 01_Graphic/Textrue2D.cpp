@@ -1,6 +1,11 @@
+#include "Context.h"
 #include "Textrue2D.h"
 #include "Resource\Image.h"
 
+
+Sapphire::Texture2D::Texture2D(Context * ctx):Texture(ctx)
+{
+}
 
 Sapphire::Texture2D::~Texture2D()
 {
@@ -8,6 +13,11 @@ Sapphire::Texture2D::~Texture2D()
 	{
 		delete mImage;
 	}
+}
+
+void Sapphire::Texture2D::RegisterObject(Context * context)
+{
+	context->RegisterFactory<Texture2D>();
 }
 
 void Sapphire::Texture2D::SetSize(int weight, int height, int depth)
@@ -58,4 +68,30 @@ bool Sapphire::Texture2D::GetData(void*& dest)
 		return true;
 	}
 	return false;
+}
+
+bool Sapphire::Texture2D::BeginLoad(Deserializer & source)
+{
+	mImage = new Image(context_);
+	if (!mImage->Load(source))
+	{
+		//¼ÓÔØÊ§°Ü
+		mImage.Reset();
+		return false;
+	}
+	if (GetAsyncLoadState() == ASYNC_LOADING)
+		mImage->PrecalculateLevels();
+
+	return true;
+}
+
+bool Sapphire::Texture2D::EndLoad()
+{
+	if (mImage.Null())
+	{
+		return false;
+	}
+	SetData(mImage);
+	mImage.Reset();
+	return true;
 }

@@ -74,4 +74,6 @@ namespace Sapphire
 		EIT_16BIT,
 		EIT_32BIT
 	};
+
+	
 }

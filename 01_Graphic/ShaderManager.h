@@ -8,12 +8,14 @@
 
 namespace Sapphire
 {
-	class ShaderManager
+	class SAPPHIRE_API ShaderManager : public Object
 	{
+		SAPPHIRE_OBJECT(ShaderManager, Object);
+
 	public:
 
-		ShaderManager() {};
-		~ShaderManager() {};
+		ShaderManager(Context* ctx);
+		virtual ~ShaderManager() {};
 
 		void Release();
 

@@ -3,6 +3,10 @@
 #include <iostream>
 #include  <GL\glew.h>
 
+Sapphire::ShaderManager::ShaderManager(Context* ctx) : Object(ctx)
+{
+}
+
 void Sapphire::ShaderManager::Release()
 {
 	hash_map<string, Shader*>::iterator it = shaderMap.begin();
@@ -18,7 +22,7 @@ void Sapphire::ShaderManager::Release()
 
 Sapphire::Shader * Sapphire::ShaderManager::CreateShaderProgram(string shaderName, string vertexShaderSrc, string fragmentShaderSrc)
 {
-	Shader* shader = new Shader();
+	SharedPtr<Shader> shader = DynamicCast<Shader>(context_->CreateObject(Shader::GetTypeStatic()));
 	shader->ShaderName = shaderName;
 	shader->VertexShaderSrc = vertexShaderSrc;
 	shader->FragmentShaderSrc = fragmentShaderSrc;

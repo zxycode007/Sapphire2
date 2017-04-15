@@ -2,7 +2,7 @@
 #include "ShaderManager.h"
 #include "ITexture.h"
 
-Sapphire::Material::Material()
+Sapphire::Material::Material(Context* context) :Resource(context)
 {
 	mFillMode = FILL_SOLID;
 }
@@ -27,18 +27,17 @@ void Sapphire::Material::SetShaderParameter(String name, Variant parameter)
 	}
 }
 
-void Sapphire::Material::SetTexture(String name, ITexture * texture)
+void Sapphire::Material::SetTexture(String name, Texture * texture)
 {
-	HashMap<String, ITexture*>::Iterator it = mTextureMap.Find(name);
+	HashMap<String, SharedPtr<Texture>>::Iterator it = mTextureMap.Find(name);
 	if (it != mTextureMap.End())
 	{
-		ITexture* pTexture = it->second_;
-		delete pTexture;
+		it->second_.Reset();
 		it->second_ = texture;
 	}
 	else
-	{
-		mTextureMap[name] = texture;
+	{	
+		mTextureMap[name] = SharedPtr<Texture>(texture);
 	}
 
 
@@ -49,14 +48,14 @@ void Sapphire::Material::SetFillMode(FillMode mode)
 	mFillMode = mode;
 }
 
-Sapphire::ITexture * Sapphire::Material::GetTexture(String name)
+Sapphire::Texture*  Sapphire::Material::GetTexture(String name)
 {
-	HashMap<String, ITexture*>::Iterator it = mTextureMap.Find(name);
+	HashMap<String, SharedPtr<Texture>>::Iterator it = mTextureMap.Find(name);
 	if (it != mTextureMap.End())
 	{
-		return it->second_;
+		return it->second_.Get();
 	}
-	return NULL;
+	return nullptr;
 }
 
 Sapphire::FillMode Sapphire::Material::GetFillMode()
@@ -76,16 +75,15 @@ Sapphire::MaterialShaderParameter Sapphire::Material::GetShaderParameter(String 
 
 void Sapphire::Material::SetShader(String name, Shader * shader)
 {
-	HashMap<String, Shader*>::Iterator it = mShaderMap.Find(name);
+	HashMap<String, SharedPtr<Shader>>::Iterator it = mShaderMap.Find(name);
 	if (it != mShaderMap.End())
 	{
-		Shader* pShader = it->second_;
-		delete pShader;
+		it->second_.Reset();
 		it->second_ = shader;
 	}
 	else
 	{
-		mShaderMap[name] = shader;
+		mShaderMap[name] = SharedPtr<Shader>(shader);
 	}
 
 
@@ -93,7 +91,12 @@ void Sapphire::Material::SetShader(String name, Shader * shader)
 
 Sapphire::Shader * Sapphire::Material::GetShader(String name)
 {
-	return mShaderMap[name];
+	HashMap<String, SharedPtr<Shader>>::Iterator it = mShaderMap.Find(name);
+	if (it != mShaderMap.End())
+	{
+		return it->second_.Get();
+	}
+	return NULL;
 }
 
 Sapphire::EVertexType Sapphire::Material::GetVertexType()

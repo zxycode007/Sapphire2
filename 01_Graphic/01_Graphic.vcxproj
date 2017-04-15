@@ -78,18 +78,22 @@
     <None Include="vs.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="ITexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Textrue2D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GraphicDefs.h" />
-    <ClInclude Include="IMaterial.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="ITexture.h" />
+    <ClInclude Include="IVideoDriver.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Shader.h" />
@@ -98,6 +102,7 @@
     <ClInclude Include="Textrue2D.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VideoDriver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

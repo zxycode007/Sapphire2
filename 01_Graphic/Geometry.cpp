@@ -7,7 +7,7 @@
 
 namespace Sapphire
 {
-	Geometry::Geometry(VertexBuffer * pVb, IndexBuffer * pIb, IMaterial* material, EPRIMITIVE_TYPE type)
+	Geometry::Geometry(VertexBuffer * pVb, IndexBuffer * pIb, Material* material, EPRIMITIVE_TYPE type)
 	{
 		mVertexBuffer = pVb;
 		mIndexBuffer = pIb;
@@ -67,12 +67,12 @@ namespace Sapphire
 		}
 	}
 
-	void Geometry::setMaterial(IMaterial * material)
+	void Geometry::setMaterial(Material * material)
 	{
 		mMaterial = material;
 	}
 
-	IMaterial * Geometry::getMaterial()
+	Material * Geometry::getMaterial()
 	{
 		return mMaterial;
 	}

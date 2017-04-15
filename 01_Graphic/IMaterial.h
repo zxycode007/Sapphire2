@@ -10,14 +10,11 @@ namespace Sapphire
 {
 	enum EVertexType;
 
-	struct MaterialShaderParameter
-	{
-		String name_;
-		Variant value_;
-	};
+	
 
-	class IMaterial
+	class SAPPHIRE_API IMaterial : public Resource
 	{
+		SAPPHIRE_OBJECT(Material, Object);
 
 	public:
 

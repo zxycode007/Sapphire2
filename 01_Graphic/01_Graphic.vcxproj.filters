@@ -54,11 +54,17 @@
     <ClCompile Include="ShaderManager.cpp">
       <Filter>源文件\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="ITexture.cpp">
+      <Filter>源文件\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>源文件\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IMaterial.h">
-      <Filter>头文件\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>头文件\graphics</Filter>
     </ClInclude>
@@ -94,6 +100,15 @@
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IVideoDriver.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoDriver.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

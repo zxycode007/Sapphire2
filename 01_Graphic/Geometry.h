@@ -1,6 +1,6 @@
 #pragma once
 #include "GraphicDefs.h"
-#include "IMaterial.h"
+#include "Material.h"
 
 namespace Sapphire
 {
@@ -18,7 +18,7 @@ namespace Sapphire
 			mType = EPT_TRIANGLES;
 			mMaterial = 0;
 		};
-		Geometry(VertexBuffer* pVb, IndexBuffer* pIb, IMaterial* material, EPRIMITIVE_TYPE type);
+		Geometry(VertexBuffer* pVb, IndexBuffer* pIb, Material* material, EPRIMITIVE_TYPE type);
 		~Geometry()
 		{
 			release();
@@ -30,8 +30,8 @@ namespace Sapphire
 		EPRIMITIVE_TYPE  getType();
 		void          setType(EPRIMITIVE_TYPE type);
 		void release();
-		void   setMaterial(IMaterial* material);
-		IMaterial*  getMaterial();
+		void   setMaterial(Material* material);
+		Material*  getMaterial();
 
 
 	private:
@@ -39,7 +39,7 @@ namespace Sapphire
 		VertexBuffer*  mVertexBuffer;
 		IndexBuffer*   mIndexBuffer;
 		EPRIMITIVE_TYPE  mType;
-		IMaterial*     mMaterial;
+		Material*     mMaterial;
 
 
 	};

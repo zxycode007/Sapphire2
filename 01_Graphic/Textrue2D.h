@@ -5,24 +5,33 @@
 
 namespace Sapphire
 {
-	class Texture2D : public ITexture
+	class SAPPHIRE_API Texture2D : public Texture
 	{
-	public:
-		~Texture2D();
+		SAPPHIRE_OBJECT(Texture2D, Texture);
 
-		virtual void SetSize(int weight, int height, int depth = 32);
-		virtual int GetDepth();
-		virtual int GetWidth();
-		virtual int GetHeight();
-		virtual void SetData(Image* image);
-		virtual void SetData(void* data, int width, int height, int depth = 32);
-		virtual bool GetData(void*& dest);
+	public:
+
+		Texture2D(Context* ctx);
+		virtual ~Texture2D();
+
+		static void RegisterObject(Context* context);
+
+		void SetSize(int weight, int height, int depth = 32);
+		int GetDepth();
+		int GetWidth();
+		int GetHeight();
+		void SetData(Image* image);
+		void SetData(void* data, int width, int height, int depth = 32);
+		bool GetData(void*& dest);
+
+		virtual bool BeginLoad(Deserializer& source);
+		virtual bool EndLoad();
 
 	private:
 		int     mWidth;
 		int     mHeight;
 		int     mDepth;
-		Image*  mImage;
+		SharedPtr<Image>  mImage;
 
 	};
 }
