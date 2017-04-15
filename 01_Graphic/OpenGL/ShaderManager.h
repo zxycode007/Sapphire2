@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <GL\glew.h>
-#include "Shader.h"
+#include "Shader"
 
 namespace Sapphire
 {
@@ -19,18 +19,18 @@ namespace Sapphire
 
 		void Release();
 
-		Shader*  CreateShaderProgram(String shaderName, String vertexShaderSrc, String fragmentShaderSrc);
+		Shader*  CreateShaderProgram(string shaderName, string vertexShaderSrc, string fragmentShaderSrc);
 		bool     CompileAndLink(Shader* shader);
-		Shader*  FindShader(String shaderName);
-		void  ReleaseShader(String shaderName);
+		Shader*  FindShader(string shaderName);
+		void  ReleaseShader(string shaderName);
 		void  PrintLogs();
 
 	private:
 
-		HashMap<String, SharedPtr<Shader>> shaderMap;
-		vector<String>                 logs;
+		hash_map<string, Shader*> shaderMap;
+		vector<string>                 logs;
 
-		void  DeleteShader(String shaderName);
+		void  DeleteShader(Shader*& shader);
 
 
 

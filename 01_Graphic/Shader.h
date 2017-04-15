@@ -17,9 +17,9 @@ namespace Sapphire
 		virtual ~Shader();
 		static void RegisterObject(Context* context);
 
-		std::string  ShaderName;
-		std::string  VertexShaderSrc;
-		std::string  FragmentShaderSrc;
+		String  ShaderName;
+		String  VertexShaderSrc;
+		String  FragmentShaderSrc;
 		GLuint    ShaderProgram;
 		GLuint    VertexShaderHandle;
 		GLuint    FragmentShaderHandle;

@@ -44,6 +44,9 @@
 #endif
 
 #define NONSCRIPTABLE
+#define SAPPHIRE_OPENGL_DRV
+#define SAPPHIRE_OPENGL_VERSION_MAJOR 4
+#define SAPPHIRE_OPENGL_VERSION_MIRROR 5
 
 #include <Windows.h>
 

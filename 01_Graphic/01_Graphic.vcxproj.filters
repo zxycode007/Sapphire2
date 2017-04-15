@@ -22,6 +22,12 @@
     <Filter Include="源文件\graphics">
       <UniqueIdentifier>{a8596a36-b7b0-4e0c-9416-c923dbfa4111}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\graphics\OpenGL">
+      <UniqueIdentifier>{7ebef43b-68ae-434d-97f5-8d9f294e3c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\graphics\OpenGL">
+      <UniqueIdentifier>{01c51ec5-8600-4637-a1ad-5e786dc9400c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -51,9 +57,6 @@
     <ClCompile Include="Material.cpp">
       <Filter>源文件\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>源文件\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="ITexture.cpp">
       <Filter>源文件\graphics</Filter>
     </ClCompile>
@@ -63,11 +66,14 @@
     <ClCompile Include="Engine.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGL\VideoDriver.cpp">
+      <Filter>源文件\graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shader.h">
-      <Filter>头文件\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="ITexture.h">
       <Filter>头文件\graphics</Filter>
     </ClInclude>
@@ -98,17 +104,20 @@
     <ClInclude Include="Material.h">
       <Filter>头文件\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>头文件\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="IVideoDriver.h">
-      <Filter>头文件\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="VideoDriver.h">
       <Filter>头文件\graphics</Filter>
     </ClInclude>
     <ClInclude Include="Engine.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\VideoDriver.h">
+      <Filter>头文件\graphics\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>头文件\graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

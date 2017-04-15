@@ -83,6 +83,7 @@
     <ClCompile Include="ITexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="OpenGL\VideoDriver.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Textrue2D.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="ITexture.h" />
     <ClInclude Include="IVideoDriver.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="OpenGL\VideoDriver.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
@@ -102,7 +104,6 @@
     <ClInclude Include="Textrue2D.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="VideoDriver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
