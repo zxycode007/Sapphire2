@@ -120,7 +120,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="EmptyRefException.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="ITexture.h" />

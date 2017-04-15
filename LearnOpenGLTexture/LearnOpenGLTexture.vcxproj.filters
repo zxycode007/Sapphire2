@@ -48,9 +48,6 @@
     <ClInclude Include="VideoDriver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="EmptyRefException.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="IndexBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>

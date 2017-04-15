@@ -8,7 +8,7 @@ namespace Sapphire
 	class EmptyRefException : public std::exception
 	{
 	public:
-		explicit EmptyRefException(const char *reason):exception(reason)  //防止隐式构造
+		explicit EmptyRefException(const char *reason) :exception(reason)  //防止隐式构造
 		{
 
 		}

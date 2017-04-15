@@ -1,34 +1,14 @@
 #pragma once
 
+#include "GraphicDefs.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Color.h"
 
 
-
-
 namespace Sapphire
 {
-	enum EVertexType
-	{
-		EVT_STARNDRD,
-		EVT_COLOR,
-		EVT_NORMAL,
-		EVT_TCOORD,
-		EVT_2TCOORD,
-		EVT_TANGENTS,
-		MAX_EVT
-	};
-
-	enum EIndexType
-	{
-		EIT_16BIT,
-		EIT_32BIT
-	};
-
-	
-
 	class Vertex
 	{
 	public:
@@ -66,7 +46,7 @@ namespace Sapphire
 		{
 			return mType;
 		}
-		 const EVertexType& getCType() const
+		const EVertexType& getCType() const
 		{
 			return mType;
 		}
@@ -97,8 +77,8 @@ namespace Sapphire
 			mType = EVT_COLOR;
 
 		};
-		VertexColor(float x, float y, float z,float r,float g,float b,float a):Vertex(x, y, z)
-		{		
+		VertexColor(float x, float y, float z, float r, float g, float b, float a) :Vertex(x, y, z)
+		{
 			mColor = Color(r, g, b, a);
 			mType = EVT_COLOR;
 
@@ -110,8 +90,8 @@ namespace Sapphire
 			mType = EVT_COLOR;
 		}
 
-		VertexColor(Sapphire::Vertex& v): Vertex(v)
-		{		
+		VertexColor(Sapphire::Vertex& v) : Vertex(v)
+		{
 			mColor = Color::WHITE;
 			mType = EVT_COLOR;
 		}
@@ -120,7 +100,7 @@ namespace Sapphire
 
 		bool operator==(const VertexColor& other)
 		{
-			return (static_cast<Vertex>(*this)==other && mColor == other.getCColor() );
+			return (static_cast<Vertex>(*this) == other && mColor == other.getCColor());
 		};
 
 		bool operator!=(const VertexColor& other)
@@ -136,7 +116,7 @@ namespace Sapphire
 		VertexColor Lerp(const VertexColor& other, float d)
 		{
 			d = Clamp(d, 0.0f, 1.0f);
-			return VertexColor(mPos.Lerp(other.getCPos(), d), mColor.Lerp(other.getCColor(),d));
+			return VertexColor(mPos.Lerp(other.getCPos(), d), mColor.Lerp(other.getCColor(), d));
 		}
 
 	protected:
@@ -149,21 +129,19 @@ namespace Sapphire
 	{
 	public:
 
-
-
 		VertexNormal()
 		{
 			VertexColor();
 			mNormal = Vector3::ZERO;
 			mType = EVT_NORMAL;
 		};
-		VertexNormal(float x, float y, float z, float r, float g, float b, float a, float nx, float ny, float nz):VertexColor(x, y, z, r, g, b, a)
-		{		
+		VertexNormal(float x, float y, float z, float r, float g, float b, float a, float nx, float ny, float nz) :VertexColor(x, y, z, r, g, b, a)
+		{
 			mNormal = Vector3(nx, ny, nz);
 			mType = EVT_NORMAL;
 
 		};
-		VertexNormal(Sapphire::Vector3 pos, Sapphire::Color color, Sapphire::Vector3 normal):VertexColor(pos, color)
+		VertexNormal(Sapphire::Vector3 pos, Sapphire::Color color, Sapphire::Vector3 normal) :VertexColor(pos, color)
 		{
 			mNormal = normal;
 			mType = EVT_NORMAL;
@@ -199,11 +177,11 @@ namespace Sapphire
 		VertexNormal Lerp(const VertexNormal& other, float d)
 		{
 			d = Clamp(d, 0.0f, 1.0f);
-			return VertexNormal(mPos.Lerp(other.getCPos(), d), mColor.Lerp(other.getCColor(), d), mNormal.Lerp(other.getCNormal(),d));
+			return VertexNormal(mPos.Lerp(other.getCPos(), d), mColor.Lerp(other.getCColor(), d), mNormal.Lerp(other.getCNormal(), d));
 		}
 
 	protected:
-		
+
 		Vector3 mNormal;
 
 	};
@@ -213,25 +191,20 @@ namespace Sapphire
 	{
 	public:
 
-
-
-		VertexTcoord():VertexNormal()
+		VertexTcoord()
 		{
-
+			VertexNormal();
 			mType = EVT_TCOORD;
 		};
-		VertexTcoord(float x, float y, float z, float r, float g, float b, float a, float nx, float ny, float nz, float tu, float tv):VertexNormal(x, y, z, r, g, b, a, nx, ny, nz)
+		VertexTcoord(float x, float y, float z, float r, float g, float b, float a, float nx, float ny, float nz, float tu, float tv) :VertexNormal(x, y, z, r, g, b, a, nx, ny, nz)
 		{
 
 			mTcoord = Vector2(tu, tv);
 			mType = EVT_TCOORD;
 
 		};
-		VertexTcoord(Sapphire::Vector3 pos, Sapphire::Color color, Sapphire::Vector3 normal, Sapphire::Vector2 tcoord):VertexNormal(pos,color,normal)
+		VertexTcoord(Sapphire::Vector3 pos, Sapphire::Color color, Sapphire::Vector3 normal, Sapphire::Vector2 tcoord) :VertexNormal(pos, color, normal)
 		{
-			/*mPos = pos;
-			mColor = color;
-			mNormal = normal;*/
 			mTcoord = tcoord;
 			mType = EVT_TCOORD;
 		}
@@ -286,16 +259,14 @@ namespace Sapphire
 			VertexTcoord();
 			mType = EVT_2TCOORD;
 		};
-		VertexTcoord2(float x, float y, float z, float r, float g, float b, float a, float nx, float ny, float nz, float tu, float tv, float tu2, float tv2)
-		{
-			VertexTcoord(x, y, z, r, g, b, a, nx, ny, nz, tu, tv);
+		VertexTcoord2(float x, float y, float z, float r, float g, float b, float a, float nx, float ny, float nz, float tu, float tv, float tu2, float tv2):VertexTcoord(x, y, z, r, g, b, a, nx, ny, nz, tu, tv)
+		{	
 			mTcoord = Vector2(tu, tv);
 			mType = EVT_2TCOORD;
 
 		};
-		VertexTcoord2(Sapphire::Vector3 pos, Sapphire::Color color, Sapphire::Vector3 normal, Sapphire::Vector2 tcoord, Sapphire::Vector2 tcoord2)
+		VertexTcoord2(Sapphire::Vector3 pos, Sapphire::Color color, Sapphire::Vector3 normal, Sapphire::Vector2 tcoord, Sapphire::Vector2 tcoord2):VertexTcoord(pos, color, normal, tcoord)
 		{
-			VertexTcoord(pos, color, normal, tcoord);
 			mTcoord2 = tcoord2;
 			mType = EVT_2TCOORD;
 		}

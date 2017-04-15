@@ -40,6 +40,9 @@
     <Filter Include="源文件\Core\Resource">
       <UniqueIdentifier>{c8d7fcbb-45a3-4e8e-ad51-f18383d2b241}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Exception">
+      <UniqueIdentifier>{09d6419c-271e-4fae-89f1-e266f73f5105}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attribute.h">
@@ -164,6 +167,9 @@
     </ClInclude>
     <ClInclude Include="Resource\XMLFile.h">
       <Filter>头文件\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception\EmptyRefException.h">
+      <Filter>头文件\Exception</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

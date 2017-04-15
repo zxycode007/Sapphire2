@@ -89,6 +89,16 @@ int main(char* argc[], int argv)
 	Sapphire::VertexTcoord rightTop(Sapphire::Vector3(0.3, 0.4, 0), Sapphire::Color::RED, Sapphire::Vector3(0, 0, 0), Sapphire::Vector2(1, 0));
 	Sapphire::VertexTcoord leftBottom(Sapphire::Vector3(-0.3, -0.4, 0), Sapphire::Color::GREEN, Sapphire::Vector3(0, 0, 0), Sapphire::Vector2(0, 1));
 	Sapphire::VertexTcoord rightBottom(Sapphire::Vector3(0.3, -0.4, 0), Sapphire::Color::BLACK, Sapphire::Vector3(0, 0, 0), Sapphire::Vector2(1, 1));
+	int typesize = sizeof(Sapphire::EVertexType);
+	byte* seek = (byte*)&rightTop;
+	seek += 4;
+	Sapphire::Vector3* v = (Sapphire::Vector3*)seek;
+	seek += sizeof(Sapphire::Vector3)+4;
+	Sapphire::Color* color = (Sapphire::Color*)seek;
+	seek += sizeof(Sapphire::Color);
+	Sapphire::Vector3* normal = (Sapphire::Vector3*)seek;
+	seek += sizeof(Sapphire::Vector3);
+	Sapphire::Vector2* tcoord = (Sapphire::Vector2*)seek;
 	Sapphire::TexturedQuad quad(leftTop, rightTop, leftBottom, rightBottom);
 	tgeometry = quad.toGeometry();
 

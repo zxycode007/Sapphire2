@@ -16,6 +16,12 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{9e1e9b60-df0c-481f-9b70-c302aa4bffae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\graphics">
+      <UniqueIdentifier>{e92fe92c-45ab-4954-9ae7-e7ccbde88967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\graphics">
+      <UniqueIdentifier>{a8596a36-b7b0-4e0c-9416-c923dbfa4111}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -36,5 +42,58 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>源文件\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Textrue2D.cpp">
+      <Filter>源文件\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>源文件\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>源文件\graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IMaterial.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ITexture.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicDefs.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Textrue2D.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

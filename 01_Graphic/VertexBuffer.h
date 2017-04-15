@@ -1,23 +1,12 @@
 #pragma once
 
+#include "GraphicDefs.h"
 #include <vector>
-#include "../Exception/EmptyRefException.h"
 #include "Vertex.h"
+#include "../Exception/EmptyRefException.h"
 
 namespace Sapphire
 {
-
-	enum EVertexAttribute
-	{
-		EVA_NULL,
-		EVA_POSITION,
-		EVA_COLOR,
-		EVA_NORMAL,
-		EVA_TCOORD,
-		EVA_2TCOORD,
-		EVA_TANGENT,
-		MAX_EVA
-	};
 
 	struct VertexAttributeInfo
 	{
@@ -53,8 +42,6 @@ namespace Sapphire
 			virtual void* getData(ULONG& size, UINT32& stride) = 0;
 			virtual Vertex&      operator[] (const UINT32 index) const = 0;
 			virtual int  getStride() = 0;
-			
-
 		};
 
 		template<class T>
@@ -76,8 +63,6 @@ namespace Sapphire
 			{
 				if (mVertices.size() > 0)
 				{
-					/*buf = new byte[sizeof(T)*mVertices.size()];
-					memcpy(buf, mVertices.begin(), mVertices.size() * sizeof(T));*/
 					size = mVertices.size() * sizeof(T);
 					stride = getStride();
 					return (byte*)mVertices.begin()._Ptr;
@@ -132,24 +117,24 @@ namespace Sapphire
 			switch (mVertexType)
 			{
 			case EVT_STARNDRD:
-			   {
-				  vertices = new VertexList();
-				  VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), seek);
-				  mAttributesInfo.push_back(pos);
-			    }
-				break;
+			{
+				vertices = new VertexList();
+				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), seek);
+				mAttributesInfo.push_back(pos);
+			}
+			break;
 			case EVT_COLOR:
-			    {
+			{
 				vertices = new VertexColorList();
 				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), seek);
 				mAttributesInfo.push_back(pos);
 				seek += sizeof(EVertexType) + sizeof(Vector3);
 				VertexAttributeInfo color(EVA_COLOR, sizeof(Color), seek);
 				mAttributesInfo.push_back(color);
-			    }
-				break;
+			}
+			break;
 			case EVT_NORMAL:
-			    {
+			{
 				vertices = new VertexNormalList();
 				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), seek);
 				mAttributesInfo.push_back(pos);
@@ -159,10 +144,10 @@ namespace Sapphire
 				seek += sizeof(Color);
 				VertexAttributeInfo normal(EVA_NORMAL, sizeof(Vector3), seek);
 				mAttributesInfo.push_back(normal);
-			    }
-				break;
+			}
+			break;
 			case EVT_TCOORD:
-			    {
+			{
 				vertices = new VertexTcoordList();
 				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), seek);
 				mAttributesInfo.push_back(pos);
@@ -175,10 +160,10 @@ namespace Sapphire
 				seek += sizeof(Vector3);
 				VertexAttributeInfo tcoord(EVA_TCOORD, sizeof(Vector2), seek);
 				mAttributesInfo.push_back(tcoord);
-			    }
-				break;
+			}
+			break;
 			case EVT_2TCOORD:
-			   {
+			{
 				vertices = new Vertex2TcoordList();
 				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), seek);
 				mAttributesInfo.push_back(pos);
@@ -192,17 +177,17 @@ namespace Sapphire
 				VertexAttributeInfo tcoord(EVA_TCOORD, sizeof(Vector2), sizeof(Vector3));
 				mAttributesInfo.push_back(tcoord);
 				seek += sizeof(Vector2);
-				VertexAttributeInfo tcoord2(EVA_2TCOORD, sizeof(Vector2), 20 + sizeof(Vector3) + sizeof(Color) + sizeof(Vector3)+ sizeof(Vector2));
+				VertexAttributeInfo tcoord2(EVA_2TCOORD, sizeof(Vector2), seek);
 				mAttributesInfo.push_back(tcoord2);
-			   }
-			   break;
+			}
+			break;
 			default:
-			   {
+			{
 				vertices = new VertexList();
 				VertexAttributeInfo pos(EVA_POSITION, sizeof(Vector3), 4);
 				mAttributesInfo.push_back(pos);
-			    }
-				break;
+			}
+			break;
 			}
 			if (mVertices)
 			{
@@ -254,6 +239,6 @@ namespace Sapphire
 
 
 	};
-	
+
 
 }
