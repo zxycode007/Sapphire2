@@ -72,6 +72,9 @@
     <ClCompile Include="OpenGL\VideoDriver.cpp">
       <Filter>源文件\graphics\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGL\GLGPUObject.cpp">
+      <Filter>源文件\graphics\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ITexture.h">
@@ -118,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>头文件\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="IGPUObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL\GLGPUObject.h">
+      <Filter>头文件\graphics\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

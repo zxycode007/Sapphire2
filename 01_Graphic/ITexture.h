@@ -1,11 +1,12 @@
 #pragma once
 #include "Resource\Resource.h"
+#include "IGPUObject.h"
 
 namespace Sapphire
 {
 	class Image;
 
-	class SAPPHIRE_API Texture : public Resource
+	class SAPPHIRE_API Texture : public Resource, public GPUObject
 	{
 		SAPPHIRE_OBJECT(Texture, Resource);
 

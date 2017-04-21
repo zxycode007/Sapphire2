@@ -40,7 +40,7 @@ namespace Sapphire
 	private:
 
 		void createWindow();
-		void setTexture(int index, byte* data);
+		void setTexture(int index, int data);
 
 		SharedPtr<ShaderManager>  mShaderManager;
 		SharedPtr<WindowsHandle>  mWindowHandle;

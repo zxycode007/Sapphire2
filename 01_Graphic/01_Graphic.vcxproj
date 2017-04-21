@@ -83,6 +83,7 @@
     <ClCompile Include="ITexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="OpenGL\GLGPUObject.cpp" />
     <ClCompile Include="OpenGL\VideoDriver.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
@@ -92,10 +93,12 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GraphicDefs.h" />
+    <ClInclude Include="IGPUObject.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="ITexture.h" />
     <ClInclude Include="IVideoDriver.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="OpenGL\GLGPUObject.h" />
     <ClInclude Include="OpenGL\VideoDriver.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Shader.h" />

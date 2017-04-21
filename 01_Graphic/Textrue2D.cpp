@@ -5,6 +5,7 @@
 
 Sapphire::Texture2D::Texture2D(Context * ctx):Texture(ctx)
 {
+	GPUObject(ctx->GetSubsystem<VideoDriver>());
 }
 
 Sapphire::Texture2D::~Texture2D()
