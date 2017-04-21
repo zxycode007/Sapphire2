@@ -1,4 +1,5 @@
 #pragma once
+#include <GLFW\glfw3.h>
 #include "Object.h"
 
 namespace Sapphire
@@ -26,6 +27,8 @@ namespace Sapphire
 		void   render();
 		void   EndFrame();
 
+		void   prepareDraw();
+
 		void   release();
 		int    getWidth();
 		void   setWidth(int width);
@@ -37,6 +40,7 @@ namespace Sapphire
 	private:
 
 		void createWindow();
+		void setTexture(int index, byte* data);
 
 		SharedPtr<ShaderManager>  mShaderManager;
 		SharedPtr<WindowsHandle>  mWindowHandle;
