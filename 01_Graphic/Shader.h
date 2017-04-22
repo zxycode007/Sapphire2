@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include <GL\glew.h>
 #include "Resource\Resource.h"
 
 
@@ -20,9 +19,9 @@ namespace Sapphire
 		String  ShaderName;
 		String  VertexShaderSrc;
 		String  FragmentShaderSrc;
-		GLuint    ShaderProgram;
-		GLuint    VertexShaderHandle;
-		GLuint    FragmentShaderHandle;
+		unsigned    ShaderProgram;
+		unsigned    VertexShaderHandle;
+		unsigned    FragmentShaderHandle;
 		bool    isCompiled;
 		
 

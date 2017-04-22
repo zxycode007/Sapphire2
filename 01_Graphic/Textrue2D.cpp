@@ -2,6 +2,10 @@
 #include "Textrue2D.h"
 #include "Resource\Image.h"
 #include <GL\glew.h>
+#include "FileSystem.h"
+#include "Resource\XMLFile.h"
+#include "Resource\ResourceCache.h"
+
 
 
 Sapphire::Texture2D::Texture2D(Context * ctx):Texture(ctx)
@@ -81,8 +85,17 @@ bool Sapphire::Texture2D::BeginLoad(Deserializer & source)
 		mImage.Reset();
 		return false;
 	}
+	//如果异步读取状态
 	if (GetAsyncLoadState() == ASYNC_LOADING)
-		mImage->PrecalculateLevels();
+		mImage->PrecalculateLevels();   //预计数MIP
+
+	 
+
+	// 读取XML配置
+	ResourceCache* cache = GetSubsystem<ResourceCache>();
+	String xmlName = ReplaceExtension(GetName(), ".xml");
+	mloadParameters = cache->GetTempResource<XMLFile>(xmlName, false);
+
 
 	return true;
 }

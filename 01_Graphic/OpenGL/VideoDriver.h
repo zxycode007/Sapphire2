@@ -1,14 +1,18 @@
 #pragma once
-#include <GLFW\glfw3.h>
 #include "Object.h"
+#include "Mutex.h"
+#include <GL\glew.h>
+#include <GLFW\glfw3.h>
+#include "../GraphicDefs.h"
+#include "GLGPUObject.h"
+#include "../ShaderManager.h"
+#include "../Shader.h"
 
 namespace Sapphire
 {
-	typedef GLFWwindow WindowsHandle ;
-	class ShaderManager;
+	typedef GLFWwindow WindowsHandle;
 	class Texture;
-
-
+ 
 	class  SAPPHIRE_API  VideoDriver : public Object
 	{
 		SAPPHIRE_OBJECT(VideoDriver, Object);
@@ -23,6 +27,10 @@ namespace Sapphire
 		WindowsHandle*  GetWindow();
 		void   SetShaderManager(Sapphire::ShaderManager* manager);
 		ShaderManager*  GetShaderManager();
+		ETextureFilterMode  GetDefaultTextureFilterMode();
+		void   SetTextureParametersDirty();
+		bool GetAnisotropySupport() const { return m_bAnisotropySupport; }
+		unsigned GetTextureAnisotropy() const { return m_textureAnisotropy; }
 
 		void   BeginFrame();
 		void   render();
@@ -47,7 +55,7 @@ namespace Sapphire
 		void setTexture(int index, Texture* tex);
 
 		SharedPtr<ShaderManager>  mShaderManager;
-		SharedPtr<WindowsHandle>  mWindowHandle;
+		WindowsHandle*  mWindowHandle;
 		int  m_windth;
 		int  m_height;
 		bool      m_canResize;
@@ -59,6 +67,13 @@ namespace Sapphire
 		int       m_activeTexture;
 		//纹理类型
 		unsigned  m_textrueTypes[SAPPHIRE_MAX_TEXTURE_UNIT];
+		/// GPU 对象
+		PODVector<GPUObject*>  m_gpuobjects;
+		Mutex                 m_gpuobjectsMutex;
+		bool                  m_bAnisotropySupport;
+		unsigned              m_textureAnisotropy;
+		 
+
 		//OpenGL3.0支持标志
 		static bool      m_gl3support;
 

@@ -1,6 +1,4 @@
 #include "VideoDriver.h"
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
 #include "Context.h"
 #include "Color.h"
 #include "../ITexture.h"
@@ -44,10 +42,9 @@ void Sapphire::VideoDriver::SetWindow(WindowsHandle * window)
 	if (window)
 	{
 		glfwMakeContextCurrent(window);
-		if (mWindowHandle.NotNull())
+		if (mWindowHandle)
 		{
-			glfwDestroyWindow(mWindowHandle.Get());
-			mWindowHandle.Reset();
+			glfwDestroyWindow(mWindowHandle);
 		}
 		mWindowHandle = window;
 	}
@@ -55,7 +52,7 @@ void Sapphire::VideoDriver::SetWindow(WindowsHandle * window)
 
 Sapphire::WindowsHandle * Sapphire::VideoDriver::GetWindow()
 {
-	return mWindowHandle.NotNull()? mWindowHandle.Get():NULL;
+	return mWindowHandle==NULL? mWindowHandle:NULL;
 }
 
 void Sapphire::VideoDriver::SetShaderManager(Sapphire::ShaderManager * manager)
@@ -74,6 +71,22 @@ void Sapphire::VideoDriver::SetShaderManager(Sapphire::ShaderManager * manager)
 Sapphire::ShaderManager * Sapphire::VideoDriver::GetShaderManager()
 {
 	return mShaderManager.NotNull()?mShaderManager.Get():NULL;
+}
+
+Sapphire::ETextureFilterMode Sapphire::VideoDriver::GetDefaultTextureFilterMode()
+{
+	return ETextureFilterMode::EFILTER_NEAREST;
+}
+
+void Sapphire::VideoDriver::SetTextureParametersDirty()
+{
+	MutexLock lock(m_gpuobjectsMutex);
+	for (PODVector<GPUObject*>::Iterator it = m_gpuobjects.Begin(); it != m_gpuobjects.End(); ++it)
+	{
+		Texture* texture = dynamic_cast<Texture*>(*it);
+		if (texture)
+			texture->SetParametersDirty();   //设置纹理参数发生变更
+	}
 }
 
 void Sapphire::VideoDriver::BeginFrame()

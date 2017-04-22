@@ -31,7 +31,7 @@ namespace Sapphire
 #endif
 
 	//获取纹理寻址模式
-	static GLenum GetWrapMode(TextureAddressingMode mode);
+	static GLenum GetWrapMode(ETextureAddressingMode mode);
 	
 
 	class SAPPHIRE_API Texture : public Resource, public GPUObject
@@ -43,6 +43,7 @@ namespace Sapphire
 		Texture(Context* ctx);
 		virtual ~Texture();
 
+		void SetMipLevel(unsigned level);
 		void SetSize(int width, int height, int depth = 32);
 		void SetWidth(int width);
 		void SetHeight(int height);
@@ -52,6 +53,12 @@ namespace Sapphire
 		int GetHeight();
 		unsigned  GetTextureTarget();
 		bool     GetTextureParametersDirty(){ return m_parametersDirty; }
+		ETextureFilterMode   GetFilterMode() { return m_filterMode; }
+		ETextureAddressingMode  GetAddressMode(ETextureCoordinate coord) { return m_addressMode[coord]; }
+		//设置纹理参数需要更新
+		void    SetParametersDirty();
+		void    SetFilterMode(ETextureFilterMode  filterMode);
+		void    SetAddressMode(ETextureCoordinate coord, ETextureAddressingMode   addressMode);
 		//更新纹理参数
 		void   UpdateParameters();
 
@@ -61,10 +68,13 @@ namespace Sapphire
 		int m_width;
 		int m_height;
 		int m_depth;
+		unsigned m_mipLevel;
 		//纹理参数脏标志
 		bool  m_parametersDirty;
 		//u/v/w纹理寻址模式
-		TextureAddressingMode m_addressMode[TextureCoordinate::MAX_COORDS];
+		ETextureAddressingMode m_addressMode[ETextureCoordinate::MAX_COORDS];
+
+		ETextureFilterMode m_filterMode;
 
 	private:
 

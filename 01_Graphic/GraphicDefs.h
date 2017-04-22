@@ -75,20 +75,33 @@ namespace Sapphire
 		EIT_32BIT
 	};
 
-	enum TextureAddressingMode
+	//纹理寻址模式
+	enum ETextureAddressingMode
 	{
-		EADDRESS_WRAP = 0,
-		EADDRESS_MIRROR,
-		EADDRESS_CLAMP,
-		EADDRESS_BORDER,
-		MAX_EADDRESSMODES
+		EAD_WRAP = 0,
+		EAD_MIRROR,
+		EAD_CLAMP,
+		EAD_BORDER,
+		MAX_EAD_MODES
 	};
 
-	enum TextureCoordinate
+	//纹理坐标
+	enum ETextureCoordinate
 	{
-		COORD_U = 0,
-		COORD_V,
-		COORD_W,
+		ECOORD_U = 0,
+		ECOORD_V,
+		ECOORD_W,
 		MAX_COORDS
+	};
+
+	//纹理滤波模式
+	enum ETextureFilterMode
+	{
+		EFILTER_NEAREST = 0,
+		FILTER_BILINEAR,
+		FILTER_TRILINEAR,
+		FILTER_ANISOTROPIC,
+		FILTER_DEFAULT,
+		MAX_EFILTERMODES
 	};
 }

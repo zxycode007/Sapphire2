@@ -5,6 +5,8 @@
 
 namespace Sapphire
 {
+	class XMLFile;
+
 	class SAPPHIRE_API Texture2D : public Texture
 	{
 		SAPPHIRE_OBJECT(Texture2D, Texture);
@@ -31,7 +33,10 @@ namespace Sapphire
 		int     mWidth;
 		int     mHeight;
 		int     mDepth;
+
 		SharedPtr<Image>  mImage;
+		//XML≈‰÷√≤Œ ˝
+		SharedPtr<XMLFile>  mloadParameters;
 
 	};
 }
