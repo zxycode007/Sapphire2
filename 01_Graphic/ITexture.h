@@ -7,6 +7,8 @@
 namespace Sapphire
 {
 	class Image;
+	class XMLFile;
+	class XMLElement;
 
 	static GLenum glWrapModes[] =
 	{
@@ -29,6 +31,8 @@ namespace Sapphire
 		GL_CLAMP_TO_BORDER
 	};
 #endif
+
+
 
 	//获取纹理寻址模式
 	static GLenum GetWrapMode(ETextureAddressingMode mode);
@@ -61,6 +65,8 @@ namespace Sapphire
 		void    SetAddressMode(ETextureCoordinate coord, ETextureAddressingMode   addressMode);
 		//更新纹理参数
 		void   UpdateParameters();
+		void SetParameters(XMLFile* xml);
+		void SetParameters(const XMLElement& element);
 
 	protected:
 		//纹理目标GL_TEXTURE_2D/3D

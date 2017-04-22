@@ -50,6 +50,15 @@ void Sapphire::VideoDriver::SetWindow(WindowsHandle * window)
 	}
 }
 
+void Sapphire::VideoDriver::SetWindowPos(WindowsHandle * window, IntVector2 & pos)
+{
+	if (mWindowHandle)
+	{
+		glfwSetWindowPos(window, pos.x_, pos.y_);
+	}
+	SAPPHIRE_LOGDEBUG("Error! WindowHandle invalid!");
+}
+
 Sapphire::WindowsHandle * Sapphire::VideoDriver::GetWindow()
 {
 	return mWindowHandle==NULL? mWindowHandle:NULL;
@@ -86,6 +95,25 @@ void Sapphire::VideoDriver::SetTextureParametersDirty()
 		Texture* texture = dynamic_cast<Texture*>(*it);
 		if (texture)
 			texture->SetParametersDirty();   //设置纹理参数发生变更
+	}
+}
+
+void Sapphire::VideoDriver::SetTextureAnisotropy(unsigned level)
+{
+	if (level != m_textureAnisotropy)
+	{
+		m_textureAnisotropy = level;
+		SetTextureParametersDirty();
+	}
+	
+}
+
+void Sapphire::VideoDriver::SetDefaultTextureFilterMode(ETextureFilterMode mode)
+{
+	if (mode != m_defaultfilterMode)
+	{
+		m_defaultfilterMode = mode;
+		SetTextureParametersDirty();
 	}
 }
 
@@ -171,6 +199,9 @@ void Sapphire::VideoDriver::setTexture(int index, Texture* tex)
 			glBindTexture(glType, tex->GetGPUHandle());
 			m_textrueTypes[index] = glType;
 
+			if (tex->GetTextureParametersDirty())
+				tex->UpdateParameters();
+
 		}
 		else if (m_textrueTypes[index])
 		{
@@ -191,6 +222,7 @@ void Sapphire::VideoDriver::setTexture(int index, Texture* tex)
 				m_activeTexture = index;
 			}
 			glBindTexture(m_textrueTypes[index], tex->GetGPUHandle());
+			tex->UpdateParameters();
 		}
 	}
 

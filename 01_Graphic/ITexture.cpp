@@ -2,7 +2,27 @@
 #include "Context.h"
 #include "IVideoDriver.h"
 #include "GraphicDefs.h"
+#include "Resource\XMLFile.h"
+#include "Resource\XMLElement.h"
 
+static const char* addressModeNames[] =
+{
+	"wrap",
+	"mirror",
+	"clamp",
+	"border",
+	0
+};
+
+static const char* filterModeNames[] =
+{
+	"nearest",
+	"bilinear",
+	"trilinear",
+	"anisotropic",
+	"default",
+	0
+};
 
 Sapphire::Texture::Texture(Context * ctx) : Resource(ctx), GPUObject(ctx->GetSubsystem<VideoDriver>())
 , m_parametersDirty(true),
@@ -140,10 +160,51 @@ void  Sapphire::Texture::UpdateParameters()
 			filterMode == FILTER_ANISOTROPIC ? (float)GetVideoDiver()->GetTextureAnisotropy() : 1.0f);
 	}
 
-	
 #endif
 
 	m_parametersDirty = false;
+}
+
+void Sapphire::Texture::SetParameters(XMLFile * xml)
+{
+	if (!xml)
+		return;
+
+	XMLElement rootElem = xml->GetRoot();
+	SetParameters(rootElem);
+}
+
+void Sapphire::Texture::SetParameters(const XMLElement & element)
+{
+	XMLElement paramElem = element.GetChild();
+	while (paramElem)
+	{
+		String name = paramElem.GetName();
+
+		if (name == "address")
+		{
+			String coord = paramElem.GetAttributeLower("coord");
+			if (coord.Length() >= 1)
+			{
+				ETextureCoordinate coordIndex = (ETextureCoordinate)(coord[0] - 'u');
+				String mode = paramElem.GetAttributeLower("mode");
+				SetAddressMode(coordIndex, (ETextureAddressingMode)GetStringListIndex(mode.CString(), addressModeNames, EAD_WRAP));
+			}
+		}		 
+
+		if (name == "filter")
+		{
+			String mode = paramElem.GetAttributeLower("mode");
+			SetFilterMode((ETextureFilterMode)GetStringListIndex(mode.CString(), filterModeNames, FILTER_DEFAULT));
+		}
+
+		if (name == "mipmap")
+			SetMipLevel(paramElem.GetBool("enable") ? 0 : 1);
+
+		 
+
+		paramElem = paramElem.GetNext();
+	}
 }
 
 GLenum Sapphire::GetWrapMode(Sapphire::ETextureAddressingMode mode)

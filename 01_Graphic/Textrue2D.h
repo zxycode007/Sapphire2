@@ -6,6 +6,7 @@
 namespace Sapphire
 {
 	class XMLFile;
+	class XMLElement;
 
 	class SAPPHIRE_API Texture2D : public Texture
 	{
@@ -25,6 +26,8 @@ namespace Sapphire
 		void SetData(Image* image);
 		void SetData(void* data, int width, int height, int depth = 32);
 		bool GetData(void*& dest);
+
+		
 
 		virtual bool BeginLoad(Deserializer& source);
 		virtual bool EndLoad();

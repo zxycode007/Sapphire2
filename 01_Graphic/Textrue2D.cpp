@@ -76,6 +76,8 @@ bool Sapphire::Texture2D::GetData(void*& dest)
 	return false;
 }
 
+
+
 bool Sapphire::Texture2D::BeginLoad(Deserializer & source)
 {
 	mImage = new Image(context_);

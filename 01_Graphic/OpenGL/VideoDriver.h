@@ -24,6 +24,7 @@ namespace Sapphire
 
 		void  Initialize();
 		void  SetWindow(WindowsHandle* window);
+		void  SetWindowPos(WindowsHandle* window, IntVector2& pos);
 		WindowsHandle*  GetWindow();
 		void   SetShaderManager(Sapphire::ShaderManager* manager);
 		ShaderManager*  GetShaderManager();
@@ -31,6 +32,8 @@ namespace Sapphire
 		void   SetTextureParametersDirty();
 		bool GetAnisotropySupport() const { return m_bAnisotropySupport; }
 		unsigned GetTextureAnisotropy() const { return m_textureAnisotropy; }
+		void SetTextureAnisotropy(unsigned level);
+		void SetDefaultTextureFilterMode(ETextureFilterMode mode);
 
 		void   BeginFrame();
 		void   render();
@@ -72,6 +75,7 @@ namespace Sapphire
 		Mutex                 m_gpuobjectsMutex;
 		bool                  m_bAnisotropySupport;
 		unsigned              m_textureAnisotropy;
+		ETextureFilterMode       m_defaultfilterMode;
 		 
 
 		//OpenGL3.0支持标志
