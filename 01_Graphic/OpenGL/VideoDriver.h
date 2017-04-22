@@ -37,6 +37,8 @@ namespace Sapphire
 		Color  getClearColor();
 		void   setWindowName(String name);
 		String getWindowName();
+		//是否支持OpenGL3.0
+		static bool   getGL3Support(){ return m_gl3support; };
 
 	private:
 
@@ -57,6 +59,8 @@ namespace Sapphire
 		int       m_activeTexture;
 		//纹理类型
 		unsigned  m_textrueTypes[SAPPHIRE_MAX_TEXTURE_UNIT];
+		//OpenGL3.0支持标志
+		static bool      m_gl3support;
 
 	};
 }

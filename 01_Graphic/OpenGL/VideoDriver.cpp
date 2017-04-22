@@ -13,6 +13,8 @@ Sapphire::VideoDriver::~VideoDriver()
 {
 }
 
+bool Sapphire::VideoDriver::m_gl3support = false;
+
 void Sapphire::VideoDriver::Initialize()
 {
 	//glfwInit来初始化GLFW，然后我们可以使用glfwWindowHint来配置GLFW。

@@ -131,7 +131,7 @@ namespace Sapphire
 	};
 
 	/// 纹理地址模式
-	enum TextureAddressMode
+	enum ETextureAddressMode
 	{
 		ADDRESS_WRAP = 0,
 		ADDRESS_MIRROR,

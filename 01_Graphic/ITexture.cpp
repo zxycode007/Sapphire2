@@ -1,6 +1,7 @@
 #include "ITexture.h"
 #include "Context.h"
 #include "IVideoDriver.h"
+#include "GraphicDefs.h"
 
 Sapphire::Texture::Texture(Context * ctx) : Resource(ctx), GPUObject(ctx->GetSubsystem<VideoDriver>())
 {
@@ -56,5 +57,20 @@ unsigned Sapphire::Texture::GetTextureTarget()
 
 void  Sapphire::Texture::UpdateParameters()
 {
+	if (!GetGPUHandle() && !GetVideoDiver())
+		return;
+	glTexParameteri(m_target, GL_TEXTURE_WRAP_S, GetWrapMode(m_addressMode[COORD_U]));
+	glTexParameteri(m_target, GL_TEXTURE_WRAP_T, GetWrapMode(m_addressMode[COORD_V]));
+#ifndef GL_ES_VERSION_2_0
+	glTexParameteri(m_target, GL_TEXTURE_WRAP_R, GetWrapMode(m_addressMode[COORD_W]));
+#endif
+}
 
+static GLenum GetWrapMode(Sapphire::TextureAddressingMode mode)
+{
+#ifndef GL_ES_VERSION_2_0
+	return Sapphire::VideoDriver::getGL3Support() ? Sapphire::gl3WrapModes[mode] : Sapphire::glWrapModes[mode];
+#else
+	return glWrapModes[mode];
+#endif
 }

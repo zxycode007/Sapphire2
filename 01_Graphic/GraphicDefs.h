@@ -75,5 +75,20 @@ namespace Sapphire
 		EIT_32BIT
 	};
 
-	
+	enum TextureAddressingMode
+	{
+		EADDRESS_WRAP = 0,
+		EADDRESS_MIRROR,
+		EADDRESS_CLAMP,
+		EADDRESS_BORDER,
+		MAX_EADDRESSMODES
+	};
+
+	enum TextureCoordinate
+	{
+		COORD_U = 0,
+		COORD_V,
+		COORD_W,
+		MAX_COORDS
+	};
 }
