@@ -1,11 +1,12 @@
 #include "Context.h"
 #include "Textrue2D.h"
 #include "Resource\Image.h"
+#include <GL\glew.h>
 
 
 Sapphire::Texture2D::Texture2D(Context * ctx):Texture(ctx)
 {
-	GPUObject(ctx->GetSubsystem<VideoDriver>());
+	m_target = GL_TEXTURE_2D;
 }
 
 Sapphire::Texture2D::~Texture2D()

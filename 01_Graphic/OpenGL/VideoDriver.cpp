@@ -3,6 +3,7 @@
 #include <GLFW\glfw3.h>
 #include "Context.h"
 #include "Color.h"
+#include "../ITexture.h"
 
 Sapphire::VideoDriver::VideoDriver(Context * context) :Object(context)
 {
@@ -122,4 +123,60 @@ void Sapphire::VideoDriver::setWindowName(String name)
 Sapphire::String Sapphire::VideoDriver::getWindowName()
 {
 	return m_windowName;
+}
+
+void Sapphire::VideoDriver::setTexture(int index, Texture* tex)
+{
+	if (index > SAPPHIRE_MAX_TEXTURE_UNIT)
+	{
+		SAPPHIRE_LOGGING("texture index exceeded!");
+		return;
+	}
+	
+	//纹理已存在
+	if (m_textures[index] != tex)
+	{
+		if (m_activeTexture != index)
+		{
+			//激活该纹理
+			glActiveTexture(GL_TEXTURE0 + index);
+			m_activeTexture = index;
+		}
+
+		if (tex)
+		{
+			//如果纹理有效
+			unsigned glType = tex->GetTextureTarget();
+			if (m_textrueTypes[index] && m_textrueTypes[index] != glType)
+			{
+				//取消原绑定的纹理
+				glBindTexture(m_textrueTypes[index], 0);
+			}
+			//绑定现在的纹理
+			glBindTexture(glType, tex->GetGPUHandle());
+			m_textrueTypes[index] = glType;
+
+		}
+		else if (m_textrueTypes[index])
+		{
+			//解除原理的绑定
+			glBindTexture(m_textrueTypes[index], 0);
+			m_textrueTypes[index] = 0;
+		}
+
+	}
+	else
+	{
+		if (tex && tex->GetTextureParametersDirty())
+		{
+			if (m_activeTexture != index)
+			{    
+				//激活新的纹理
+				glActiveTexture(GL_TEXTURE0 + index);
+				m_activeTexture = index;
+			}
+			glBindTexture(m_textrueTypes[index], tex->GetGPUHandle());
+		}
+	}
+
 }

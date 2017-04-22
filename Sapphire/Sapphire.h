@@ -49,7 +49,7 @@
 #define SAPPHIRE_OPENGL_VERSION_MIRROR 5
 
 
-#define SAPPHIRE_MAX_TEXTURE_UNIT    8;
+#define SAPPHIRE_MAX_TEXTURE_UNIT    8
 
 #include <Windows.h>
 

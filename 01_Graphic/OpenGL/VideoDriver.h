@@ -6,6 +6,7 @@ namespace Sapphire
 {
 	typedef GLFWwindow WindowsHandle ;
 	class ShaderManager;
+	class Texture;
 
 
 	class  SAPPHIRE_API  VideoDriver : public Object
@@ -40,7 +41,8 @@ namespace Sapphire
 	private:
 
 		void createWindow();
-		void setTexture(int index, int data);
+		//设置纹理 
+		void setTexture(int index, Texture* tex);
 
 		SharedPtr<ShaderManager>  mShaderManager;
 		SharedPtr<WindowsHandle>  mWindowHandle;
@@ -49,6 +51,12 @@ namespace Sapphire
 		bool      m_canResize;
 		Color     m_clearColor;
 		String    m_windowName;
+		//渲染使用的纹理
+		Texture*  m_textures[SAPPHIRE_MAX_TEXTURE_UNIT];
+		//激活的纹理索引
+		int       m_activeTexture;
+		//纹理类型
+		unsigned  m_textrueTypes[SAPPHIRE_MAX_TEXTURE_UNIT];
 
 	};
 }

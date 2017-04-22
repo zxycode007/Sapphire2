@@ -1,7 +1,10 @@
 #include "ITexture.h"
+#include "Context.h"
+#include "IVideoDriver.h"
 
-Sapphire::Texture::Texture(Context * ctx): Resource(ctx)
+Sapphire::Texture::Texture(Context * ctx) : Resource(ctx), GPUObject(ctx->GetSubsystem<VideoDriver>())
 {
+	
 }
 
 Sapphire::Texture::~Texture()
@@ -43,4 +46,15 @@ int Sapphire::Texture::GetWidth()
 int Sapphire::Texture::GetHeight()
 {
 	return m_height;
+}
+
+unsigned Sapphire::Texture::GetTextureTarget()
+{
+	return m_target;
+}
+
+
+void  Sapphire::Texture::UpdateParameters()
+{
+
 }

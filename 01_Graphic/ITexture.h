@@ -22,13 +22,23 @@ namespace Sapphire
 		int GetDepth();
 	    int GetWidth();
 		int GetHeight();
+		unsigned  GetTextureTarget();
+		bool     GetTextureParametersDirty(){ return m_parametersDirty; }
+		void   UpdateParameters();
 
-
-	private:
-
+	protected:
+		//纹理目标GL_TEXTURE_2D/3D
+		unsigned   m_target;
 		int m_width;
 		int m_height;
 		int m_depth;
+		//纹理参数脏标志
+		bool  m_parametersDirty;
+
+	private:
+
+		
+		
 
 
 	};
