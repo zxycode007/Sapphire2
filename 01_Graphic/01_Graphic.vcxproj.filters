@@ -128,5 +128,8 @@
     <ClInclude Include="ShaderManager.h">
       <Filter>头文件\graphics\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsEvents.h">
+      <Filter>头文件\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

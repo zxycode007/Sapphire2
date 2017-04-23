@@ -12,6 +12,9 @@ namespace Sapphire
 {
 	typedef GLFWwindow WindowsHandle;
 	class Texture;
+	class Geometry;
+	class XMLFile;
+	class XMLElement;
  
 	class  SAPPHIRE_API  VideoDriver : public Object
 	{
@@ -40,7 +43,8 @@ namespace Sapphire
 		void   EndFrame();
 
 		void   prepareDraw();
-
+		void   Draw(EPRIMITIVE_TYPE type, Geometry* geo);
+		bool   IsInitialzed();
 		void   release();
 		int    getWidth();
 		void   setWidth(int width);
@@ -48,6 +52,10 @@ namespace Sapphire
 		Color  getClearColor();
 		void   setWindowName(String name);
 		String getWindowName();
+		void   setVBO(unsigned obj);
+		void   setVAO(unsigned  obj);
+		void   setEBO(unsigned  obj);
+
 		//是否支持OpenGL3.0
 		static bool   getGL3Support(){ return m_gl3support; };
 
@@ -61,6 +69,7 @@ namespace Sapphire
 		WindowsHandle*  mWindowHandle;
 		int  m_windth;
 		int  m_height;
+		bool      m_fullScreen;
 		bool      m_canResize;
 		Color     m_clearColor;
 		String    m_windowName;
@@ -76,10 +85,20 @@ namespace Sapphire
 		bool                  m_bAnisotropySupport;
 		unsigned              m_textureAnisotropy;
 		ETextureFilterMode       m_defaultfilterMode;
-		 
+		bool                  m_isInitialized;
+
+		unsigned              m_Vbo;
+		unsigned              m_Vao;
+		unsigned              m_Ebo;
 
 		//OpenGL3.0支持标志
 		static bool      m_gl3support;
+
+	private:
+
+		//读取XML配置文件
+		void LoadConfig(XMLFile* xmlFile);
+		void LoadConfigElement(XMLElement* element);
 
 	};
 }

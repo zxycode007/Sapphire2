@@ -93,6 +93,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GraphicDefs.h" />
+    <ClInclude Include="GraphicsEvents.h" />
     <ClInclude Include="IGPUObject.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="ITexture.h" />

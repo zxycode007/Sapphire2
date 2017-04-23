@@ -1,9 +1,21 @@
+#include "Resource\ResourceCache.h"
 #include "VideoDriver.h"
 #include "Context.h"
 #include "Color.h"
 #include "../ITexture.h"
+#include "../Resource/XMLFile.h"
+#include "../GraphicsEvents.h"
+#include "../Geometry.h"
 
 Sapphire::VideoDriver::VideoDriver(Context * context) :Object(context)
+,m_isInitialized(false),
+m_windth(800),
+m_height(600),
+m_fullScreen(false),
+m_canResize(false),
+m_clearColor(Color::BLACK),
+m_windowName("testWindow"),
+m_bAnisotropySupport(false)
 {
 }
 
@@ -15,6 +27,12 @@ bool Sapphire::VideoDriver::m_gl3support = false;
 
 void Sapphire::VideoDriver::Initialize()
 {
+	//初始化
+	SetShaderManager(context_->GetSubsystem<ShaderManager>());
+	ResourceCache* cache = context_->GetSubsystem<ResourceCache>();
+	SharedPtr<XMLFile> configFile = cache->GetTempResource<XMLFile>("config.xml");
+	mShaderManager = context_->GetSubsystem<ShaderManager>();
+	LoadConfig(configFile);
 	//glfwInit来初始化GLFW，然后我们可以使用glfwWindowHint来配置GLFW。
 	glfwInit();
 	//glfwWindowHint的第一个参数告诉我们，配置哪个选项，这些选项带有GLFW_前缀。第二个参数是一个整数，它代表我们为选项所设置的值
@@ -29,12 +47,37 @@ void Sapphire::VideoDriver::Initialize()
 	{
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	}
+	mWindowHandle = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
+	//创建我们窗口的环境（glfwMakeContextCurrent），这个环境是当前线程的主环境
+	//设置当前窗口
+	glfwMakeContextCurrent(mWindowHandle);
+	if (mWindowHandle == NULL)
+	{
+		SAPPHIRE_LOGDEBUG("Failed to create GLFW window");
+		glfwTerminate();
+		return;
+	}
 
-	SetShaderManager(context_->GetSubsystem<ShaderManager>());
+	//初始化GLEW
+	//在初始化GLEW前我们把glewExperimental变量设置为GL_TRUE。(glew 1.13或更早的版本)
+	//设置glewExperimental为true可以保证GLEW使用更多的现代技术来管理OpenGL机能。
+	//如果不这么设置，它就会使用默认的GL_FALSE，这样当使用core profile的时有可能发生问题。
+	glewExperimental = GL_TRUE;
+	if (glewInit() != GLEW_OK) //glewInit()放在Opengl环境建立之后
+	{
+		//初始化失败
+		SAPPHIRE_LOGDEBUG("Failed to initialize GLEW");
+		return;
+	}
 
+
+	// 定义视口大小
+	int width, height;
+	glfwGetFramebufferSize(mWindowHandle, &width, &height);
+	glViewport(0, 0, width, height);
+
+	m_isInitialized = true;
 	
-
-
 }
 
 void Sapphire::VideoDriver::SetWindow(WindowsHandle * window)
@@ -119,6 +162,15 @@ void Sapphire::VideoDriver::SetDefaultTextureFilterMode(ETextureFilterMode mode)
 
 void Sapphire::VideoDriver::BeginFrame()
 {
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	for (int i = 0; i < SAPPHIRE_MAX_TEXTURE_UNIT; i++)
+	{
+		setTexture(i, 0);
+	}
+	prepareDraw();
+
+	SendEvent(E_BEGINRENDERING);
 }
 
 void Sapphire::VideoDriver::render()
@@ -131,6 +183,28 @@ void Sapphire::VideoDriver::createWindow()
 
 void Sapphire::VideoDriver::EndFrame()
 {
+	SendEvent(E_ENDRENDERING);
+}
+
+void Sapphire::VideoDriver::prepareDraw()
+{
+}
+
+void Sapphire::VideoDriver::Draw(EPRIMITIVE_TYPE type, Geometry * geo)
+{
+	if (!geo)
+	{
+		return;
+	}
+	Material* material = geo->getMaterial();
+	material->GetTexture("");
+	
+	
+}
+
+bool Sapphire::VideoDriver::IsInitialzed()
+{
+	return m_isInitialized;
 }
 
 void Sapphire::VideoDriver::release()
@@ -166,6 +240,40 @@ void Sapphire::VideoDriver::setWindowName(String name)
 Sapphire::String Sapphire::VideoDriver::getWindowName()
 {
 	return m_windowName;
+}
+
+void Sapphire::VideoDriver::setVBO(unsigned obj)
+{
+	if (m_Vbo != obj)
+	{
+		if (obj)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, obj);
+			m_Vbo = obj;
+		}
+	}
+}
+
+void Sapphire::VideoDriver::setVAO(unsigned obj)
+{
+	if (m_Vao != obj)
+	{
+		if (obj)
+		{
+			glBindVertexArray(obj);
+			m_Vao = obj;
+
+		}
+	}
+}
+
+void Sapphire::VideoDriver::setEBO(unsigned obj)
+{
+	if (m_Ebo != obj)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj);
+		m_Ebo = obj;
+	}
 }
 
 void Sapphire::VideoDriver::setTexture(int index, Texture* tex)
@@ -226,4 +334,39 @@ void Sapphire::VideoDriver::setTexture(int index, Texture* tex)
 		}
 	}
 
+}
+
+void Sapphire::VideoDriver::LoadConfig(XMLFile * xmlFile)
+{
+	if (!xmlFile)
+	{
+		SAPPHIRE_LOGDEBUG("load config.xml faild!");
+		return;
+	}
+	XMLElement root = xmlFile->GetRoot();
+	LoadConfigElement(&root);
+}
+
+void Sapphire::VideoDriver::LoadConfigElement(XMLElement * element)
+{
+	XMLElement paramElem = element->GetChild();
+	while (paramElem)
+	{
+		String name = paramElem.GetName();
+		if (name == "display")
+		{
+			String width = paramElem.GetAttributeLower("width");
+			String height = paramElem.GetAttributeLower("height");
+			String fullscreen = paramElem.GetAttribute("fullscreen");
+			m_windth = ToInt(width);
+			m_height = ToInt(height);
+			m_fullScreen = ToBool(fullscreen);
+		}
+		if (name == "application")
+		{
+			String appName = paramElem.GetAttribute("name");
+			m_windowName = appName;
+		}
+		paramElem = paramElem.GetNext();
+	}
 }
