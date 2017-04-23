@@ -16,6 +16,12 @@ namespace Sapphire
 		Variant value_;
 	};
 
+	/// 纹理单元的hash方法
+	 inline unsigned MakeHash(const ETextureUnit& value)
+	{
+		return (unsigned)value;
+	}
+
 	class SAPPHIRE_API Material : public Resource
 	{
 		SAPPHIRE_OBJECT(Material, Resource);
@@ -26,9 +32,9 @@ namespace Sapphire
 		virtual ~Material();
 
 		virtual void SetShaderParameter(String name, Variant parameter);
-		virtual void SetTexture(String name, Texture* texture);
+		virtual void SetTexture(ETextureUnit unit, Texture* texture);
 		virtual void SetFillMode(FillMode mode);
-		virtual Texture*   GetTexture(String name);
+		virtual Texture*   GetTexture(ETextureUnit name);
 		virtual FillMode    GetFillMode();
 		virtual MaterialShaderParameter  GetShaderParameter(String name);
 		virtual void  SetShader(String name, Shader* shader);
@@ -37,9 +43,11 @@ namespace Sapphire
 		virtual void         SetVertexType(EVertexType vType);
 
 	private:
+
 		HashMap<String, SharedPtr<Shader>> mShaderMap;
 		HashMap<String, MaterialShaderParameter> mShaderParameters;
-		HashMap<String, SharedPtr<Texture>>   mTextureMap;
+		//纹理单元与纹理的映射
+		HashMap<ETextureUnit, SharedPtr<Texture>>   mTextureMap;
 		FillMode                     mFillMode;
 		EVertexType                  mVertexType;
 	};

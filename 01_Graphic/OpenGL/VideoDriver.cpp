@@ -160,6 +160,41 @@ void Sapphire::VideoDriver::SetDefaultTextureFilterMode(ETextureFilterMode mode)
 	}
 }
 
+void Sapphire::VideoDriver::SetTextureUnit()
+{
+	m_textureUnits["DiffMap"] = TU_DIFFUSE;
+	m_textureUnits["DiffCubeMap"] = TU_DIFFUSE;
+	m_textureUnits["AlbedoBuffer"] = TU_ALBEDOBUFFER;
+	m_textureUnits["NormalMap"] = TU_NORMAL;
+	m_textureUnits["NormalBuffer"] = TU_NORMALBUFFER;
+	m_textureUnits["SpecMap"] = TU_SPECULAR;
+	m_textureUnits["EmissiveMap"] = TU_EMISSIVE;
+	m_textureUnits["EnvMap"] = TU_ENVIRONMENT;
+	m_textureUnits["EnvCubeMap"] = TU_ENVIRONMENT;
+	m_textureUnits["LightRampMap"] = TU_LIGHTRAMP;
+	m_textureUnits["LightSpotMap"] = TU_LIGHTSHAPE;
+	m_textureUnits["LightCubeMap"] = TU_LIGHTSHAPE;
+	m_textureUnits["ShadowMap"] = TU_SHADOWMAP;
+#ifdef SAPPHIRE_DESKTOP_GRAPHICS
+	m_textureUnits["VolumeMap"] = TU_VOLUMEMAP;
+	m_textureUnits["FaceSelectCubeMap"] = TU_FACESELECT;
+	m_textureUnits["IndirectionCubeMap"] = TU_INDIRECTION;
+	m_textureUnits["DepthBuffer"] = TU_DEPTHBUFFER;
+	m_textureUnits["LightBuffer"] = TU_LIGHTBUFFER;
+	m_textureUnits["ZoneCubeMap"] = TU_ZONE;
+	m_textureUnits["ZoneVolumeMap"] = TU_ZONE;
+#endif
+}
+
+void Sapphire::VideoDriver::Close()
+{
+}
+
+void Sapphire::VideoDriver::Clear()
+{
+
+}
+
 void Sapphire::VideoDriver::BeginFrame()
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -171,6 +206,7 @@ void Sapphire::VideoDriver::BeginFrame()
 	prepareDraw();
 
 	SendEvent(E_BEGINRENDERING);
+	
 }
 
 void Sapphire::VideoDriver::render()
@@ -197,7 +233,7 @@ void Sapphire::VideoDriver::Draw(EPRIMITIVE_TYPE type, Geometry * geo)
 		return;
 	}
 	Material* material = geo->getMaterial();
-	material->GetTexture("");
+	
 	
 	
 }

@@ -49,7 +49,14 @@
 #define SAPPHIRE_OPENGL_VERSION_MIRROR 5
 
 
-#define SAPPHIRE_MAX_TEXTURE_UNIT    8
+#define SAPPHIRE_MAX_TEXTURE_UNIT    16
+
+//移动端还是桌面图形系统
+#if defined(ANDROID) || defined(IOS) || defined(RPI)
+#define SAPPHIRE_MOBILE_GRAPHICS
+#else
+#define SAPPHIRE_DESKTOP_GRAPHICS
+#endif
 
 #include <Windows.h>
 

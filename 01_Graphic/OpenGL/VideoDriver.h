@@ -37,6 +37,10 @@ namespace Sapphire
 		unsigned GetTextureAnisotropy() const { return m_textureAnisotropy; }
 		void SetTextureAnisotropy(unsigned level);
 		void SetDefaultTextureFilterMode(ETextureFilterMode mode);
+		//设置指定各个纹理单元
+		void  SetTextureUnit();
+		void   Close();
+		void   Clear();
 
 		void   BeginFrame();
 		void   render();
@@ -52,7 +56,7 @@ namespace Sapphire
 		Color  getClearColor();
 		void   setWindowName(String name);
 		String getWindowName();
-		void   setVBO(unsigned obj);
+		void   setVBO(unsigned  obj);
 		void   setVAO(unsigned  obj);
 		void   setEBO(unsigned  obj);
 
@@ -79,6 +83,8 @@ namespace Sapphire
 		int       m_activeTexture;
 		//纹理类型
 		unsigned  m_textrueTypes[SAPPHIRE_MAX_TEXTURE_UNIT];
+		/// 纹理单元映射
+		HashMap<String, ETextureUnit> m_textureUnits;
 		/// GPU 对象
 		PODVector<GPUObject*>  m_gpuobjects;
 		Mutex                 m_gpuobjectsMutex;

@@ -27,9 +27,9 @@ void Sapphire::Material::SetShaderParameter(String name, Variant parameter)
 	}
 }
 
-void Sapphire::Material::SetTexture(String name, Texture * texture)
+void Sapphire::Material::SetTexture(ETextureUnit unit, Texture* texture)
 {
-	HashMap<String, SharedPtr<Texture>>::Iterator it = mTextureMap.Find(name);
+	HashMap<ETextureUnit, SharedPtr<Texture>>::Iterator it = mTextureMap.Find(unit);
 	if (it != mTextureMap.End())
 	{
 		it->second_.Reset();
@@ -37,7 +37,7 @@ void Sapphire::Material::SetTexture(String name, Texture * texture)
 	}
 	else
 	{	
-		mTextureMap[name] = SharedPtr<Texture>(texture);
+		mTextureMap[unit] = SharedPtr<Texture>(texture);
 	}
 
 
@@ -48,14 +48,14 @@ void Sapphire::Material::SetFillMode(FillMode mode)
 	mFillMode = mode;
 }
 
-Sapphire::Texture*  Sapphire::Material::GetTexture(String name)
+Sapphire::Texture*  Sapphire::Material::GetTexture(ETextureUnit unit)
 {
-	HashMap<String, SharedPtr<Texture>>::Iterator it = mTextureMap.Find(name);
+	HashMap<ETextureUnit, SharedPtr<Texture>>::ConstIterator it = mTextureMap.Find(unit);
 	if (it != mTextureMap.End())
 	{
 		return it->second_.Get();
 	}
-	return nullptr;
+	return NULL;
 }
 
 Sapphire::FillMode Sapphire::Material::GetFillMode()
