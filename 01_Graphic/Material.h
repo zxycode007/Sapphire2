@@ -31,6 +31,8 @@ namespace Sapphire
 		Material(Context* context);
 		virtual ~Material();
 
+		virtual bool BeginLoad(Deserializer& source);
+		virtual bool EndLoad();
 		virtual void SetShaderParameter(String name, Variant parameter);
 		virtual void SetTexture(ETextureUnit unit, Texture* texture);
 		virtual void SetFillMode(FillMode mode);
@@ -41,6 +43,8 @@ namespace Sapphire
 		virtual Shader*   GetShader(String name);
 		virtual EVertexType  GetVertexType();
 		virtual void         SetVertexType(EVertexType vType);
+		       
+
 
 	private:
 
@@ -50,5 +54,11 @@ namespace Sapphire
 		HashMap<ETextureUnit, SharedPtr<Texture>>   mTextureMap;
 		FillMode                     mFillMode;
 		EVertexType                  mVertexType;
+		SharedPtr<XMLFile>           mLoadXMLFile;
+		String                       mShaderName;
+
+	private:
+		void   ResetToDefault();
+		void   Load(XMLElement& elem);
 	};
 }

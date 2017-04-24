@@ -97,7 +97,8 @@ bool Sapphire::Texture2D::BeginLoad(Deserializer & source)
 	ResourceCache* cache = GetSubsystem<ResourceCache>();
 	String xmlName = ReplaceExtension(GetName(), ".xml");
 	mloadParameters = cache->GetTempResource<XMLFile>(xmlName, false);
-
+	//ÉèÖÃ²ÎÊı
+	SetParameters(mloadParameters);
 
 	return true;
 }

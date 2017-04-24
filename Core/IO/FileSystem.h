@@ -109,7 +109,7 @@ namespace Sapphire
 	SAPPHIRE_API String GetPath(const String& fullPath);
 	/// Return the filename from a full path.
 	SAPPHIRE_API String GetFileName(const String& fullPath);
-	/// Return the extension from a full path, converted to lowercase by default.
+	/// 返回一个完整路径的扩展名，默认转为小写
 	SAPPHIRE_API String GetExtension(const String& fullPath, bool lowercaseExtension = true);
 	/// Return the filename and extension from a full path. The case of the extension is preserved by default, so that the file can be opened in case-sensitive operating systems.
 	SAPPHIRE_API String GetFileNameAndExtension(const String& fullPath, bool lowercaseExtension = false);
