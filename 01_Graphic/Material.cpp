@@ -184,6 +184,7 @@ bool Sapphire::Material::EndLoad()
 	if (mLoadXMLFile)
 	{
 		XMLElement root = mLoadXMLFile->GetRoot();
+		//º”‘ÿ≤ƒ÷ ≈‰÷√
 		Load(root);
 	}
 	mLoadXMLFile.Reset();
@@ -307,6 +308,7 @@ void Sapphire::Material::Load(XMLElement& root)
 		XMLElement shaderElem = techniqueElem.GetChild("shader");
 		if (shaderElem.NotNull())
 		{
+			
 			mShaderName = shaderElem.GetName();
 			String fillmode = shaderElem.GetAttribute("fillmode");
 			mFillMode = ParseFillMode(fillmode);

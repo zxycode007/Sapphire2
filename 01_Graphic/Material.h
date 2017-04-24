@@ -55,6 +55,7 @@ namespace Sapphire
 		FillMode                     mFillMode;
 		EVertexType                  mVertexType;
 		SharedPtr<XMLFile>           mLoadXMLFile;
+		//Shader名字，Draw的时候通过这个名字从shadermanager中取Shader
 		String                       mShaderName;
 
 	private:
