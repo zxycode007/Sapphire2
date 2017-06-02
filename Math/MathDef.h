@@ -177,7 +177,7 @@ namespace Sapphire
 	/// Return a random integer between min and max - 1.
 	inline int Random(int min, int max) { float range = (float)(max - min); return (int)(Random() * range) + min; }
 
-	/// Return a random normal distributed number with the given mean value and variance.
+	/// 返回符合给的期望值和方差的正态分布的随机数
 	inline float RandomNormal(float meanValue, float variance) { return Sapphire::RandStandardNormal() * sqrtf(variance) + meanValue; }
 
 	/// Convert float to half float. From https://gist.github.com/martinkallman/5049614

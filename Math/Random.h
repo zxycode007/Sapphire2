@@ -13,6 +13,7 @@ namespace Sapphire
 	/// Return a random number between 0-32767. Should operate similarly to MSVC rand().
 	SAPPHIRE_API int Rand();
 	/// Return a standard normal distributed number.
+	/// 返回一个标准正态分布数
 	SAPPHIRE_API float RandStandardNormal();
 
 }
